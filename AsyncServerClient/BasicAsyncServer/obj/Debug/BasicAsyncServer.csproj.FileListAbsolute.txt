@@ -1,0 +1,10 @@
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\bin\Debug\BasicAsyncServer.exe.config
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\bin\Debug\BasicAsyncServer.exe
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\bin\Debug\BasicAsyncServer.pdb
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.csprojAssemblyReference.cache
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.Properties.Resources.resources
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.ServerForm.resources
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.GenerateResource.cache
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.CoreCompileInputs.cache
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.exe
+C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.pdb

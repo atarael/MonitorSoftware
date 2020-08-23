@@ -5,3 +5,9 @@ C:\Users\sara\Desktop\saraayash\Server\Server\obj\Debug\Server.csprojAssemblyRef
 C:\Users\sara\Desktop\saraayash\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
 C:\Users\sara\Desktop\saraayash\Server\Server\obj\Debug\Server.exe
 C:\Users\sara\Desktop\saraayash\Server\Server\obj\Debug\Server.pdb
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.ServerForm.resources
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.exe
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Server\Server\obj\Debug\Server.pdb

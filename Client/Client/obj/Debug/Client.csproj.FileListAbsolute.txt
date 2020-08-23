@@ -7,3 +7,9 @@ C:\Users\sara\Desktop\saraayash\Client\Client\obj\Debug\Client.exe
 C:\Users\sara\Desktop\saraayash\Client\Client\obj\Debug\Client.pdb
 C:\Users\sara\Desktop\saraayash\Client\Client\obj\Debug\Client.ClientForm.resources
 C:\Users\sara\Desktop\saraayash\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.csprojAssemblyReference.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.ClientForm.resources
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.exe
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\Client\Client\obj\Debug\Client.pdb
