@@ -34,19 +34,21 @@
         {
             this.buttonSend = new System.Windows.Forms.Button();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.textBoxEmployee = new System.Windows.Forms.TextBox();
+            this.txbName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txbMsg = new System.Windows.Forms.TextBox();
             this.txbChat = new System.Windows.Forms.TextBox();
             this.labelIP = new System.Windows.Forms.Label();
             this.textBoxAddress = new System.Windows.Forms.TextBox();
+            this.txbDB = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonSend
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Enabled = false;
-            this.buttonSend.Location = new System.Drawing.Point(386, 454);
+            this.buttonSend.Location = new System.Drawing.Point(394, 454);
             this.buttonSend.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(123, 60);
@@ -58,7 +60,7 @@
             // buttonConnect
             // 
             this.buttonConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConnect.Location = new System.Drawing.Point(354, 70);
+            this.buttonConnect.Location = new System.Drawing.Point(405, 72);
             this.buttonConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(112, 35);
@@ -67,22 +69,22 @@
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
-            // textBoxEmployee
+            // txbName
             // 
-            this.textBoxEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxEmployee.Location = new System.Drawing.Point(78, 23);
-            this.textBoxEmployee.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBoxEmployee.Name = "textBoxEmployee";
-            this.textBoxEmployee.Size = new System.Drawing.Size(605, 26);
-            this.textBoxEmployee.TabIndex = 7;
+            this.txbName.Location = new System.Drawing.Point(74, 25);
+            this.txbName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txbName.Name = "txbName";
+            this.txbName.Size = new System.Drawing.Size(660, 26);
+            this.txbName.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 28);
+            this.label1.Location = new System.Drawing.Point(13, 30);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 20);
@@ -99,7 +101,7 @@
             // 
             // txbChat
             // 
-            this.txbChat.Location = new System.Drawing.Point(21, 125);
+            this.txbChat.Location = new System.Drawing.Point(17, 115);
             this.txbChat.Multiline = true;
             this.txbChat.Name = "txbChat";
             this.txbChat.Size = new System.Drawing.Size(488, 305);
@@ -109,7 +111,7 @@
             // 
             this.labelIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelIP.AutoSize = true;
-            this.labelIP.Location = new System.Drawing.Point(21, 79);
+            this.labelIP.Location = new System.Drawing.Point(17, 81);
             this.labelIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelIP.Name = "labelIP";
             this.labelIP.Size = new System.Drawing.Size(24, 20);
@@ -119,21 +121,43 @@
             // textBoxAddress
             // 
             this.textBoxAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxAddress.Location = new System.Drawing.Point(55, 74);
+            this.textBoxAddress.Location = new System.Drawing.Point(51, 76);
             this.textBoxAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxAddress.Name = "textBoxAddress";
             this.textBoxAddress.Size = new System.Drawing.Size(276, 26);
             this.textBoxAddress.TabIndex = 4;
             this.textBoxAddress.Text = "127.0.0.1";
             // 
+            // txbDB
+            // 
+            this.txbDB.Location = new System.Drawing.Point(21, 590);
+            this.txbDB.Multiline = true;
+            this.txbDB.Name = "txbDB";
+            this.txbDB.Size = new System.Drawing.Size(492, 171);
+            this.txbDB.TabIndex = 12;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(28, 554);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(128, 30);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Data Base";
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 639);
+            this.ClientSize = new System.Drawing.Size(759, 812);
+            this.Controls.Add(this.txbDB);
             this.Controls.Add(this.txbMsg);
             this.Controls.Add(this.txbChat);
-            this.Controls.Add(this.textBoxEmployee);
+            this.Controls.Add(this.txbName);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxAddress);
             this.Controls.Add(this.labelIP);
@@ -153,12 +177,14 @@
 
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.Button buttonConnect;
-        private System.Windows.Forms.TextBox textBoxEmployee;
+        private System.Windows.Forms.TextBox txbName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txbMsg;
         private System.Windows.Forms.TextBox txbChat;
         private System.Windows.Forms.Label labelIP;
         private System.Windows.Forms.TextBox textBoxAddress;
+        private System.Windows.Forms.TextBox txbDB;
+        private System.Windows.Forms.Label label2;
     }
 }
 

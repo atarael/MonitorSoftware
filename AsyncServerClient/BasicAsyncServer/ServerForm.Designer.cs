@@ -31,6 +31,7 @@
             this.txbChat = new System.Windows.Forms.TextBox();
             this.txbMsg = new System.Windows.Forms.TextBox();
             this.btnSendMsg = new System.Windows.Forms.Button();
+            this.checkLstAllClient = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // txbChat
@@ -59,11 +60,20 @@
             this.btnSendMsg.UseVisualStyleBackColor = true;
             this.btnSendMsg.Click += new System.EventHandler(this.btnSendMsg_Click);
             // 
+            // checkLstAllClient
+            // 
+            this.checkLstAllClient.FormattingEnabled = true;
+            this.checkLstAllClient.Location = new System.Drawing.Point(23, 503);
+            this.checkLstAllClient.Name = "checkLstAllClient";
+            this.checkLstAllClient.Size = new System.Drawing.Size(545, 257);
+            this.checkLstAllClient.TabIndex = 4;
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 670);
+            this.ClientSize = new System.Drawing.Size(879, 812);
+            this.Controls.Add(this.checkLstAllClient);
             this.Controls.Add(this.btnSendMsg);
             this.Controls.Add(this.txbMsg);
             this.Controls.Add(this.txbChat);
@@ -79,6 +89,7 @@
         private System.Windows.Forms.TextBox txbChat;
         private System.Windows.Forms.TextBox txbMsg;
         private System.Windows.Forms.Button btnSendMsg;
+        private System.Windows.Forms.CheckedListBox checkLstAllClient;
     }
 }
 

@@ -8,3 +8,23 @@ C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\Ba
 C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.CoreCompileInputs.cache
 C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.exe
 C:\Users\sara\Downloads\NetworkingSamples-master (1)\NetworkingSamples-master\BasicAsyncServer\obj\Debug\BasicAsyncServer.pdb
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\BasicAsyncServer.exe.config
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\BasicAsyncServer.exe
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\BasicAsyncServer.pdb
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.csprojAssemblyReference.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.Properties.Resources.resources
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.ServerForm.resources
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.CoreCompileInputs.cache
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.exe
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.pdb
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\EntityFramework.dll
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.dll
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\EntityFramework.xml
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.xml
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.CopyComplete
