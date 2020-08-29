@@ -16,6 +16,7 @@ namespace BasicAsyncServer
         private Socket serverSocket;
         private Socket clientSocket; // We will only accept one socket.
         private byte[] buffer;
+       
         private int numOfClient;
         private String name;
         private bool getNameFromServer;
@@ -68,15 +69,15 @@ namespace BasicAsyncServer
 
                 // Send a message to the newly connected client.
                 var sendData = Encoding.ASCII.GetBytes("Hello client im server");
-                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
+                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
                 // Listen for client data.
-                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, FirstReceiveCallback, null);
+                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, FirstReceiveCallback, clientSocket);
                 // Continue listening for clients.
                 serverSocket.BeginAccept(AcceptCallback, null);
-                
+
                 // wait to get client name
-                while (!getNameFromServer);
-               
+                while (!getNameFromServer) ;
+
                 // create new client 
                 Client newClient = new Client(name, numOfClient, clientSocket, buffer);
                 Allclients.Add(newClient);
@@ -101,17 +102,17 @@ namespace BasicAsyncServer
 
         private void addClientToCheckBoxLst(Client newClient)
         {
-            if(newClient!= null)
+            if (newClient != null)
             {
                 Invoke((Action)delegate
                 {
                     String line = "";
                     line += "Client Name: " + newClient.Name + " ,id: " + newClient.id + " ,Socket: " + newClient.ClientSocket.RemoteEndPoint;
                     checkLstAllClient.Items.Insert(newClient.id, line);
-                    
+
                 });
             }
-           
+
 
         }
 
@@ -119,7 +120,9 @@ namespace BasicAsyncServer
         {
             try
             {
-                //clientSocket.EndSend(AR);
+               clientSocket = AR.AsyncState as Socket;
+               clientSocket.EndSend(AR);
+
             }
             catch (SocketException ex)
             {
@@ -134,65 +137,57 @@ namespace BasicAsyncServer
         private void ReceiveCallback(IAsyncResult AR)
         {
             try
-            {
-                 
-                int received = clientSocket.EndReceive(AR);
-
-                if (received == 0)
+            {      
+                if (AR.AsyncState as Socket != null)
                 {
-                    return;
-                }
+ 
+                    
+                    int id = -1;
+                    String clientName = "";
+                    for (int i = 0; i < Allclients.Count; i++)
+                    {
+                        if (Allclients[i].ClientSocket == AR.AsyncState as Socket)
+                        {
+                            clientName = Allclients[i].Name;
+                            id = i;
+                            break;
+                        }
+                    }
+                    
+                    if(id != -1)
+                    {
+                        int received = Allclients[id].ClientSocket.EndReceive(AR);
 
-                string message = Encoding.ASCII.GetString(buffer);
-
-
-                Invoke((Action)delegate
-                {
-                    // write on txtBox
-                    txbChat.AppendText("CLIENT: |" + message + "|");
-                    txbChat.AppendText(Environment.NewLine);
-                    Text = "client says: " + message;
-                });
-
-
-                // Socket exception will raise here when client closes, as this sample does not
-                // demonstrate graceful disconnects for the sake of simplicity.
-               // for (int i=0; i < Allclients.Count; i++)
-               /* {
-                    //int availableTOread = Allclients[i].ClientSocket.Available;
-                    Boolean connected = Allclients[i].ClientSocket.Connected ;
-                    if (connected   ) {
-                        clientSocket = Allclients[i].ClientSocket;
-                       
-                        int availableTOread = Allclients[i].ClientSocket.Available;
-                        
-                        if (received == 0 && availableTOread == 0)
+                        if (received == 0)
                         {
                             return;
                         }
 
                         string message = Encoding.ASCII.GetString(buffer);
 
+                        String[] SplitedMessage = message.Split('\0');
+                        message = SplitedMessage[0];
+
 
                         Invoke((Action)delegate
                         {
                             // write on txtBox
-                            txbChat.AppendText("CLIENT: |" + message + "|");
+
+                            txbChat.AppendText("CLIENT(" + clientName + "): |" + message + "|");
                             txbChat.AppendText(Environment.NewLine);
                             Text = "client says: " + message;
                         });
 
-                            }
-                }
-                // Start receiving data again.
-                //for (int j = 0; j < Allclients.Count; j++)
-                {
-                    buffer = new byte[clientSocket.ReceiveBufferSize];
-                    clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, null);
+                        buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
+                        Allclients[id].ClientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
+
+
+                    }
+
 
                 }
-                */
-               
+
+
             }
 
 
@@ -211,25 +206,25 @@ namespace BasicAsyncServer
         {
             try
             {
-                // Socket exception will raise here when client closes, as this sample does not
-                // demonstrate graceful disconnects for the sake of simplicity.
-                int received = clientSocket.EndReceive(AR);
-
+                Socket client = AR.AsyncState as Socket;
+                int received = client.EndReceive(AR);
+                
                 if (received == 0)
                 {
                     return;
                 }
 
-                 
+
                 name = Encoding.ASCII.GetString(buffer);
                 String[] SplitedName = name.Split('\0');
                 name = SplitedName[0];
-               
+
                 getNameFromServer = true;
+
                 // Start receiving data again.
                 this.buffer = new byte[clientSocket.ReceiveBufferSize];
-                clientSocket.BeginReceive(this.buffer, 0, this.buffer.Length, SocketFlags.None, this.ReceiveCallback, null);
-                
+                client.BeginReceive(this.buffer, 0, this.buffer.Length, SocketFlags.None, this.ReceiveCallback, client);
+
             }
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
@@ -249,15 +244,15 @@ namespace BasicAsyncServer
         }
 
         private void btnSendMsg_Click(object sender, EventArgs e)
-         {
-           List<Socket> selectedClient = getCheckedClients();
+        {
+            List<Socket> selectedClient = getCheckedClients();
 
             try
             {
                 String msg = txbMsg.Text;
                 txbMsg.Text = "";
                 var sendData = Encoding.ASCII.GetBytes(msg);
-                foreach(Socket s in selectedClient)
+                foreach (Socket s in selectedClient)
                 {
                     clientSocket = s;
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
@@ -267,32 +262,33 @@ namespace BasicAsyncServer
                 // write on txtBox
                 txbChat.AppendText("ME: " + msg);
                 txbChat.AppendText(Environment.NewLine);
-                
+
             }
             catch (SocketException ex)
             {
                 ShowErrorDialog(ex.Message);
-               
+
             }
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog(ex.Message);
-              
+
             }
         }
 
         private List<Socket> getCheckedClients()
         {
             List<Socket> selectedClient = new List<Socket>();
-                Invoke((Action)delegate
-                {
-                    for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                        if (checkLstAllClient.GetItemChecked(i)) {
-                            selectedClient.Add(Allclients[i].ClientSocket);
+            Invoke((Action)delegate
+            {
+                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                    if (checkLstAllClient.GetItemChecked(i))
+                    {
+                        selectedClient.Add(Allclients[i].ClientSocket);
 
-                        }
-                                                
-                });
+                    }
+
+            });
             return selectedClient;
         }
     }

@@ -21,14 +21,19 @@ namespace BasicAsyncServer
             get ;
             set;
         }
+        public byte[] buffer{
+            get;
+            set;
+        }
 
-        public Client(String name, int id, Socket clientSocket)
+        public Client(string name, int id, Socket clientSocket, byte[] buffer)
         {
             Name = name;
             this.id = id;
             ClientSocket = clientSocket;
+            this.buffer = buffer;
+            
         }
-
 
 
     }
