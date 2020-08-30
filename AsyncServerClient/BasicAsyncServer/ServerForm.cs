@@ -75,20 +75,6 @@ namespace BasicAsyncServer
                 // Continue listening for clients.
                 serverSocket.BeginAccept(AcceptCallback, null);
 
-                // wait to get client name
-                while (!getNameFromServer) ;
-
-                // create new client 
-                Client newClient = new Client(name, numOfClient, clientSocket, buffer);
-                Allclients.Add(newClient);
-                numOfClient++;
-
-                //newClient.ClientSocket.BeginAccept(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
-
-
-                addClientToCheckBoxLst(newClient);
-
-
             }
             catch (SocketException ex)
             {
@@ -123,6 +109,7 @@ namespace BasicAsyncServer
                clientSocket = AR.AsyncState as Socket;
                clientSocket.EndSend(AR);
 
+
             }
             catch (SocketException ex)
             {
@@ -136,6 +123,7 @@ namespace BasicAsyncServer
 
         private void ReceiveCallback(IAsyncResult AR)
         {
+            
             try
             {      
                 if (AR.AsyncState as Socket != null)
@@ -163,7 +151,7 @@ namespace BasicAsyncServer
                             return;
                         }
 
-                        string message = Encoding.ASCII.GetString(buffer);
+                        string message = Encoding.ASCII.GetString(Allclients[id].buffer);
 
                         String[] SplitedMessage = message.Split('\0');
                         message = SplitedMessage[0];
@@ -178,8 +166,8 @@ namespace BasicAsyncServer
                             Text = "client says: " + message;
                         });
 
-                        buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
-                        Allclients[id].ClientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
+                        Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
+                        Allclients[id].ClientSocket.BeginReceive(Allclients[id].buffer, 0, Allclients[id].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
 
 
                     }
@@ -206,14 +194,14 @@ namespace BasicAsyncServer
         {
             try
             {
+              
                 Socket client = AR.AsyncState as Socket;
                 int received = client.EndReceive(AR);
-                
-                if (received == 0)
+
+                if (received == 0 )
                 {
                     return;
                 }
-
 
                 name = Encoding.ASCII.GetString(buffer);
                 String[] SplitedName = name.Split('\0');
@@ -221,9 +209,14 @@ namespace BasicAsyncServer
 
                 getNameFromServer = true;
 
-                // Start receiving data again.
-                this.buffer = new byte[clientSocket.ReceiveBufferSize];
-                client.BeginReceive(this.buffer, 0, this.buffer.Length, SocketFlags.None, this.ReceiveCallback, client);
+                // create new client 
+                Client newClient = new Client(name, numOfClient, client, buffer);
+                Allclients.Add(newClient);
+                
+                // Start receiving data from this client Socket.
+                Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
+                numOfClient++;
+                addClientToCheckBoxLst(newClient);
 
             }
             // Avoid Pokemon exception handling in cases like these.
@@ -255,7 +248,7 @@ namespace BasicAsyncServer
                 foreach (Socket s in selectedClient)
                 {
                     clientSocket = s;
-                    clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
+                    clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
 
                 }
 
@@ -285,7 +278,6 @@ namespace BasicAsyncServer
                     if (checkLstAllClient.GetItemChecked(i))
                     {
                         selectedClient.Add(Allclients[i].ClientSocket);
-
                     }
 
             });

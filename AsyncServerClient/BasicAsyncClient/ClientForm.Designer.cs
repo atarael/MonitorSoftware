@@ -42,6 +42,7 @@
             this.textBoxAddress = new System.Windows.Forms.TextBox();
             this.txbDB = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.sendDB = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSend
@@ -144,15 +145,26 @@
             this.label2.Location = new System.Drawing.Point(28, 554);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 30);
+            this.label2.Size = new System.Drawing.Size(85, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "Data Base";
+            // 
+            // sendDB
+            // 
+            this.sendDB.Location = new System.Drawing.Point(139, 541);
+            this.sendDB.Name = "sendDB";
+            this.sendDB.Size = new System.Drawing.Size(167, 32);
+            this.sendDB.TabIndex = 13;
+            this.sendDB.Text = "Send DB";
+            this.sendDB.UseVisualStyleBackColor = true;
+            this.sendDB.Click += new System.EventHandler(this.sendDB_Click);
             // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 812);
+            this.Controls.Add(this.sendDB);
             this.Controls.Add(this.txbDB);
             this.Controls.Add(this.txbMsg);
             this.Controls.Add(this.txbChat);
@@ -185,6 +197,7 @@
         private System.Windows.Forms.TextBox textBoxAddress;
         private System.Windows.Forms.TextBox txbDB;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button sendDB;
     }
 }
 

@@ -5,15 +5,18 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.IO;
 
 namespace BasicAsyncClient
 {
     public partial class ClientForm : Form
     {
+        private String clientName = "";
         private Socket clientSocket;
         private byte[] buffer;
         // Holds our connection with the database
         SQLiteConnection m_dbConnection;
+        private String DB = "";
 
 
         public ClientForm()
@@ -120,7 +123,7 @@ namespace BasicAsyncClient
                 txbMsg.Text = "";
                 var sendData = Encoding.ASCII.GetBytes(msg);
                 clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
-
+             
                 // write on txtBox
                 txbChat.AppendText("ME: " + msg);
                 txbChat.AppendText(Environment.NewLine);
@@ -147,19 +150,19 @@ namespace BasicAsyncClient
                     ShowErrorDialog("Must fill Client Name");
                 }
                 else
-                {
-                    if (checkDB())
-                    {
+                { 
                         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         // Connect to the specified host.
                         var endPoint = new IPEndPoint(IPAddress.Parse(textBoxAddress.Text), 3333);
                         clientSocket.BeginConnect(endPoint, ConnectCallback, null);
                         // send ClientName
                         var sendData = Encoding.ASCII.GetBytes(txbName.Text);
+                        clientName = txbName.Text;
                         clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
 
-                    }
-                   
+                    checkDB();
+
+
 
                 }
 
@@ -176,58 +179,57 @@ namespace BasicAsyncClient
 
         private bool checkDB()
         {
-            /*
-             * 
-             * createNewDatabase();
+            createNewDatabase();
             connectToDatabase();
             createTable();
             fillTable();
-            printHighscores();
-             */
+            printClientData();
+            
             return true;
         }
 
         // Creates an empty database file
         void createNewDatabase()
         {
-            SQLiteConnection.CreateFile("MyDatabase.sqlite");
+            DB = clientName + "DB.sqlite";
+            SQLiteConnection.CreateFile(DB);
         }
 
         // Creates a connection with our database file.
         void connectToDatabase()
         {
-            m_dbConnection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
+            m_dbConnection = new SQLiteConnection("Data Source="+DB+";Version=3;");
             m_dbConnection.Open();
         }
 
-        // Creates a table named 'highscores' with two columns: name (a string of max 20 characters) and score (an int)
+        // Creates a table named 'clientData' with two columns: name (a string of max 20 characters) and score (an int)
         void createTable()
         {
-            string sql = "create table highscores (name varchar(20), score int)";
+            string sql = "create table clientData (name varchar(20), score int)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
-        // Inserts some values in the highscores table.
+        // Inserts some values in the clientData table.
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         void fillTable()
         {
-            string sql = "insert into highscores (name, score) values ('Me', 3000)";
+            string sql = "insert into clientData (name, score) values ('Me', 3000)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-            sql = "insert into highscores (name, score) values ('Myself', 6000)";
+            sql = "insert into clientData (name, score) values ('Myself', 6000)";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-            sql = "insert into highscores (name, score) values ('And I', 9001)";
+            sql = "insert into clientData (name, score) values ('And I', 9001)";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
-        // Writes the highscores to the console sorted on score in descending order.
-        void printHighscores()
+        // Writes the clientData to the console sorted on score in descending order.
+        void printClientData()
         {
             txbDB.Text = "";
-            string sql = "select * from highscores order by score desc";
+            string sql = "select * from clientData order by score desc";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -238,7 +240,17 @@ namespace BasicAsyncClient
            
         }
 
+        private void sendDB_Click(object sender, EventArgs e)
+        {
+            string path = Directory.GetCurrentDirectory();
+            path = System.IO.Path.Combine(path, clientName+"-Data.txt");
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+            {
+                file.WriteLine(DateTime.Now.ToString());         
+                file.WriteLine(txbDB.Text);
+            }
+            clientSocket.SendFile(path);
 
-
+        }
     }
 }
