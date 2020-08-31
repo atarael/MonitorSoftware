@@ -43,13 +43,15 @@
             this.txbDB = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.sendDB = new System.Windows.Forms.Button();
+            this.txbShowAllApp = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonSend
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Enabled = false;
-            this.buttonSend.Location = new System.Drawing.Point(394, 454);
+            this.buttonSend.Location = new System.Drawing.Point(397, 443);
             this.buttonSend.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(123, 60);
@@ -61,7 +63,7 @@
             // buttonConnect
             // 
             this.buttonConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConnect.Location = new System.Drawing.Point(405, 72);
+            this.buttonConnect.Location = new System.Drawing.Point(408, 61);
             this.buttonConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(112, 35);
@@ -74,7 +76,7 @@
             // 
             this.txbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txbName.Location = new System.Drawing.Point(74, 25);
+            this.txbName.Location = new System.Drawing.Point(77, 14);
             this.txbName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txbName.Name = "txbName";
             this.txbName.Size = new System.Drawing.Size(660, 26);
@@ -85,7 +87,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 30);
+            this.label1.Location = new System.Drawing.Point(16, 19);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 20);
@@ -94,7 +96,7 @@
             // 
             // txbMsg
             // 
-            this.txbMsg.Location = new System.Drawing.Point(21, 454);
+            this.txbMsg.Location = new System.Drawing.Point(46, 440);
             this.txbMsg.Multiline = true;
             this.txbMsg.Name = "txbMsg";
             this.txbMsg.Size = new System.Drawing.Size(344, 60);
@@ -112,7 +114,7 @@
             // 
             this.labelIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelIP.AutoSize = true;
-            this.labelIP.Location = new System.Drawing.Point(17, 81);
+            this.labelIP.Location = new System.Drawing.Point(20, 70);
             this.labelIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelIP.Name = "labelIP";
             this.labelIP.Size = new System.Drawing.Size(24, 20);
@@ -122,7 +124,7 @@
             // textBoxAddress
             // 
             this.textBoxAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxAddress.Location = new System.Drawing.Point(51, 76);
+            this.textBoxAddress.Location = new System.Drawing.Point(54, 65);
             this.textBoxAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxAddress.Name = "textBoxAddress";
             this.textBoxAddress.Size = new System.Drawing.Size(276, 26);
@@ -131,7 +133,7 @@
             // 
             // txbDB
             // 
-            this.txbDB.Location = new System.Drawing.Point(21, 590);
+            this.txbDB.Location = new System.Drawing.Point(28, 980);
             this.txbDB.Multiline = true;
             this.txbDB.Name = "txbDB";
             this.txbDB.Size = new System.Drawing.Size(492, 171);
@@ -142,7 +144,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 554);
+            this.label2.Location = new System.Drawing.Point(33, 946);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 20);
@@ -151,7 +153,7 @@
             // 
             // sendDB
             // 
-            this.sendDB.Location = new System.Drawing.Point(139, 541);
+            this.sendDB.Location = new System.Drawing.Point(142, 164);
             this.sendDB.Name = "sendDB";
             this.sendDB.Size = new System.Drawing.Size(167, 32);
             this.sendDB.TabIndex = 13;
@@ -159,16 +161,38 @@
             this.sendDB.UseVisualStyleBackColor = true;
             this.sendDB.Click += new System.EventHandler(this.sendDB_Click);
             // 
+            // txbShowAllApp
+            // 
+            this.txbShowAllApp.Location = new System.Drawing.Point(28, 553);
+            this.txbShowAllApp.Multiline = true;
+            this.txbShowAllApp.Name = "txbShowAllApp";
+            this.txbShowAllApp.Size = new System.Drawing.Size(535, 379);
+            this.txbShowAllApp.TabIndex = 11;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(42, 521);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(105, 20);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Show All APP";
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 812);
+            this.ClientSize = new System.Drawing.Size(759, 1178);
             this.Controls.Add(this.sendDB);
             this.Controls.Add(this.txbDB);
             this.Controls.Add(this.txbMsg);
+            this.Controls.Add(this.txbShowAllApp);
             this.Controls.Add(this.txbChat);
             this.Controls.Add(this.txbName);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxAddress);
@@ -198,6 +222,8 @@
         private System.Windows.Forms.TextBox txbDB;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button sendDB;
+        private System.Windows.Forms.TextBox txbShowAllApp;
+        private System.Windows.Forms.Label label3;
     }
 }
 

