@@ -104,7 +104,7 @@
             // 
             // txbChat
             // 
-            this.txbChat.Location = new System.Drawing.Point(17, 115);
+            this.txbChat.Location = new System.Drawing.Point(37, 115);
             this.txbChat.Multiline = true;
             this.txbChat.Name = "txbChat";
             this.txbChat.Size = new System.Drawing.Size(488, 305);
@@ -133,7 +133,7 @@
             // 
             // txbDB
             // 
-            this.txbDB.Location = new System.Drawing.Point(28, 980);
+            this.txbDB.Location = new System.Drawing.Point(28, 813);
             this.txbDB.Multiline = true;
             this.txbDB.Name = "txbDB";
             this.txbDB.Size = new System.Drawing.Size(492, 171);
@@ -144,7 +144,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 946);
+            this.label2.Location = new System.Drawing.Point(33, 772);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 20);
@@ -153,7 +153,7 @@
             // 
             // sendDB
             // 
-            this.sendDB.Location = new System.Drawing.Point(142, 164);
+            this.sendDB.Location = new System.Drawing.Point(322, 766);
             this.sendDB.Name = "sendDB";
             this.sendDB.Size = new System.Drawing.Size(167, 32);
             this.sendDB.TabIndex = 13;
@@ -166,7 +166,7 @@
             this.txbShowAllApp.Location = new System.Drawing.Point(28, 553);
             this.txbShowAllApp.Multiline = true;
             this.txbShowAllApp.Name = "txbShowAllApp";
-            this.txbShowAllApp.Size = new System.Drawing.Size(535, 379);
+            this.txbShowAllApp.Size = new System.Drawing.Size(539, 207);
             this.txbShowAllApp.TabIndex = 11;
             // 
             // label3
@@ -186,11 +186,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 1178);
+            this.Controls.Add(this.txbChat);
             this.Controls.Add(this.sendDB);
             this.Controls.Add(this.txbDB);
             this.Controls.Add(this.txbMsg);
             this.Controls.Add(this.txbShowAllApp);
-            this.Controls.Add(this.txbChat);
             this.Controls.Add(this.txbName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);

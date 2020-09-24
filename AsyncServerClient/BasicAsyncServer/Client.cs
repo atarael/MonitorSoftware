@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BasicAsyncServer
 {
@@ -25,6 +26,7 @@ namespace BasicAsyncServer
             get;
             set;
         }
+        public MonitorSystem monitorSystem;
 
         public Client(string name, int id, Socket clientSocket, byte[] buffer)
         {
@@ -32,8 +34,12 @@ namespace BasicAsyncServer
             this.id = id;
             ClientSocket = clientSocket;
             this.buffer = buffer;
+            monitorSystem = new MonitorSystem();
             
         }
+      
+
+
 
 
     }

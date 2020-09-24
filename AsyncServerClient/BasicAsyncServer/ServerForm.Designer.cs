@@ -32,6 +32,7 @@
             this.txbMsg = new System.Windows.Forms.TextBox();
             this.btnSendMsg = new System.Windows.Forms.Button();
             this.checkLstAllClient = new System.Windows.Forms.CheckedListBox();
+            this.btnSetSystem = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txbChat
@@ -68,11 +69,22 @@
             this.checkLstAllClient.Size = new System.Drawing.Size(545, 257);
             this.checkLstAllClient.TabIndex = 4;
             // 
+            // btnSetSystem
+            // 
+            this.btnSetSystem.Location = new System.Drawing.Point(106, 776);
+            this.btnSetSystem.Name = "btnSetSystem";
+            this.btnSetSystem.Size = new System.Drawing.Size(310, 95);
+            this.btnSetSystem.TabIndex = 5;
+            this.btnSetSystem.Text = "Set System to Client";
+            this.btnSetSystem.UseVisualStyleBackColor = true;
+            this.btnSetSystem.Click += new System.EventHandler(this.btnSetSystem_Click);
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(879, 812);
+            this.ClientSize = new System.Drawing.Size(996, 962);
+            this.Controls.Add(this.btnSetSystem);
             this.Controls.Add(this.checkLstAllClient);
             this.Controls.Add(this.btnSendMsg);
             this.Controls.Add(this.txbMsg);
@@ -90,6 +102,7 @@
         private System.Windows.Forms.TextBox txbMsg;
         private System.Windows.Forms.Button btnSendMsg;
         private System.Windows.Forms.CheckedListBox checkLstAllClient;
+        private System.Windows.Forms.Button btnSetSystem;
     }
 }
 

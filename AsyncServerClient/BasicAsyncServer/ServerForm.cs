@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -156,14 +157,31 @@ namespace BasicAsyncServer
                         String[] SplitedMessage = message.Split('\0');
                         message = SplitedMessage[0];
 
+                        var msg1 = Allclients[id].buffer;
+                        string DB = clientName + ".sqlite";
+                        var output = File.Create(DB);
+                        output.Write(msg1, 0, msg1.Length);
 
-                        Invoke((Action)delegate
+                        SQLiteConnection m_dbConnection;
+                        m_dbConnection = new SQLiteConnection("Data Source=" + DB + ";Version=3;");
+                        m_dbConnection.Open();
+
+                        string query = "";
+                        string sql = "select * from clientData order by score desc";
+                        SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                        SQLiteDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            query += "Name: " + reader["name"] + "\tScore: " + reader["score"] + "\n";
+                        }
+
+                  Invoke((Action)delegate
                         {
                             // write on txtBox
 
                             txbChat.AppendText("CLIENT(" + clientName + "): |" + message + "|");
                             txbChat.AppendText(Environment.NewLine);
-                            Text = "client says: " + message;
+                            Text = "client says: ";
                         });
 
                         Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
@@ -282,6 +300,20 @@ namespace BasicAsyncServer
 
             });
             return selectedClient;
+        }
+
+        private void btnSetSystem_Click(object sender, EventArgs e)
+        {
+            Invoke((Action)delegate
+            {
+                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                    if (checkLstAllClient.GetItemChecked(i))
+                    {
+                        Allclients[i].monitorSystem.ShowDialog();
+                    }
+
+            });
+
         }
     }
 

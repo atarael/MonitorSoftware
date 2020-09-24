@@ -28,3 +28,4 @@ C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServ
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.xml
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\bin\Debug\System.Data.SQLite.dll.config
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.csproj.CopyComplete
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.MonitorSystem.resources
