@@ -228,23 +228,28 @@ namespace BasicAsyncServer
 
                 getNameFromServer = true;
 
+                String System = "";
+                // set system 
+                Invoke((Action)delegate
+                {
+                    monitorSystem = new MonitorSystem(name);
+                    // open gui to set system 
+                    monitorSystem.ShowDialog();
+                    System = monitorSystem.sendSystem(); // get system from monitorSystem form
+                    ShowErrorDialog(System);
+                                        
+                });
+
                 // create new client 
-                Client newClient = new Client(name, numOfClient, client, buffer);
+                Client newClient = new Client(name, numOfClient, client, buffer, System);
                 Allclients.Add(newClient);
 
                 // Start receiving data from this client Socket.
                 Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
                 
+                
                 addClientToCheckBoxLst(newClient);
 
-                // set system 
-                Invoke((Action)delegate
-                {
-                    monitorSystem = new MonitorSystem(ref name);
-                    monitorSystem.ShowDialog();
-                    ShowErrorDialog(monitorSystem.sendSystem());
-                    
-                });
               
 
              numOfClient++;
@@ -323,7 +328,7 @@ namespace BasicAsyncServer
                 for (int i = 0; i < checkLstAllClient.Items.Count; i++)
                     if (checkLstAllClient.GetItemChecked(i))
                     {
-                        Allclients[i].monitorSystem.ShowDialog();
+                        
                     }
 
             });

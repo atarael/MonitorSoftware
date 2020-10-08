@@ -26,19 +26,19 @@ namespace BasicAsyncServer
             get;
             set;
         }
-        public MonitorSystem monitorSystem;
+        public String System
+        {
+            get;
+            set;
+        }
 
-        public Client(String name, int id, Socket clientSocket, byte[] buffer)
+        public Client(string name, int id, Socket clientSocket, byte[] buffer, string system)
         {
             Name = name;
             this.id = id;
             ClientSocket = clientSocket;
-            this.buffer = buffer;   
+            this.buffer = buffer;
+            System = system;
         }
-      
-
-
-
-
     }
 }

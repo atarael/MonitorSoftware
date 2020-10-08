@@ -14,11 +14,12 @@ namespace BasicAsyncServer
     {
 
         private static String system ="";
-        
-        public MonitorSystem(ref String text)
+        private static String clientName = "";
+
+        public MonitorSystem(String name)
         {
             InitializeComponent();
-            text += " press OK"; ;
+            clientName = name;
  
         }
 
@@ -26,13 +27,11 @@ namespace BasicAsyncServer
         {
 
             this.Close();
-            
-
         }
 
 
         public String sendSystem() {
-            system += "try sent..";
+            system = clientName + " set system";
             return system;
 
 
