@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BasicAsyncClient",
-    "\\BasicAsyncServer"
+    "\\Client",
+    "\\Server"
   ],
-  "SelectedNode": "\\BasicAsyncServer",
+  "SelectedNode": "\\Client\\Client.sln",
   "PreviewInSolutionExplorer": false
 }

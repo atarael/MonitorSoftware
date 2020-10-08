@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4EAC8522-45C1-4195-BC7C-86850F320C61}</ProjectGuid>
+    <ProjectGuid>{6FB1EFA5-F5AB-442F-9D22-D8EEB0B420A9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BasicAsyncClient</RootNamespace>
