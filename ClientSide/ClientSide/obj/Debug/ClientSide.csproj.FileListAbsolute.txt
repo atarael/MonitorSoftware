@@ -1,0 +1,17 @@
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.exe.config
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.exe
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.pdb
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\EntityFramework.dll
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\System.Data.SQLite.dll
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\EntityFramework.xml
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\System.Data.SQLite.xml
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.csprojAssemblyReference.cache
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.csproj.CoreCompileInputs.cache
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.csproj.CopyComplete
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.exe
+C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.pdb
