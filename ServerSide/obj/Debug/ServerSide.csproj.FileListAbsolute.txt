@@ -54,3 +54,5 @@ C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ServerSide
 C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ServerSide\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
 C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ServerSide\ServerSide\obj\Debug\ServerSide.exe
 C:\Users\עטרה אלמליח\Desktop\ataraElmaliach\MonitorSoftware\ServerSide\ServerSide\obj\Debug\ServerSide.pdb
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
+C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
