@@ -61,3 +61,11 @@ C:\Users\עטרה אלמליח\Desktop\AsyncServerClient-20201018T124033Z-001\As
 C:\Users\עטרה אלמליח\Desktop\AsyncServerClient-20201018T124033Z-001\AsyncServerClient\BasicAsyncServer\obj\Debug\Server.csproj.CopyComplete
 C:\Users\עטרה אלמליח\Desktop\AsyncServerClient-20201018T124033Z-001\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.exe
 C:\Users\עטרה אלמליח\Desktop\AsyncServerClient-20201018T124033Z-001\AsyncServerClient\BasicAsyncServer\obj\Debug\BasicAsyncServer.pdb
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\Server.csprojAssemblyReference.cache
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\BasicAsyncServer.MonitorSystem.resources
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\BasicAsyncServer.Properties.Resources.resources
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\BasicAsyncServer.ServerForm.resources
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\Server.csproj.GenerateResource.cache
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\BasicAsyncServer.exe
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\BasicAsyncServer\obj\Debug\BasicAsyncServer.pdb
