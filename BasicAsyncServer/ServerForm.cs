@@ -15,9 +15,10 @@ namespace BasicAsyncServer
     public partial class ServerForm : Form
     {
         int b = 0;
+        
         private List<Client> Allclients;
         private Socket serverSocket;
-        private Socket clientSocket; // We will only accept one socket.
+        private Socket clientSocket; 
         private byte[] buffer;
         //public MonitorSystem monitorSystem;
 
