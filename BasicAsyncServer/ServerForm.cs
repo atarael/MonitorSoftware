@@ -11,13 +11,15 @@ using System.Windows.Forms;
 
 namespace BasicAsyncServer
 {
+    
     public partial class ServerForm : Form
     {
+        int b = 0;
         private List<Client> Allclients;
         private Socket serverSocket;
         private Socket clientSocket; // We will only accept one socket.
         private byte[] buffer;
-        public MonitorSystem monitorSystem;
+        //public MonitorSystem monitorSystem;
 
         private int numOfClient;
         private String name;
