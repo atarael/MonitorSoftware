@@ -19,7 +19,7 @@ namespace BasicAsyncServer
         private Socket serverSocket;
         private Socket clientSocket; // We will only accept one socket.
         private byte[] buffer;
-        public MonitorSystem monitorSystem;
+        //public MonitorSystem monitorSystem;
 
         private int numOfClient;
         private String name;
