@@ -88,7 +88,7 @@ namespace ClientSide
                 sw.Write(AllApp);
 
             }
-
+            ShowErrorDialog(AllApp);
 
 
 
