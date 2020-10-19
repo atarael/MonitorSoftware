@@ -1,0 +1,7 @@
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.exe.config
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.exe
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\bin\Debug\ClientSide.pdb
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.csprojAssemblyReference.cache
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.csproj.CoreCompileInputs.cache
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.exe
+C:\Users\עטרה אלמליח\Desktop\final\MonitorSoftware\MonitorSoftware\ClientSide\ClientSide\obj\Debug\ClientSide.pdb
