@@ -14,8 +14,7 @@ namespace ClientSide
         private Socket clientSocket;
         private byte[] buffer;
         // Holds our connection with the database
-        SQLiteConnection m_dbConnection;
-
+        public DBclient dbs;
         private String DB = "";
 
 
@@ -159,6 +158,11 @@ namespace ClientSide
                     var sendData = Encoding.ASCII.GetBytes(txbName.Text);
                     clientName = txbName.Text;
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
+                    dbs = new DBclient();
+                    dbs.createNewDatabase();
+                    dbs.connectToDatabase();
+                    dbs.createTable();
+                    dbs.fillTable(1, "f", "jj");
 
                     // create DB
 
