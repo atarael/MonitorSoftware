@@ -34,7 +34,7 @@ namespace ServerSide
         }
 
         // Creates a table named 'clientData' with two columns: name (a string of max 20 characters) and score (an int)
-        public void createTable()
+        public void createClientsTable()
         {
             //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
             string sql = "create table clientData(id INTEGER PRIMARY KEY,name TEXT, settingString TEXT)";
@@ -45,7 +45,7 @@ namespace ServerSide
 
         // Inserts some values in the clientData table.
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
-        public void fillTable(int id1, string name1, string settingString1)
+        public void fillClientsTable(int id1, string name1, string settingString1)
         {
             string sql = "insert into clientData (id,name,settingString) values('" + id1 + "','" + name1 + "','" + settingString1 + "');";
 
@@ -61,6 +61,31 @@ namespace ServerSide
              command = new SQLiteCommand(sql, m_dbConnection);
              command.ExecuteNonQuery();*/
         }
+
+        public void createTriggersTable()
+        {
+            //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
+            string sql = "create table  TriggersTable(clientId int ,trigerId int, triggerDate TEXT, triggerDes TEXT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void fillTriggersTable(int clientId, int trigerId, string triggerDate, string triggerDes)
+        {
+            string sql = "insert into TriggersTable (clientId,trigerId,triggerDate,triggerDes) values('" + clientId + "','" + trigerId + "','" + triggerDate + "','" + triggerDes + "');";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            /* string sql = "insert into clientData (name, score) values ('Me', 3000)";
+             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+             command.ExecuteNonQuery();
+             sql = "insert into clientData (name, score) values ('Myself', 6000)";
+             command = new SQLiteCommand(sql, m_dbConnection);
+             command.ExecuteNonQuery();
+             sql = "insert into clientData (name, score) values ('And I', 9001)";
+             command = new SQLiteCommand(sql, m_dbConnection);
+             command.ExecuteNonQuery();*/
+        }
+
+
 
         // Writes the clientData to the console sorted on score in descending order.
         void printClientData()

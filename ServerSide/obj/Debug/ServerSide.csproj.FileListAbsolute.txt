@@ -14,3 +14,22 @@ C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
 C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb

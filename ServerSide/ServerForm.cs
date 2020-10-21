@@ -16,7 +16,7 @@ namespace ServerSide
         private Socket serverSocket;
         private Socket clientSocket; // We will only accept one socket.
         private byte[] buffer;
-        public MonitorSystem monitorSystem;
+        public MonitorSetting monitorSystem;
         public DBserver dbs;
 
         private int numOfClient;
@@ -53,8 +53,8 @@ namespace ServerSide
                 dbs = new DBserver("TableOfClient");
                 dbs.createNewDatabase();
                 dbs.connectToDatabase();
-                dbs.createTable();
-
+                dbs.createClientsTable();
+                dbs.createTriggersTable();
 
             }
             catch (SocketException ex)
@@ -203,8 +203,8 @@ namespace ServerSide
             try
             {
 
-                Socket client = AR.AsyncState as Socket;
-                int received = client.EndReceive(AR);
+                Socket NewClientSocket = AR.AsyncState as Socket;
+                int received = NewClientSocket.EndReceive(AR);
 
                 if (received == 0)
                 {
@@ -217,22 +217,30 @@ namespace ServerSide
 
                 getNameFromServer = true;
 
-                String System = "";
+                String Setting = "";
                 // set system 
                 Invoke((Action)delegate
                 {
-                    monitorSystem = new MonitorSystem(name);
-                    // open gui to set system 
+                    monitorSystem = new MonitorSetting(name);
+                    // open GUI to set Setting 
                     monitorSystem.ShowDialog();
-                    System = monitorSystem.sendSystem(); // get system from monitorSystem form
-                    ShowErrorDialog(name);
+                    Setting = monitorSystem.sendSystem(); // get Setting from monitorSystem form
+                    ShowErrorDialog(Setting);
+                   
 
                 });
 
                 // create new client 
-                Client newClient = new Client(name, numOfClient, client, buffer);
+                Client newClient = new Client(name, numOfClient, NewClientSocket, buffer);
+                
                 Allclients.Add(newClient);
-                dbs.fillTable(numOfClient, name, System);
+                
+                // write new client to Data base 
+                dbs.fillClientsTable(numOfClient, name, Setting);
+
+                // send Setting to new Client
+                sendSettingToClient(NewClientSocket, Setting);
+
                 // Start receiving data from this client Socket.
                 Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
 
@@ -253,7 +261,12 @@ namespace ServerSide
             }
         }
 
+        private void sendSettingToClient(Socket ClientSocket, string Setting)
+        {
+            var sendSetting = Encoding.ASCII.GetBytes(Setting);
+            clientSocket.BeginSend(sendSetting, 0, sendSetting.Length, SocketFlags.None, SendCallback, clientSocket);
 
+        }
 
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

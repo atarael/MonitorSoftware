@@ -1,6 +1,6 @@
 ﻿namespace ServerSide
 {
-    partial class MonitorSystem
+    partial class MonitorSetting
     {
         /// <summary>
         /// Required designer variable.
@@ -63,6 +63,9 @@
             this.dtpTo1 = new System.Windows.Forms.DateTimePicker();
             this.txbUnblockedSites = new System.Windows.Forms.TextBox();
             this.txbBlockedSites = new System.Windows.Forms.TextBox();
+            this.chbUpdateReportIinappropriateWords = new System.Windows.Forms.CheckBox();
+            this.chbReportImamediatelyIinappropriateWords = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,7 +100,7 @@
             // chbUpdateReportLimitApp
             // 
             this.chbUpdateReportLimitApp.AutoSize = true;
-            this.chbUpdateReportLimitApp.Location = new System.Drawing.Point(121, 739);
+            this.chbUpdateReportLimitApp.Location = new System.Drawing.Point(122, 739);
             this.chbUpdateReportLimitApp.Name = "chbUpdateReportLimitApp";
             this.chbUpdateReportLimitApp.Size = new System.Drawing.Size(134, 24);
             this.chbUpdateReportLimitApp.TabIndex = 0;
@@ -107,7 +110,7 @@
             // chbReportImmediatelyLimitApp
             // 
             this.chbReportImmediatelyLimitApp.AutoSize = true;
-            this.chbReportImmediatelyLimitApp.Location = new System.Drawing.Point(121, 769);
+            this.chbReportImmediatelyLimitApp.Location = new System.Drawing.Point(276, 739);
             this.chbReportImmediatelyLimitApp.Name = "chbReportImmediatelyLimitApp";
             this.chbReportImmediatelyLimitApp.Size = new System.Drawing.Size(171, 24);
             this.chbReportImmediatelyLimitApp.TabIndex = 0;
@@ -117,7 +120,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(96, 858);
+            this.label6.Location = new System.Drawing.Point(89, 887);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 20);
             this.label6.TabIndex = 2;
@@ -125,7 +128,7 @@
             // 
             // txbNumOfLimitHours
             // 
-            this.txbNumOfLimitHours.Location = new System.Drawing.Point(371, 886);
+            this.txbNumOfLimitHours.Location = new System.Drawing.Point(364, 915);
             this.txbNumOfLimitHours.Name = "txbNumOfLimitHours";
             this.txbNumOfLimitHours.Size = new System.Drawing.Size(50, 26);
             this.txbNumOfLimitHours.TabIndex = 4;
@@ -133,7 +136,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(126, 889);
+            this.label7.Location = new System.Drawing.Point(119, 918);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(239, 20);
             this.label7.TabIndex = 2;
@@ -142,7 +145,7 @@
             // dtpFrom1
             // 
             this.dtpFrom1.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpFrom1.Location = new System.Drawing.Point(388, 921);
+            this.dtpFrom1.Location = new System.Drawing.Point(381, 950);
             this.dtpFrom1.Name = "dtpFrom1";
             this.dtpFrom1.ShowUpDown = true;
             this.dtpFrom1.Size = new System.Drawing.Size(130, 26);
@@ -152,7 +155,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(530, 926);
+            this.label8.Location = new System.Drawing.Point(523, 955);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(23, 20);
             this.label8.TabIndex = 2;
@@ -161,7 +164,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(341, 920);
+            this.label9.Location = new System.Drawing.Point(334, 949);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 20);
             this.label9.TabIndex = 2;
@@ -172,9 +175,9 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(87, 1057);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(201, 20);
+            this.label10.Size = new System.Drawing.Size(210, 20);
             this.label10.TabIndex = 1;
-            this.label10.Text = "Set frequncy to get Report:";
+            this.label10.Text = "Set frequency to get Report:";
             // 
             // chbEachDay
             // 
@@ -271,7 +274,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(530, 958);
+            this.label11.Location = new System.Drawing.Point(523, 987);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(23, 20);
             this.label11.TabIndex = 2;
@@ -280,7 +283,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(530, 991);
+            this.label12.Location = new System.Drawing.Point(523, 1020);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(23, 20);
             this.label12.TabIndex = 2;
@@ -307,7 +310,7 @@
             // chbBlockLimitApp
             // 
             this.chbBlockLimitApp.AutoSize = true;
-            this.chbBlockLimitApp.Location = new System.Drawing.Point(122, 799);
+            this.chbBlockLimitApp.Location = new System.Drawing.Point(474, 739);
             this.chbBlockLimitApp.Name = "chbBlockLimitApp";
             this.chbBlockLimitApp.Size = new System.Drawing.Size(92, 24);
             this.chbBlockLimitApp.TabIndex = 0;
@@ -317,7 +320,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(126, 920);
+            this.label13.Location = new System.Drawing.Point(119, 949);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(208, 20);
             this.label13.TabIndex = 2;
@@ -326,7 +329,7 @@
             // dtpFrom2
             // 
             this.dtpFrom2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpFrom2.Location = new System.Drawing.Point(388, 956);
+            this.dtpFrom2.Location = new System.Drawing.Point(381, 985);
             this.dtpFrom2.Name = "dtpFrom2";
             this.dtpFrom2.ShowUpDown = true;
             this.dtpFrom2.Size = new System.Drawing.Size(130, 26);
@@ -336,7 +339,7 @@
             // dtpFrom3
             // 
             this.dtpFrom3.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpFrom3.Location = new System.Drawing.Point(388, 990);
+            this.dtpFrom3.Location = new System.Drawing.Point(381, 1019);
             this.dtpFrom3.Name = "dtpFrom3";
             this.dtpFrom3.ShowUpDown = true;
             this.dtpFrom3.Size = new System.Drawing.Size(130, 26);
@@ -346,7 +349,7 @@
             // dtpTo3
             // 
             this.dtpTo3.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpTo3.Location = new System.Drawing.Point(559, 990);
+            this.dtpTo3.Location = new System.Drawing.Point(552, 1019);
             this.dtpTo3.Name = "dtpTo3";
             this.dtpTo3.ShowUpDown = true;
             this.dtpTo3.Size = new System.Drawing.Size(130, 26);
@@ -356,7 +359,7 @@
             // dtpTo2
             // 
             this.dtpTo2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpTo2.Location = new System.Drawing.Point(559, 956);
+            this.dtpTo2.Location = new System.Drawing.Point(552, 985);
             this.dtpTo2.Name = "dtpTo2";
             this.dtpTo2.ShowUpDown = true;
             this.dtpTo2.Size = new System.Drawing.Size(130, 26);
@@ -366,7 +369,7 @@
             // dtpTo1
             // 
             this.dtpTo1.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpTo1.Location = new System.Drawing.Point(559, 920);
+            this.dtpTo1.Location = new System.Drawing.Point(552, 949);
             this.dtpTo1.Name = "dtpTo1";
             this.dtpTo1.ShowUpDown = true;
             this.dtpTo1.Size = new System.Drawing.Size(130, 26);
@@ -389,7 +392,37 @@
             this.txbBlockedSites.Size = new System.Drawing.Size(507, 92);
             this.txbBlockedSites.TabIndex = 13;
             // 
-            // MonitorSystem
+            // chbUpdateReportIinappropriateWords
+            // 
+            this.chbUpdateReportIinappropriateWords.AutoSize = true;
+            this.chbUpdateReportIinappropriateWords.Location = new System.Drawing.Point(122, 821);
+            this.chbUpdateReportIinappropriateWords.Name = "chbUpdateReportIinappropriateWords";
+            this.chbUpdateReportIinappropriateWords.Size = new System.Drawing.Size(134, 24);
+            this.chbUpdateReportIinappropriateWords.TabIndex = 0;
+            this.chbUpdateReportIinappropriateWords.Text = "Update report";
+            this.chbUpdateReportIinappropriateWords.UseVisualStyleBackColor = true;
+            // 
+            // chbReportImamediatelyIinappropriateWords
+            // 
+            this.chbReportImamediatelyIinappropriateWords.AutoSize = true;
+            this.chbReportImamediatelyIinappropriateWords.Location = new System.Drawing.Point(276, 821);
+            this.chbReportImamediatelyIinappropriateWords.Name = "chbReportImamediatelyIinappropriateWords";
+            this.chbReportImamediatelyIinappropriateWords.Size = new System.Drawing.Size(171, 24);
+            this.chbReportImamediatelyIinappropriateWords.TabIndex = 0;
+            this.chbReportImamediatelyIinappropriateWords.Text = "Report immediately";
+            this.chbReportImamediatelyIinappropriateWords.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(95, 788);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(297, 30);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Typing inappropriate words";
+            this.label14.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // MonitorSetting
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -415,19 +448,22 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.chbReportImamediatelyIinappropriateWords);
             this.Controls.Add(this.chbBlockLimitApp);
             this.Controls.Add(this.chbReportImmediatelyLimitApp);
             this.Controls.Add(this.chbEachMonth);
             this.Controls.Add(this.chbEach2onceWeek);
             this.Controls.Add(this.chbEachWeek);
+            this.Controls.Add(this.chbUpdateReportIinappropriateWords);
             this.Controls.Add(this.chbEachDay);
             this.Controls.Add(this.chbUpdateReportLimitApp);
             this.HelpButton = true;
-            this.Name = "MonitorSystem";
+            this.Name = "MonitorSetting";
             this.Text = "MonitorSystem";
             this.Load += new System.EventHandler(this.MonitorSystem_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).EndInit();
@@ -472,5 +508,8 @@
         private System.Windows.Forms.DateTimePicker dtpTo1;
         private System.Windows.Forms.TextBox txbUnblockedSites;
         private System.Windows.Forms.TextBox txbBlockedSites;
+        private System.Windows.Forms.CheckBox chbUpdateReportIinappropriateWords;
+        private System.Windows.Forms.CheckBox chbReportImamediatelyIinappropriateWords;
+        private System.Windows.Forms.Label label14;
     }
 }

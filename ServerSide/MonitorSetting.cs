@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace ServerSide
 {
-    public partial class MonitorSystem : Form
+    public partial class MonitorSetting : Form
     {
 
         private static String system = "";
         private static String clientName = "";
         private List<String> CategorySite;
 
-        public MonitorSystem(String name)
+        public MonitorSetting(String name)
         {
             InitializeComponent();
             clientName = name;
@@ -65,24 +65,13 @@ namespace ServerSide
             }
 
 
-            system += "\n";
+            system += "\n\r";
 
-            // insert second line - link to another sites to block
-            string[] BlockedSites = txbBlockedSites.Text.Split('\n', ' ', '\r');
-            for (int i = 0; i < BlockedSites.Length; i++)
-            {
-                system += BlockedSites[i] + " ";
-            }
-
-            system += "\n";
+            // insert second line - link to another sites to block             
+            system += addSiteToSystem(txbBlockedSites.Text) + "\n\r";
 
             // insert third line - link to sites to unblock
-            string[] unBlockedSites = txbUnblockedSites.Text.Split('\n', ' ', '\r');
-            for (int i = 0; i < unBlockedSites.Length; i++)
-            {
-                system += unBlockedSites[i] + " ";
-            }
-            system += "\n";
+            system += addSiteToSystem(txbUnblockedSites.Text) + "\n\r";
 
             // insert forth line - application installation.  format: XXX, where X is 1-selected or 0-not selected
             if (chbReportImmediatelyLimitApp.Checked)
@@ -95,37 +84,60 @@ namespace ServerSide
                 system += "1";
             else system += "0";
 
-            system += "\n";
+            system += "\n\r";
 
             // insert five line - num of dayly hour to limit
-            system += txbNumOfLimitHours.Text + "\n";
+            if (txbNumOfLimitHours.Text.Equals("")) 
+                system += "0\n\r";
+            else
+                system += txbNumOfLimitHours.Text + "\n\r";
 
-            // insert six line -  Hours of use limitation
+            // insert six line -  Typing inappropriate words
+            if ( chbUpdateReportIinappropriateWords.Checked)
+                system += "1";
+            else system += "0";
+            if (chbUpdateReportIinappropriateWords.Checked)
+                system += "1";
+            else system += "0";
+
+            // insert seven line -  Hours of use limitation
             // range1
             String range = rangeOfTime(dtpFrom1, dtpTo1);
-            if (range != null)
-            {
-                system += range + " ";
-            }
+            system += range + " "; 
+               
             // range2
             range = rangeOfTime(dtpFrom2, dtpTo2);
-            if (range != null)
-            {
-                system += range + " ";
-            }
+            system += range + " ";
+
             // range3
             range = rangeOfTime(dtpFrom3, dtpTo3);
-            if (range != null)
-            {
-                system += range + " ";
-            }
-            system += "\n";
+            system += range + " ";
+
+            system += "\n\r";
 
             // insert seven line - report time
 
 
 
             this.Close();
+        }
+
+        private string addSiteToSystem(String Sites)
+        {
+            string[] SitesToAdd = Sites.Split('\n', ' ', '\r');
+            String subSys = "";
+            if (SitesToAdd.Length == 0) // check if insert link
+            {
+                return "NULL";
+            }
+            else
+            {
+                for (int i = 0; i < SitesToAdd.Length; i++)
+                {
+                    subSys += SitesToAdd[i] + " ";
+                }
+            }
+            return subSys;
         }
 
         private string rangeOfTime(DateTimePicker dtpFrom, DateTimePicker dtpTo)
@@ -137,7 +149,7 @@ namespace ServerSide
                 if (from != to)
                     return from + "-" + to;
             }
-            return null;
+            return "NULL";
         }
 
         public String sendSystem()

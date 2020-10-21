@@ -30,7 +30,7 @@ namespace ServerSide
             get;
             set;
         }
-        public MonitorSystem monitorSystem;
+        public MonitorSetting monitorSystem;
 
         public Client(String name, int id, Socket clientSocket, byte[] buffer)
         {
