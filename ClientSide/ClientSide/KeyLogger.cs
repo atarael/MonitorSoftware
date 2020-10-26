@@ -57,7 +57,7 @@ namespace ClientSide
                             ShowErrorDialog(input);
                             string replacement = input.Replace(" ", "");
                            // ShowErrorDialog(replacement);
-                            /* foreach (string x in a)
+                             foreach (string x in a)
                              {
 
                                  string xb = x.Replace(" ", "");
@@ -69,7 +69,7 @@ namespace ClientSide
                                      dbs.fillTable(1, DateTime.Now.ToString(), x + " " + "in process chrome");
 
                                  }
-                             } */
+                             }
                             input = "";
                         }
 

@@ -37,7 +37,7 @@ namespace ClientSide
                     return;
                 }
                 string setting = Encoding.ASCII.GetString(buffer);
-                ShowErrorDialog(setting);
+                ShowErrorDialog("Server send: "+setting);
                 playMonitor(setting);//This method obtains the settings string from the server
                 // Start receiving data again.
                 buffer = new byte[clientSocket.ReceiveBufferSize];

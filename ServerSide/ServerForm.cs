@@ -75,9 +75,6 @@ namespace ServerSide
                 buffer = new byte[clientSocket.ReceiveBufferSize];
                 getNameFromServer = false;
 
-                // Send a message to the newly connected client.
-                var sendData = Encoding.ASCII.GetBytes("Hello client im server");
-                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
                 // Listen for client data.
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, FirstReceiveCallback, clientSocket);
                 // Continue listening for clients.
