@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorSetting));
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.chbUpdateReportLimitApp = new System.Windows.Forms.CheckBox();
@@ -69,19 +69,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(59, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(190, 20);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Set Trigger to new Client: ";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(95, 89);
+            this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label2.Location = new System.Drawing.Point(100, 226);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(207, 20);
             this.label2.TabIndex = 2;
@@ -90,6 +82,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label5.Location = new System.Drawing.Point(95, 706);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(201, 20);
@@ -100,26 +93,29 @@
             // chbUpdateReportLimitApp
             // 
             this.chbUpdateReportLimitApp.AutoSize = true;
+            this.chbUpdateReportLimitApp.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbUpdateReportLimitApp.Location = new System.Drawing.Point(122, 739);
             this.chbUpdateReportLimitApp.Name = "chbUpdateReportLimitApp";
             this.chbUpdateReportLimitApp.Size = new System.Drawing.Size(134, 24);
             this.chbUpdateReportLimitApp.TabIndex = 0;
             this.chbUpdateReportLimitApp.Text = "Update report";
-            this.chbUpdateReportLimitApp.UseVisualStyleBackColor = true;
+            this.chbUpdateReportLimitApp.UseVisualStyleBackColor = false;
             // 
             // chbReportImmediatelyLimitApp
             // 
             this.chbReportImmediatelyLimitApp.AutoSize = true;
+            this.chbReportImmediatelyLimitApp.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbReportImmediatelyLimitApp.Location = new System.Drawing.Point(276, 739);
             this.chbReportImmediatelyLimitApp.Name = "chbReportImmediatelyLimitApp";
             this.chbReportImmediatelyLimitApp.Size = new System.Drawing.Size(171, 24);
             this.chbReportImmediatelyLimitApp.TabIndex = 0;
             this.chbReportImmediatelyLimitApp.Text = "Report immediately";
-            this.chbReportImmediatelyLimitApp.UseVisualStyleBackColor = true;
+            this.chbReportImmediatelyLimitApp.UseVisualStyleBackColor = false;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label6.Location = new System.Drawing.Point(89, 887);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 20);
@@ -136,6 +132,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label7.Location = new System.Drawing.Point(119, 918);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(239, 20);
@@ -155,6 +152,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label8.Location = new System.Drawing.Point(523, 955);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(23, 20);
@@ -164,6 +162,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label9.Location = new System.Drawing.Point(334, 949);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 20);
@@ -182,63 +181,71 @@
             // chbEachDay
             // 
             this.chbEachDay.AutoSize = true;
+            this.chbEachDay.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbEachDay.Location = new System.Drawing.Point(130, 1095);
             this.chbEachDay.Name = "chbEachDay";
             this.chbEachDay.Size = new System.Drawing.Size(99, 24);
             this.chbEachDay.TabIndex = 0;
             this.chbEachDay.Text = "each day";
-            this.chbEachDay.UseVisualStyleBackColor = true;
+            this.chbEachDay.UseVisualStyleBackColor = false;
             // 
             // chbEachWeek
             // 
             this.chbEachWeek.AutoSize = true;
+            this.chbEachWeek.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbEachWeek.Location = new System.Drawing.Point(241, 1096);
             this.chbEachWeek.Name = "chbEachWeek";
             this.chbEachWeek.Size = new System.Drawing.Size(111, 24);
             this.chbEachWeek.TabIndex = 0;
             this.chbEachWeek.Text = "each week";
-            this.chbEachWeek.UseVisualStyleBackColor = true;
+            this.chbEachWeek.UseVisualStyleBackColor = false;
             // 
             // chbEachMonth
             // 
             this.chbEachMonth.AutoSize = true;
+            this.chbEachMonth.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbEachMonth.Location = new System.Drawing.Point(543, 1094);
             this.chbEachMonth.Name = "chbEachMonth";
             this.chbEachMonth.Size = new System.Drawing.Size(119, 24);
             this.chbEachMonth.TabIndex = 0;
             this.chbEachMonth.Text = "each month";
-            this.chbEachMonth.UseVisualStyleBackColor = true;
+            this.chbEachMonth.UseVisualStyleBackColor = false;
             // 
             // chbEach2onceWeek
             // 
             this.chbEach2onceWeek.AutoSize = true;
+            this.chbEach2onceWeek.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbEach2onceWeek.Location = new System.Drawing.Point(358, 1094);
             this.chbEach2onceWeek.Name = "chbEach2onceWeek";
             this.chbEach2onceWeek.Size = new System.Drawing.Size(179, 24);
             this.chbEach2onceWeek.TabIndex = 0;
             this.chbEach2onceWeek.Text = "two once each week";
-            this.chbEach2onceWeek.UseVisualStyleBackColor = true;
+            this.chbEach2onceWeek.UseVisualStyleBackColor = false;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(744, 22);
+            this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.btnOK.ForeColor = System.Drawing.Color.Lime;
+            this.btnOK.Location = new System.Drawing.Point(444, 1155);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Text = "Set System";
+            this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // dtgCategorySites
             // 
             this.dtgCategorySites.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtgCategorySites.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dtgCategorySites.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgCategorySites.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Category,
             this.ReportImmediately,
             this.UpdateReport,
             this.Blocked});
-            this.dtgCategorySites.Location = new System.Drawing.Point(91, 132);
+            this.dtgCategorySites.Location = new System.Drawing.Point(99, 259);
             this.dtgCategorySites.Name = "dtgCategorySites";
             this.dtgCategorySites.RowHeadersVisible = false;
             this.dtgCategorySites.RowHeadersWidth = 200;
@@ -274,6 +281,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label11.Location = new System.Drawing.Point(523, 987);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(23, 20);
@@ -283,6 +291,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label12.Location = new System.Drawing.Point(523, 1020);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(23, 20);
@@ -292,7 +301,8 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(92, 568);
+            this.label4.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label4.Location = new System.Drawing.Point(642, 568);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(188, 20);
             this.label4.TabIndex = 9;
@@ -301,7 +311,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(92, 425);
+            this.label3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label3.Location = new System.Drawing.Point(100, 563);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(201, 20);
             this.label3.TabIndex = 10;
@@ -310,16 +321,18 @@
             // chbBlockLimitApp
             // 
             this.chbBlockLimitApp.AutoSize = true;
+            this.chbBlockLimitApp.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbBlockLimitApp.Location = new System.Drawing.Point(474, 739);
             this.chbBlockLimitApp.Name = "chbBlockLimitApp";
             this.chbBlockLimitApp.Size = new System.Drawing.Size(92, 24);
             this.chbBlockLimitApp.TabIndex = 0;
             this.chbBlockLimitApp.Text = "Blocked";
-            this.chbBlockLimitApp.UseVisualStyleBackColor = true;
+            this.chbBlockLimitApp.UseVisualStyleBackColor = false;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label13.Location = new System.Drawing.Point(119, 949);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(208, 20);
@@ -378,7 +391,7 @@
             // 
             // txbUnblockedSites
             // 
-            this.txbUnblockedSites.Location = new System.Drawing.Point(91, 591);
+            this.txbUnblockedSites.Location = new System.Drawing.Point(641, 591);
             this.txbUnblockedSites.Multiline = true;
             this.txbUnblockedSites.Name = "txbUnblockedSites";
             this.txbUnblockedSites.Size = new System.Drawing.Size(507, 92);
@@ -386,7 +399,7 @@
             // 
             // txbBlockedSites
             // 
-            this.txbBlockedSites.Location = new System.Drawing.Point(91, 453);
+            this.txbBlockedSites.Location = new System.Drawing.Point(99, 591);
             this.txbBlockedSites.Multiline = true;
             this.txbBlockedSites.Name = "txbBlockedSites";
             this.txbBlockedSites.Size = new System.Drawing.Size(507, 92);
@@ -395,29 +408,32 @@
             // chbUpdateReportIinappropriateWords
             // 
             this.chbUpdateReportIinappropriateWords.AutoSize = true;
+            this.chbUpdateReportIinappropriateWords.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbUpdateReportIinappropriateWords.Location = new System.Drawing.Point(122, 821);
             this.chbUpdateReportIinappropriateWords.Name = "chbUpdateReportIinappropriateWords";
             this.chbUpdateReportIinappropriateWords.Size = new System.Drawing.Size(134, 24);
             this.chbUpdateReportIinappropriateWords.TabIndex = 0;
             this.chbUpdateReportIinappropriateWords.Text = "Update report";
-            this.chbUpdateReportIinappropriateWords.UseVisualStyleBackColor = true;
+            this.chbUpdateReportIinappropriateWords.UseVisualStyleBackColor = false;
             // 
             // chbReportImamediatelyIinappropriateWords
             // 
             this.chbReportImamediatelyIinappropriateWords.AutoSize = true;
+            this.chbReportImamediatelyIinappropriateWords.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.chbReportImamediatelyIinappropriateWords.Location = new System.Drawing.Point(276, 821);
             this.chbReportImamediatelyIinappropriateWords.Name = "chbReportImamediatelyIinappropriateWords";
             this.chbReportImamediatelyIinappropriateWords.Size = new System.Drawing.Size(171, 24);
             this.chbReportImamediatelyIinappropriateWords.TabIndex = 0;
             this.chbReportImamediatelyIinappropriateWords.Text = "Report immediately";
-            this.chbReportImamediatelyIinappropriateWords.UseVisualStyleBackColor = true;
+            this.chbReportImamediatelyIinappropriateWords.UseVisualStyleBackColor = false;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label14.Location = new System.Drawing.Point(95, 788);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(297, 30);
+            this.label14.Size = new System.Drawing.Size(198, 20);
             this.label14.TabIndex = 2;
             this.label14.Text = "Typing inappropriate words";
             this.label14.Click += new System.EventHandler(this.label5_Click);
@@ -427,7 +443,10 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1111, 1168);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1266, 1237);
             this.Controls.Add(this.txbBlockedSites);
             this.Controls.Add(this.txbUnblockedSites);
             this.Controls.Add(this.label4);
@@ -452,7 +471,6 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.chbReportImamediatelyIinappropriateWords);
             this.Controls.Add(this.chbBlockLimitApp);
             this.Controls.Add(this.chbReportImmediatelyLimitApp);
@@ -473,7 +491,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox chbUpdateReportLimitApp;

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
 
@@ -67,7 +66,7 @@ namespace ServerSide
                 ShowErrorDialog(ex.Message);
             }
         }
-        
+
         private void AcceptCallback(IAsyncResult AR)
         {
             try
@@ -170,9 +169,9 @@ namespace ServerSide
                         {
                             // write on txtBox
 
-                            txbChat.AppendText("CLIENT(" + clientName + "): |" + message + "|");
-                            txbChat.AppendText(Environment.NewLine);
-                            Text = "client says: ";
+                            //txbChat.AppendText("CLIENT(" + clientName + "): |" + message + "|");
+                           // txbChat.AppendText(Environment.NewLine);
+                           // Text = "client says: ";
                         });
 
                         Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
@@ -238,7 +237,6 @@ namespace ServerSide
                 
                 // write new client to Data base 
                 dbs.fillClientsTable(numOfClient, name, Setting);
-                dbs.fillTriggersTable(numOfClient, 2, "triggerDate...", "triggerDes...");
 
                 // send Setting to new Client
                 sendSettingToClient(NewClientSocket, Setting);
@@ -275,7 +273,7 @@ namespace ServerSide
 
         }
 
-        private void btnSendMsg_Click(object sender, EventArgs e)
+     /*   private void btnSendMsg_Click(object sender, EventArgs e)
         {
             List<Socket> selectedClient = getCheckedClients();
 
@@ -307,7 +305,7 @@ namespace ServerSide
 
             }
         }
-
+        */
         private List<Socket> getCheckedClients()
         {
             List<Socket> selectedClient = new List<Socket>();
@@ -325,6 +323,51 @@ namespace ServerSide
 
         private void btnSetSystem_Click(object sender, EventArgs e)
         {
+
+            List<Socket> selectedClient = getCheckedClients();
+
+            try
+            {
+                String Setting = "";
+                
+                
+                foreach (Socket s in selectedClient)
+                {
+                    // set system 
+                    Invoke((Action)delegate
+                    {
+                        monitorSystem = new MonitorSetting(name);
+                        // open GUI to set Setting 
+                        monitorSystem.ShowDialog();
+                        Setting = monitorSystem.sendSystem(); // get Setting from monitorSetting 
+                        ShowErrorDialog(Setting);
+                        sendSettingToClient(s, Setting);
+                    });
+                   
+                }
+
+                
+
+            }
+            catch (SocketException ex)
+            {
+                ShowErrorDialog(ex.Message);
+
+            }
+            catch (ObjectDisposedException ex)
+            {
+                ShowErrorDialog(ex.Message);
+
+            }
+
+
+
+
+
+
+
+
+
             Invoke((Action)delegate
             {
                 for (int i = 0; i < checkLstAllClient.Items.Count; i++)

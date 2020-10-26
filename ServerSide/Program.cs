@@ -14,7 +14,9 @@ namespace ServerSide
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ServerForm());
+            ServerForm s = new ServerForm();
+            s.Text = "Server";
+            Application.Run(s);
         }
     }
 }
