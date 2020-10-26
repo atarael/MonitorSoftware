@@ -13,13 +13,12 @@ namespace ClientSide
         System.Data.SQLite.SQLiteConnection m_dbConnection;
         private String DB = "triggersTable.sqlite";
       
-        public DBclient()
+        public DBclient(string clientName)
         {
-          
-            /* createNewDatabase();
-             connectToDatabase();
-             createTable();
-             fillTable();*/
+            DB = clientName+ "triggersTable.sqlite";
+            createNewDatabase();
+            connectToDatabase();
+            createTable();
         }
 
         public void createNewDatabase()
@@ -52,6 +51,7 @@ namespace ClientSide
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
+            m_dbConnection.Close();
             /* string sql = "insert into clientData (name, score) values ('Me', 3000)";
              SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
              command.ExecuteNonQuery();

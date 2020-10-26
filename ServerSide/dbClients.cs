@@ -15,17 +15,14 @@ namespace ServerSide
         public DBserver(string db)
         {
             this.DB = db + ".sqlite";
-            /* createNewDatabase();
-             connectToDatabase();
-             createTable();
-             fillTable();*/
+            
         }
 
         public void createNewDatabase()
         {
             SQLiteConnection.CreateFile(DB);
         }
-
+        
         // Creates a connection with our database file.
         public void connectToDatabase()
         {

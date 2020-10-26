@@ -18,7 +18,9 @@ namespace ClientSide
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ClientForm());
+           ClientForm f = new ClientForm();
+            f.Text="Client" ;
+            Application.Run(f);
         }
     
     }

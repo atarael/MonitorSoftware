@@ -5,6 +5,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClientSide
 {
@@ -25,6 +26,7 @@ namespace ClientSide
 
                 foreach (ManagementObject mo in MgmtClass.GetInstances())
                 {
+               
                     sb.Append("Name:\t" + mo["Name"] + Environment.NewLine);
                     sb.Append("ID:\t" + mo["ProcessId"] + Environment.NewLine);
                     sb.Append(Environment.NewLine);
@@ -42,11 +44,15 @@ namespace ClientSide
             public static string ListAllApplications()
             {
                 StringBuilder sb = new StringBuilder();
+          
 
-                foreach (Process p in Process.GetProcesses("."))
+           
+            foreach (Process p in Process.GetProcesses("."))
                 {
+               
                     try
                     {
+                    
                         if (p.MainWindowTitle.Length > 0)
                         {
                             sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
