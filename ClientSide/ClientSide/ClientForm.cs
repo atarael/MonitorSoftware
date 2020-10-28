@@ -151,17 +151,17 @@ namespace ClientSide
                 }
                 else
                 {
-                    ShowErrorDialog(txbName.Text);
+                    
                     clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     // Connect to the specified host.
                     var endPoint = new IPEndPoint(IPAddress.Parse(textBoxAddress.Text), 3333);
                     clientSocket.BeginConnect(endPoint, ConnectCallback, null);
                     // send ClientName
                     var sendData = Encoding.ASCII.GetBytes(txbName.Text);
-                    clientName = txbName.Text;
-                    ShowErrorDialog(txbName.Text);
+                    clientName = txbName.Text;               
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
-                    
+                    lblConnectedSeccesful.Visible = true;
+                    lblStartMonitoring.Visible = true;
 
 
                 }
@@ -169,11 +169,11 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("buttonConnect_Click: " + ex.Message);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("buttonConnect_Click: " + ex.Message);
             }
         }
     }  

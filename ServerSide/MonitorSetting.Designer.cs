@@ -227,7 +227,7 @@
             this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnOK.ForeColor = System.Drawing.Color.Lime;
-            this.btnOK.Location = new System.Drawing.Point(444, 1155);
+            this.btnOK.Location = new System.Drawing.Point(886, 36);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
@@ -446,7 +446,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1266, 1237);
+            this.ClientSize = new System.Drawing.Size(1224, 1244);
             this.Controls.Add(this.txbBlockedSites);
             this.Controls.Add(this.txbUnblockedSites);
             this.Controls.Add(this.label4);

@@ -6,6 +6,10 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Automation;
+using System.Net;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ClientSide
 {
@@ -44,9 +48,7 @@ namespace ClientSide
             public static string ListAllApplications()
             {
                 StringBuilder sb = new StringBuilder();
-          
 
-           
             foreach (Process p in Process.GetProcesses("."))
                 {
                
@@ -59,7 +61,10 @@ namespace ClientSide
                             sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
                             sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
                             sb.Append("Memory Allocation:\t" + p.PrivateMemorySize64.ToString() + Environment.NewLine);
-                            sb.Append(Environment.NewLine);
+                            sb.Append("Memory Allocation:\t" + p.Handle.ToString()+ Environment.NewLine);
+
+
+                        sb.Append(Environment.NewLine);
                         }
                     }
                     catch { }
@@ -67,14 +72,65 @@ namespace ClientSide
 
                 return sb.ToString();
             }
+        public static string ListAllWebSite()
+        { 
+            StringBuilder sb = new StringBuilder();
+           
+           
+
+            foreach (Process p in Process.GetProcessesByName("chrome"))
+            {
+
+                try
+                {
+
+                    if (p.MainWindowTitle.Length > 0)
+                    {  
+                        string url = GetChromeUrl(p);  
+                        ShowErrorDialog("the host is: " + url);
+                        // Uri uri = new Uri(url);
+                        // string host = uri.Host; 
+                        sb.Append("URL:\t" + url + Environment.NewLine);
+                      
+                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
+                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
+                        sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
+                       
+                        sb.Append(Environment.NewLine);
+                    }
+                }
+                catch { }
+            }
+            
+
+            return sb.ToString();
+        }
+
+        public static string GetChromeUrl(Process process)
+        {
+            
+            if (process == null)
+                throw new ArgumentNullException("process");
+
+            if (process.MainWindowHandle == IntPtr.Zero)
+                return null;
+
+            AutomationElement element = AutomationElement.FromHandle(process.MainWindowHandle);
+            if (element == null)
+                return null;
+
+            AutomationElement edit = element.FindFirst(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+            return ((ValuePattern)edit.GetCurrentPattern(ValuePattern.Pattern)).Current.Value as string;
 
 
+        }
 
-            /// <summary>
-            /// List all processes by image name
-            /// </summary>
-            /// <returns></returns>
-            public static string ListAllByImageName()
+         
+        /// <summary>
+        /// List all processes by image name
+        /// </summary>
+        /// <returns></returns>
+        public static string ListAllByImageName()
             {
 
                 StringBuilder sb = new StringBuilder();
@@ -198,7 +254,11 @@ namespace ClientSide
 
                 return rtnVal;
             }
-
-
+        private static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+
+    }
 }

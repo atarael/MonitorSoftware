@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="dbClients.cs" />
+    <Compile Include="DBserver.cs" />
     <Compile Include="MonitorSetting.cs">
       <SubType>Form</SubType>
     </Compile>
