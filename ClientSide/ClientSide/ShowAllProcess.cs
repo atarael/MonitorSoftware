@@ -82,7 +82,7 @@ namespace ClientSide
             {
 
                 try
-                {
+                {  
 
                     if (p.MainWindowTitle.Length > 0)
                     {  
