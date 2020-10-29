@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,93 +18,86 @@ namespace ClientSide
     {
 
      
-            /// <summary>
-            /// Returns a string containing information on running processes
-            /// </summary>
-            /// <param name="tb"></param>
-            public static string ListAllProcesses()
-            {
-                StringBuilder sb = new StringBuilder();
-
-                // list out all processes and write them into a stringbuilder
-                ManagementClass MgmtClass = new ManagementClass("Win32_Process");
-
-                foreach (ManagementObject mo in MgmtClass.GetInstances())
-                {
-               
-                    sb.Append("Name:\t" + mo["Name"] + Environment.NewLine);
-                    sb.Append("ID:\t" + mo["ProcessId"] + Environment.NewLine);
-                    sb.Append(Environment.NewLine);
-                }
-
-                return sb.ToString();
-            }
-
-
-
-            /// <summary>
-            /// Returns a string containing information on running processes
-            /// </summary>
-            /// <returns></returns>
-            public static string ListAllApplications()
-            {
-                StringBuilder sb = new StringBuilder();
-
-            foreach (Process p in Process.GetProcesses("."))
-                {
-               
-                    try
-                    {
-                    
-                        if (p.MainWindowTitle.Length > 0)
-                        {
-                            sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
-                            sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
-                            sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
-                            sb.Append("Memory Allocation:\t" + p.PrivateMemorySize64.ToString() + Environment.NewLine);
-                            sb.Append("Memory Allocation:\t" + p.Handle.ToString()+ Environment.NewLine);
-
-
-                        sb.Append(Environment.NewLine);
-                        }
-                    }
-                    catch { }
-                }
-
-                return sb.ToString();
-            }
-        public static string ListAllWebSite()
-        { 
+        /// <summary>
+        /// Returns a string containing information on running processes
+        /// </summary>
+        /// <param name="tb"></param>
+        public static string ListAllProcesses()
+        {
             StringBuilder sb = new StringBuilder();
-           
-           
+
+            // list out all processes and write them into a stringbuilder
+            ManagementClass MgmtClass = new ManagementClass("Win32_Process");
+
+            foreach (ManagementObject mo in MgmtClass.GetInstances())
+            {
+               
+                sb.Append("Name:\t" + mo["Name"] + Environment.NewLine);
+                sb.Append("ID:\t" + mo["ProcessId"] + Environment.NewLine);
+                sb.Append(Environment.NewLine);
+            }
+
+            return sb.ToString();
+        }
+
+
+
+        /// <summary>
+        /// Returns a string containing information on running processes
+        /// </summary>
+        /// <returns></returns>
+        public static string ListAllApplications()
+        {
+            StringBuilder sb = new StringBuilder();
+
+        foreach (Process p in Process.GetProcesses("."))
+            {
+               
+                try
+                {
+                    
+                    if (p.MainWindowTitle.Length > 0)
+                    {
+                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
+                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
+                        sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
+                        sb.Append("Memory Allocation:\t" + p.PrivateMemorySize64.ToString() + Environment.NewLine);
+                        sb.Append("Memory Allocation:\t" + p.Handle.ToString()+ Environment.NewLine);
+
+
+                    sb.Append(Environment.NewLine);
+                    }
+                }
+                catch { }
+            }
+
+            return sb.ToString();
+        }
+        public static String getCurrentURL()
+        {
+            StringBuilder sb = new StringBuilder();
 
             foreach (Process p in Process.GetProcessesByName("chrome"))
             {
 
                 try
-                {  
+                {
 
                     if (p.MainWindowTitle.Length > 0)
                     {  
-                        string url = GetChromeUrl(p);  
-                        ShowErrorDialog("the host is: " + url);
-                        // Uri uri = new Uri(url);
-                        // string host = uri.Host; 
-                        sb.Append("URL:\t" + url + Environment.NewLine);
-                      
-                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
-                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
-                        sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
-                       
-                        sb.Append(Environment.NewLine);
+                        string url = GetChromeUrl(p);
+                        Uri uri = new Uri("https://"+ url);
+                        ShowErrorDialog("the host is: " + uri.Host);
+                        return uri.Host;
+
                     }
                 }
-                catch { }
+                catch(Exception e) {
+                    ShowErrorDialog("getCurrentURL Fail" + e);
+                }
             }
-            
-
-            return sb.ToString();
+            return null;
+ 
         }
 
         public static string GetChromeUrl(Process process)
@@ -156,104 +150,104 @@ namespace ClientSide
 
 
 
-            /// <summary>
-            /// Determine if a process is running by name
-            /// </summary>
-            /// <param name="processName"></param>
-            /// <returns></returns>
-            public static bool CheckForProcessByName(string processName)
+        /// <summary>
+        /// Determine if a process is running by name
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
+        public static bool CheckForProcessByName(string processName)
+        {
+
+            ManagementClass MgmtClass = new ManagementClass("Win32_Process");
+            bool rtnVal = false;
+
+            foreach (ManagementObject mo in MgmtClass.GetInstances())
             {
-
-                ManagementClass MgmtClass = new ManagementClass("Win32_Process");
-                bool rtnVal = false;
-
-                foreach (ManagementObject mo in MgmtClass.GetInstances())
+                if (mo["Name"].ToString().ToLower() == processName.ToLower())
                 {
-                    if (mo["Name"].ToString().ToLower() == processName.ToLower())
-                    {
-                        rtnVal = true;
-                    }
+                    rtnVal = true;
                 }
-
-                return rtnVal;
             }
 
+            return rtnVal;
+        }
 
-            /// <summary>
-            /// Determine if a process is running by image name
-            /// </summary>
-            /// <param name="processName"></param>
-            /// <returns></returns>
-            public static bool CheckForProcessByImageName(string processImageName)
+
+        /// <summary>
+        /// Determine if a process is running by image name
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
+        public static bool CheckForProcessByImageName(string processImageName)
+        {
+
+            bool rtnVal = false;
+
+            foreach (Process p in Process.GetProcesses("."))
             {
-
-                bool rtnVal = false;
-
-                foreach (Process p in Process.GetProcesses("."))
+                try
                 {
-                    try
+                    foreach (ProcessModule pm in p.Modules)
                     {
-                        foreach (ProcessModule pm in p.Modules)
-                        {
-                            if (pm.ModuleName.ToLower() == processImageName.ToLower())
-                                rtnVal = true;
-                        }
-                    }
-                    catch { }
-                }
-
-                return rtnVal;
-            }
-
-
-            /// <summary>
-            /// Determine if an application is running by name
-            /// </summary>
-            /// <param name="AppName"></param>
-            /// <returns></returns>
-            public static bool CheckForApplicationByName(string AppName)
-            {
-                bool bRtn = false;
-
-                foreach (Process p in Process.GetProcesses("."))
-                {
-                    try
-                    {
-                        if (p.ProcessName.ToString().ToLower() == AppName.ToLower())
-                        {
-                            bRtn = true;
-                        }
-                    }
-                    catch { }
-                }
-
-                return bRtn;
-            }
-
-
-
-
-            /// <summary>
-            /// Check for the existence of a process by ID; if the ID
-            /// is found, the method will return a true
-            /// </summary>
-            /// <param name="processId"></param>
-            /// <returns></returns>
-            public static bool FindProcessById(string processId)
-            {
-                ManagementClass MgmtClass = new ManagementClass("Win32_Process");
-                bool rtnVal = false;
-
-                foreach (ManagementObject mo in MgmtClass.GetInstances())
-                {
-                    if (mo["ProcessId"].ToString() == processId)
-                    {
-                        rtnVal = true;
+                        if (pm.ModuleName.ToLower() == processImageName.ToLower())
+                            rtnVal = true;
                     }
                 }
-
-                return rtnVal;
+                catch { }
             }
+
+            return rtnVal;
+        }
+
+
+        /// <summary>
+        /// Determine if an application is running by name
+        /// </summary>
+        /// <param name="AppName"></param>
+        /// <returns></returns>
+        public static bool CheckForApplicationByName(string AppName)
+        {
+            bool bRtn = false;
+
+            foreach (Process p in Process.GetProcesses("."))
+            {
+                try
+                {
+                    if (p.ProcessName.ToString().ToLower() == AppName.ToLower())
+                    {
+                        bRtn = true;
+                    }
+                }
+                catch { }
+            }
+
+            return bRtn;
+        }
+
+
+
+
+        /// <summary>
+        /// Check for the existence of a process by ID; if the ID
+        /// is found, the method will return a true
+        /// </summary>
+        /// <param name="processId"></param>
+        /// <returns></returns>
+        public static bool FindProcessById(string processId)
+        {
+            ManagementClass MgmtClass = new ManagementClass("Win32_Process");
+            bool rtnVal = false;
+
+            foreach (ManagementObject mo in MgmtClass.GetInstances())
+            {
+                if (mo["ProcessId"].ToString() == processId)
+                {
+                    rtnVal = true;
+                }
+            }
+
+            return rtnVal;
+        }
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -261,4 +255,4 @@ namespace ClientSide
 
 
     }
-}
+} 

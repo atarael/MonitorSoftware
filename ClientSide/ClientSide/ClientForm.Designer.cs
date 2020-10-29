@@ -112,7 +112,7 @@
             // 
             this.buttonConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonConnect.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonConnect.BackgroundImage")));
-            this.buttonConnect.Location = new System.Drawing.Point(587, 324);
+            this.buttonConnect.Location = new System.Drawing.Point(597, 330);
             this.buttonConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(112, 35);

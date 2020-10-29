@@ -54,7 +54,7 @@ namespace ClientSide
 
                         if (i == 32)
                         {
-                            //ShowErrorDialog(input);
+                            ShowErrorDialog(input);
                             string replacement = input.Replace(" ", "");
                            // ShowErrorDialog(replacement);
                              foreach (string x in a)
@@ -64,11 +64,11 @@ namespace ClientSide
 
                                  if (replacement.ToLower().Equals(x))
                                  {
-                                     //ShowErrorDialog("bad ward insert");
+                                     ShowErrorDialog("bad ward insert");
                                      dbs.connectToDatabase();
                                      dbs.fillTable(1, DateTime.Now.ToString(), x + " " + "in process chrome");
-                                     string AllApp = ShowAllProcess.ListAllWebSite();
-                                     ShowErrorDialog("ListAllWebSite: \n" + AllApp);
+                                     //string AllApp = ShowAllProcess.ListAllWebSite();
+                                     //ShowErrorDialog("ListAllWebSite: \n" + AllApp);
 
                                 }
                             }

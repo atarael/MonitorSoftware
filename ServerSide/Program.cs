@@ -89,18 +89,7 @@ namespace ServerSide
             }
         }
 
-        public void addClientToCheckBoxLst(Client newClient)
-        {
-            if (newClient != null)
-            {
-                String line = "";
-                line += "Client Name: " + newClient.Name + " ,id: " + newClient.id + " ,Socket: " + newClient.ClientSocket.RemoteEndPoint;
-                //checkLstAllClient.Items.Insert(newClient.id, line);
-
-            }
-
-
-        }
+       
 
         public void SendCallback(IAsyncResult AR)
         {
@@ -228,7 +217,7 @@ namespace ServerSide
                 Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
 
 
-                addClientToCheckBoxLst(newClient);
+                s.addClientToCheckBoxLst(newClient.Name,newClient.id,newClient.ClientSocket);
 
                 numOfClient++;
 

@@ -15,7 +15,7 @@ namespace ClientSide
         private string[] triggersForBlock;//Triggers to block operation
         private string sitesBlockReport; //Sites to block
         private string[] sitesEnable; //Sites to enable
-        private string[] wordImmediateReport= { "atara", "sara" };
+        private string[] wordImmediateReport= { "kill", "ostracism", "stab" };
 
         public setSetting(string settingString)
         {

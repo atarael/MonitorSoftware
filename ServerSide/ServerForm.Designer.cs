@@ -47,9 +47,9 @@
             this.checkLstAllClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.checkLstAllClient.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.checkLstAllClient.FormattingEnabled = true;
-            this.checkLstAllClient.Location = new System.Drawing.Point(33, 84);
+            this.checkLstAllClient.Location = new System.Drawing.Point(33, 82);
             this.checkLstAllClient.Name = "checkLstAllClient";
-            this.checkLstAllClient.Size = new System.Drawing.Size(455, 245);
+            this.checkLstAllClient.Size = new System.Drawing.Size(655, 315);
             this.checkLstAllClient.TabIndex = 4;
             // 
             // btnSetSystem

@@ -132,14 +132,6 @@ namespace ServerSide
 
             }
 
-
-
-
-
-
-
-
-
             Invoke((Action)delegate
             {
                 for (int i = 0; i < checkLstAllClient.Items.Count; i++)
@@ -151,6 +143,22 @@ namespace ServerSide
             });
 
         }
+
+        public void addClientToCheckBoxLst(String Name, int id , Socket ClientSocket)
+        {
+            if (Name != null && id >=0  && ClientSocket!=null )
+            {
+                Invoke((Action)delegate
+                {
+                    String line = "";
+                    line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
+                    checkLstAllClient.Items.Insert(id, line);
+                });
+            }
+
+
+        }
+
     }
 
 }
