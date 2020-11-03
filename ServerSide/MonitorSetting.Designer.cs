@@ -182,7 +182,7 @@
             // 
             this.chbEachDay.AutoSize = true;
             this.chbEachDay.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbEachDay.Location = new System.Drawing.Point(123, 987);
+            this.chbEachDay.Location = new System.Drawing.Point(123, 958);
             this.chbEachDay.Name = "chbEachDay";
             this.chbEachDay.Size = new System.Drawing.Size(99, 24);
             this.chbEachDay.TabIndex = 0;
@@ -193,7 +193,7 @@
             // 
             this.chbEachWeek.AutoSize = true;
             this.chbEachWeek.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbEachWeek.Location = new System.Drawing.Point(234, 988);
+            this.chbEachWeek.Location = new System.Drawing.Point(234, 959);
             this.chbEachWeek.Name = "chbEachWeek";
             this.chbEachWeek.Size = new System.Drawing.Size(111, 24);
             this.chbEachWeek.TabIndex = 0;
@@ -204,7 +204,7 @@
             // 
             this.chbEachMonth.AutoSize = true;
             this.chbEachMonth.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbEachMonth.Location = new System.Drawing.Point(536, 986);
+            this.chbEachMonth.Location = new System.Drawing.Point(536, 957);
             this.chbEachMonth.Name = "chbEachMonth";
             this.chbEachMonth.Size = new System.Drawing.Size(119, 24);
             this.chbEachMonth.TabIndex = 0;
@@ -215,7 +215,7 @@
             // 
             this.chbEach2onceWeek.AutoSize = true;
             this.chbEach2onceWeek.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbEach2onceWeek.Location = new System.Drawing.Point(351, 986);
+            this.chbEach2onceWeek.Location = new System.Drawing.Point(351, 957);
             this.chbEach2onceWeek.Name = "chbEach2onceWeek";
             this.chbEach2onceWeek.Size = new System.Drawing.Size(179, 24);
             this.chbEach2onceWeek.TabIndex = 0;
@@ -227,11 +227,11 @@
             this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnOK.ForeColor = System.Drawing.Color.Lime;
-            this.btnOK.Location = new System.Drawing.Point(781, 932);
+            this.btnOK.Location = new System.Drawing.Point(467, 997);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
-            this.btnOK.Text = "Set System";
+            this.btnOK.Text = "Set Setting";
             this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -446,7 +446,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1224, 1061);
+            this.ClientSize = new System.Drawing.Size(1214, 1107);
             this.Controls.Add(this.txbBlockedSites);
             this.Controls.Add(this.txbUnblockedSites);
             this.Controls.Add(this.label4);
