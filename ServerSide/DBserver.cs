@@ -37,7 +37,7 @@ namespace ServerSide
         public void createClientsTable()
         {
             //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
-            string sql = "create table clientData(id INTEGER PRIMARY KEY,name TEXT, settingString TEXT)";
+            string sql = "CREATE TABLE IF NOT EXISTS clientData(id INTEGER PRIMARY KEY,name TEXT, settingString TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -102,6 +102,7 @@ namespace ServerSide
              m_dbConnection.Close();
          }*/
         }
+       
     }
 }
 

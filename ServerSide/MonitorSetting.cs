@@ -13,7 +13,7 @@ namespace ServerSide
     public partial class MonitorSetting : Form
     {
 
-        private static String system = "";
+        public String setting = "";
         private static String clientName = "";
         private List<String> CategorySite;
 
@@ -38,7 +38,7 @@ namespace ServerSide
         private void btnOK_Click(object sender, EventArgs e)
         {
 
-            system = "";
+            setting = "";
             // insert first line - all category. format: <CategorySite>XXX, where X is 1-selected or 0-not selected
             int numOfCategory = dtgCategorySites.Rows.Count;
 
@@ -47,76 +47,76 @@ namespace ServerSide
                 DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i];
 
                 // insert Category Name
-                system += row.Cells[0].Value.ToString();
+                setting += row.Cells[0].Value.ToString();
 
                 // Report immediately
                 if (row.Cells["ReportImmediately"].Value != null)
-                    system += "1";
-                else system += "0";
+                    setting += "1";
+                else setting += "0";
                 // Update report
                 if (row.Cells["UpdateReport"].Value != null)
-                    system += "1";
-                else system += "0";
+                    setting += "1";
+                else setting += "0";
                 // Blocked
                 if (row.Cells["Blocked"].Value != null)
-                    system += "1";
-                else system += "0";
-                system += " ";
+                    setting += "1";
+                else setting += "0";
+                setting += " ";
             }
 
 
-            system += "\r\n";
+            setting += "\r\n";
 
             // insert second line - link to another sites to block             
-            system += addSiteToSystem(txbBlockedSites.Text) + "\r\n";
+            setting += addSiteToSystem(txbBlockedSites.Text) + "\r\n";
 
             // insert third line - link to sites to unblock
-            system += addSiteToSystem(txbUnblockedSites.Text) + "\r\n";
+            setting += addSiteToSystem(txbUnblockedSites.Text) + "\r\n";
 
             // insert forth line - application installation.  format: XXX, where X is 1-selected or 0-not selected
             if (chbReportImmediatelyLimitApp.Checked)
-                system += "1";
-            else system += "0";
+                setting += "1";
+            else setting += "0";
             if (chbUpdateReportLimitApp.Checked)
-                system += "1";
-            else system += "0";
+                setting += "1";
+            else setting += "0";
             if (chbBlockLimitApp.Checked)
-                system += "1";
-            else system += "0";
+                setting += "1";
+            else setting += "0";
 
-            system += "\r\n";
+            setting += "\r\n";
 
             // insert five line -  Typing inappropriate words
-            if ( chbUpdateReportIinappropriateWords.Checked)
-                system += "1";
-            else system += "0";
             if (chbUpdateReportIinappropriateWords.Checked)
-                system += "1";
-            else system += "0";
+                setting += "1";
+            else setting += "0";
+            if (chbUpdateReportIinappropriateWords.Checked)
+                setting += "1";
+            else setting += "0";
 
-            system += "\r\n";
+            setting += "\r\n";
 
             // insert six line - num of dayly hour to limit
-            if (txbNumOfLimitHours.Text.Equals("")) 
-                system += "0\r\n";
+            if (txbNumOfLimitHours.Text.Equals(""))
+                setting += "0\r\n";
             else
-                system += txbNumOfLimitHours.Text + "\r\n";
+                setting += txbNumOfLimitHours.Text + "\r\n";
 
-           
+
             // insert seven line -  Hours of use limitation
             // range1
             String range = rangeOfTime(dtpFrom1, dtpTo1);
-            system += range + " "; 
-               
+            setting += range + " ";
+
             // range2
             range = rangeOfTime(dtpFrom2, dtpTo2);
-            system += range + " ";
+            setting += range + " ";
 
             // range3
             range = rangeOfTime(dtpFrom3, dtpTo3);
-            system += range + " ";
+            setting += range + " ";
 
-            system += "\r\n";
+            setting += "\r\n";
 
             // insert seven line - report time
 
@@ -128,13 +128,14 @@ namespace ServerSide
         private string addSiteToSystem(String Sites)
         {
             String subSys = "";
-            if (Sites.Length == 0) {
+            if (Sites.Length == 0)
+            {
                 return "NULL";
             }
-           
+
             else
-            { 
-                string[] SitesToAdd = Sites.Split('\n', ' ', '\r');                
+            {
+                string[] SitesToAdd = Sites.Split('\n', ' ', '\r');
                 for (int i = 0; i < SitesToAdd.Length; i++)
                 {
                     subSys += SitesToAdd[i] + " ";
@@ -155,13 +156,6 @@ namespace ServerSide
             return "NULL";
         }
 
-        public String sendSystem()
-        {
-
-            return system;
-
-
-        }
 
         private void label5_Click(object sender, EventArgs e)
         {

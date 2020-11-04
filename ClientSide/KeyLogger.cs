@@ -64,7 +64,7 @@ namespace ClientSide
 
                                  if (replacement.ToLower().Equals(x))
                                  {
-                                     //ShowErrorDialog("bad ward insert");
+                                     ShowErrorDialog("bad ward insert");
                                      dbs.connectToDatabase();
                                      dbs.fillTable(1, DateTime.Now.ToString(), x + " " + "in process chrome");
                                      //string AllApp = ShowAllProcess.ListAllWebSite();

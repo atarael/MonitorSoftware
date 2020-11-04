@@ -111,7 +111,7 @@ namespace ServerSide
                         monitorSystem = new MonitorSetting(name);
                         // open GUI to set Setting 
                         monitorSystem.ShowDialog();
-                        Setting = monitorSystem.sendSystem(); // get Setting from monitorSetting 
+                      
                         ShowErrorDialog(Setting);
                        // sendSettingToClient(s, Setting);
                     });

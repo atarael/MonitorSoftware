@@ -37,7 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txbName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxAddress = new System.Windows.Forms.TextBox();
+            this.tbxIPAddress = new System.Windows.Forms.TextBox();
             this.labelIP = new System.Windows.Forms.Label();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.lblConnectedSeccesful = new System.Windows.Forms.Label();
@@ -86,15 +86,15 @@
             this.label1.TabIndex = 16;
             this.label1.Text = "Name";
             // 
-            // textBoxAddress
+            // tbxIPAddress
             // 
-            this.textBoxAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxAddress.Location = new System.Drawing.Point(292, 334);
-            this.textBoxAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBoxAddress.Name = "textBoxAddress";
-            this.textBoxAddress.Size = new System.Drawing.Size(276, 26);
-            this.textBoxAddress.TabIndex = 15;
-            this.textBoxAddress.Text = "127.0.0.1";
+            this.tbxIPAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbxIPAddress.Location = new System.Drawing.Point(292, 334);
+            this.tbxIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbxIPAddress.Name = "tbxIPAddress";
+            this.tbxIPAddress.Size = new System.Drawing.Size(276, 26);
+            this.tbxIPAddress.TabIndex = 15;
+            this.tbxIPAddress.Text = "127.0.0.1";
             // 
             // labelIP
             // 
@@ -158,7 +158,7 @@
             this.Controls.Add(this.lblConnectedSeccesful);
             this.Controls.Add(this.txbName);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxAddress);
+            this.Controls.Add(this.tbxIPAddress);
             this.Controls.Add(this.labelIP);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.txbDB);
@@ -179,7 +179,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txbName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxAddress;
+        private System.Windows.Forms.TextBox tbxIPAddress;
         private System.Windows.Forms.Label labelIP;
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.Label lblConnectedSeccesful;

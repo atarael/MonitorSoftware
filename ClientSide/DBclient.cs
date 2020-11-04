@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-
+using System.Management;
 
 namespace ClientSide
 {
@@ -66,7 +66,7 @@ namespace ClientSide
         // Writes the clientData to the console sorted on score in descending order.
         void printClientData()
         {
-            string  Text = "";
+             string  Text = "";
              string sql = "select * from  triggersTable order by idTriger";
              SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
              SQLiteDataReader reader = command.ExecuteReader();
@@ -77,7 +77,10 @@ namespace ClientSide
 
              //m_dbConnection.Close();
          }
-        
+
+
+       
+       
     }
 }
 
