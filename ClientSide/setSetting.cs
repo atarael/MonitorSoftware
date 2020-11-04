@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClientSide
 {
@@ -17,9 +18,9 @@ namespace ClientSide
         private string[] sitesEnable; //Sites to enable
         private string[] wordImmediateReport= { "kill", "ostracism", "stab" };
 
-        public setSetting(string settingString)
+        public setSetting(string settingString, string name, string id)
         {
-            createFileStringSetting(settingString);
+            createFileStringSetting(settingString, name, id);
             //createSettingFeature(settingString);
         }
         public string[] getWord()
@@ -35,18 +36,27 @@ namespace ClientSide
           
         }*/
 
-        public void createFileStringSetting(string stringSetting)
-        {
+        public void createFileStringSetting(string stringSetting, string name, string id) {
            
-            String filepath = Environment.CurrentDirectory;
+            String projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
 
+
+            String[] paths = new string[] {@filepath, "files"};
+            filepath = Path.Combine(paths);
+            ShowErrorDialog(filepath);
+            ShowErrorDialog(stringSetting);
+             
+             
             if (!Directory.Exists(filepath))
             {
                 Directory.CreateDirectory(filepath);
             }
+             
+             
+            File.WriteAllText(Path.Combine(filepath, "setting_"+id+".txt"), name + "\r\n" + id  + stringSetting);
 
-            filepath = (filepath + @"\setting.txt");
-
+            /*
             if (!File.Exists(filepath))
             {
                 using (StreamWriter sw = File.CreateText(filepath)) ;
@@ -55,12 +65,16 @@ namespace ClientSide
             {
                 //  sw.Write(stringSetting,0,stringSetting.Length);
 
-                Byte[] info = new UTF8Encoding(true).GetBytes(stringSetting); // Add some information to the file.
+                Byte[] info = new UTF8Encoding(true).GetBytes(name+"\r\n"+id+"\r\n"+stringSetting); // Add some information to the file.
                 //sw.Write(info, 0, info.Length);‏
                 sw.Write(info, 0, info.Length);
             }
-
+            */
         }
-       
+        private static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
     }
 }
