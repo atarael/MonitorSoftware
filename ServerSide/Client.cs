@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ServerSide
 {
-    class Client
+  public  class Client
     {
         public String Name
         {
@@ -30,7 +30,7 @@ namespace ServerSide
             get;
             set;
         }
-        public MonitorSetting monitorSystem;
+        
 
         public Client(String name, int id, Socket clientSocket, byte[] buffer)
         {

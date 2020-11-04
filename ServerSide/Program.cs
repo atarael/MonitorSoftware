@@ -18,7 +18,6 @@ namespace ServerSide
         private byte[] buffer;
         public MonitorSetting monitorSystem;
         public DBserver dbs;
-
         private int numOfClient;
         private String name;
 
@@ -29,14 +28,16 @@ namespace ServerSide
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.StartServer();
+            List<Client> Allclients;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             s = new ServerForm();
             s.Text = "Server";
-            Application.Run(s);
+            s.Show();
+            p.StartServer();
+            Application.Run();
             //  System.Threading.Thread.CurrentThread.ApartmentState = System.Threading.ApartmentState.STA;
-
+            
         }
         public void StartServer()
         {
@@ -46,13 +47,18 @@ namespace ServerSide
                 serverSocket.Bind(new IPEndPoint(IPAddress.Any, 3333));
                 serverSocket.Listen(10);
                 serverSocket.BeginAccept(AcceptCallback, null);
-                Allclients = new List<Client>();
-                numOfClient = 0;
-                dbs = new DBserver("TableOfClient");
-                dbs.createNewDatabase();
-                dbs.connectToDatabase();
-                dbs.createClientsTable();
-                dbs.createTriggersTable();
+                dbs = new DBserver();
+                Allclients = dbs.initialServer();
+                numOfClient = Allclients.Count();
+                ShowErrorDialog("num" + numOfClient);
+               
+                for (int i = 0; i < numOfClient; i++)
+                {
+                    ShowErrorDialog("name " + Allclients[i].Name + "id " + Allclients[i].id);
+                    s.addClientToCheckBoxLst(Allclients[i].Name, Allclients[i].id, Allclients[i].ClientSocket);
+
+                }
+
 
 
             }
@@ -216,7 +222,7 @@ namespace ServerSide
                     dbs.fillClientsTable(numOfClient, name, Setting);
                     // Send Id to Client
                     sendDataToClient(CurrentClientSocket, "id\r" + numOfClient);
-
+                   
                     // send Setting to new Client
                     String set = "setting\r\n" + Setting;
                     sendDataToClient(CurrentClientSocket, set);
@@ -224,7 +230,7 @@ namespace ServerSide
                     // Start receiving data from this client Socket.
                     Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
 
-                    s.addClientToCheckBoxLst(newClient.Name, newClient.id, newClient.ClientSocket);
+                     s.addClientToCheckBoxLst(newClient.Name, newClient.id, newClient.ClientSocket);
                     numOfClient++;
 
                 }

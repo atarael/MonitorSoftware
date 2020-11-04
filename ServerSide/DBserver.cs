@@ -4,26 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-
+using System.IO;
+using System.Windows.Forms;
 
 namespace ServerSide
 {
     public class DBserver
     {
-         System.Data.SQLite.SQLiteConnection m_dbConnection;
-        private String DB = "";
-        public DBserver(string db)
-        {
-            this.DB = db + ".sqlite";
-            /* createNewDatabase();
-             connectToDatabase();
-             createTable();
-             fillTable();*/
-        }
+        System.Data.SQLite.SQLiteConnection m_dbConnection;
+        public String DB = "";
+        public DBserver(){
+    
+            this.DB = "DBServer.sqlite";
 
-        public void createNewDatabase()
+        }
+    public int createNewDatabase()
         {
-            SQLiteConnection.CreateFile(DB);
+            if (File.Exists(DB))
+                return 1;
+            else
+                SQLiteConnection.CreateFile(DB);
+            return 0;
+        }
+        public static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         // Creates a connection with our database file.
@@ -62,10 +67,39 @@ namespace ServerSide
              command.ExecuteNonQuery();*/
         }
 
+        internal List<Client> initialServer()
+        {
+            List<Client> Allclients = new List<Client>();
+            int exist= createNewDatabase();
+            connectToDatabase();
+            createClientsTable();
+            createTriggersTable();
+            if (exist == 1)
+            {
+                string s = "";
+                string id = "";
+                string name = "";
+                string sql = "select * from clientData ";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    //s += "id: " + reader["id"] + "\tname: " + reader["name"] + "\n";
+                    //ShowErrorDialog(s);
+                    name = "" + reader["name"];
+                    id = "" + reader["id"];
+                    Client newClient = new Client(name, int.Parse(id), null, null);
+                    Allclients.Add(newClient);
+                }
+                
+            }
+            return Allclients;
+        }
+
         public void createTriggersTable()
         {
             //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
-            string sql = "create table  TriggersTable(clientId int ,trigerId int, triggerDate TEXT, triggerDes TEXT)";
+            string sql = "create table  IF NOT EXISTS TriggersTable(clientId int ,trigerId int, triggerDate TEXT, triggerDes TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
