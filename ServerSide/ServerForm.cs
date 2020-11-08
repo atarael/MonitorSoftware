@@ -148,18 +148,24 @@ namespace ServerSide
         {
             if (Name != null && id >=0   )
             {
-                Invoke((Action)delegate
+                 Invoke((Action)delegate
                 {
                     String line = "";
                     if( ClientSocket != null)
-                    line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
+                        line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
                     else
-                     line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
-                    checkLstAllClient.Items.Insert(id, line);
-                });
+                        line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
+                    // Check if id exists in checkbox 
+
+                    for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                         if (i == id) {
+                            checkLstAllClient.Items.RemoveAt(id);
+                        }
+ 
+                     checkLstAllClient.Items.Insert(id, line);
+                  });
 
             }
-
 
         }
 

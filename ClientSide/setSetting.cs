@@ -44,18 +44,24 @@ namespace ClientSide
 
             String[] paths = new string[] {@filepath, "files"};
             filepath = Path.Combine(paths);
-            ShowErrorDialog(filepath);
-            ShowErrorDialog(stringSetting);
+            ShowErrorDialog("filepath in createFileStringSetting: " + filepath);
+            ShowErrorDialog("stringSetting createFileStringSetting: "+stringSetting);
              
              
             if (!Directory.Exists(filepath))
             {
                 Directory.CreateDirectory(filepath);
             }
-             
-             
-            File.WriteAllText(Path.Combine(filepath, "setting_"+id+".txt"), name + "\r\n" + id  + stringSetting);
 
+            String settingFile = Path.Combine(filepath, "setting_" + id + ".txt");
+            if (!File.Exists(settingFile))
+            {
+                using (StreamWriter sw = File.CreateText(settingFile)) ;
+                File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + stringSetting);
+                
+            }
+
+            
             /*
             if (!File.Exists(filepath))
             {

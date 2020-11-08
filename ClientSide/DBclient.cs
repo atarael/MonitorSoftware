@@ -5,25 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Management;
+using System.IO;
 
 namespace ClientSide
 {
     public class DBclient
     {
         System.Data.SQLite.SQLiteConnection m_dbConnection;
-        private String DB = "triggersTable.sqlite";
+        private String DB = "";
       
         public DBclient(string clientName)
         {
-            DB = clientName+ "triggersTable.sqlite";
+            DB = clientName+ "_DB.sqlite";
             createNewDatabase();
             connectToDatabase();
             createTable();
         }
-
+       
         public void createNewDatabase()
         {
-            SQLiteConnection.CreateFile(DB);
+            if (File.Exists(DB))
+                return;
+            else
+                SQLiteConnection.CreateFile(DB);
+            
+             
         }
 
         // Creates a connection with our database file.
@@ -37,7 +43,7 @@ namespace ClientSide
         public void createTable()
         {
             //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
-            string sql = "create table triggersTable(idTriger INTEGER ,dateTriger TEXT, DesTriger TEXT)";
+            string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTriger INTEGER ,dateTriger TEXT, DesTriger TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -47,7 +53,7 @@ namespace ClientSide
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         public void fillTable(int idTriger, string dateTriger, string DesTriger)
         {
-            string sql = "insert into triggersTable (idTriger,dateTriger,DesTriger) values('" + idTriger + "','" + dateTriger + "','" + DesTriger + "');";
+            string sql = "insert into TriggersTable (idTriger,dateTriger,DesTriger) values('" + idTriger + "','" + dateTriger + "','" + DesTriger + "');";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -67,7 +73,7 @@ namespace ClientSide
         void printClientData()
         {
              string  Text = "";
-             string sql = "select * from  triggersTable order by idTriger";
+             string sql = "select * from  TriggersTable order by idTriger";
              SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
              SQLiteDataReader reader = command.ExecuteReader();
              while (reader.Read())
@@ -80,7 +86,7 @@ namespace ClientSide
 
 
        
-       
+     
     }
 }
 

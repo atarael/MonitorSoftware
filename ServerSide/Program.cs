@@ -50,11 +50,11 @@ namespace ServerSide
                 dbs = new DBserver();
                 Allclients = dbs.initialServer();
                 numOfClient = Allclients.Count();
-                ShowErrorDialog("num" + numOfClient);
+                //ShowErrorDialog("num" + numOfClient);
                
                 for (int i = 0; i < numOfClient; i++)
                 {
-                    ShowErrorDialog("name " + Allclients[i].Name + "id " + Allclients[i].id);
+                    //ShowErrorDialog("name " + Allclients[i].Name + "id " + Allclients[i].id);
                     s.addClientToCheckBoxLst(Allclients[i].Name, Allclients[i].id, Allclients[i].ClientSocket);
 
                 }
@@ -238,18 +238,17 @@ namespace ServerSide
                 else if(dataFromClient[0] == "id")
                 {
                     int id = Int32.Parse(dataFromClient[1].Split('\0')[0]);                                           
-                    ShowErrorDialog("Client |" + id + "| reconnect");
+                    //ShowErrorDialog("Client |" + id + "| reconnect");
                     if (id < Allclients.Count) { 
                         Allclients[id].ClientSocket = CurrentClientSocket;
                         Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
                         Allclients[id].ClientSocket.BeginReceive(Allclients[id].buffer, 0, Allclients[id].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
+                        s.addClientToCheckBoxLst(Allclients[id].Name, id, Allclients[id].ClientSocket);
                     }
-
-
-                    sendDataToClient(CurrentClientSocket, Allclients[id].Name + " reconnected in Socket: " + CurrentClientSocket.RemoteEndPoint +"\r\nPrevius Socket is: " + Allclients[id].ClientSocket);
+                      sendDataToClient(CurrentClientSocket, Allclients[id].Name + " reconnected in Socket: " + CurrentClientSocket.RemoteEndPoint);
                 }
 
-
+                
                 
 
 
