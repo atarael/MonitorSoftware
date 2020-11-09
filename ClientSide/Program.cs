@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IWshRuntimeLibrary;
+
 
 namespace ClientSide
 {
@@ -22,52 +24,44 @@ namespace ClientSide
         private DBclient dbs;
         private setSetting set;
         private ClientForm clientForm;
-
+       
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+           // if (rkApp.GetValue("ClientSide.exe") == null) { }
+                // Remove the value from the registry so that the application doesn't start
+              //  else 
+              //  rkApp.DeleteValue("ClientSide.exe", false);
+             string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+             WshShell shell = new WshShell();
+             string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
+             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+             shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
+             shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
+             shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
+            shortcut.Save(); // save the shortcut 
+             shortcut.Arguments = "/a /c";
             Program p = new Program();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
 
             // The path to the key where Windows looks for startup applications
-            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-
-            if (p.IsStartupItem(rkApp)) { 
-                // Remove the value from the registry so that the application doesn't start
-                //rkApp.DeleteValue("ClientSide", false);
-            }
-           
-            else
-            {
-                // Add the value in the registry so that the application runs at startup
-                rkApp.SetValue("ClientSide.exe", Application.ExecutablePath.ToString());
-
-            }
-
+            
             // check if connect at first time or reconnect         
             if (!p.initialClient())
-            {
-               p.connectToServer();
-            } 
-            
+               {
+                  p.connectToServer();
+               } 
+
             Application.Run();
         }
 
-        private bool IsStartupItem(  RegistryKey rkApp)
-        {            
-            if (rkApp.GetValue("ClientSide.exe") == null)
-                // The value doesn't exist, the application is not set to run at startup
-                return false;
-            else
-                // The value exists, the application is set to run at startup
-                return true;
-        }
-
+      
 
         // The function is activated as soon as data is received in the socket
         private void ReceiveCallback(IAsyncResult AR)
@@ -242,7 +236,7 @@ namespace ClientSide
                 {
                     ShowErrorDialog(file.Name);
                     // Open the file to read from.
-                    using (StreamReader sr = File.OpenText(Path.Combine(filepath, file.Name)))
+                    using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, file.Name)))
                     {
                         name = sr.ReadLine();
                         id = sr.ReadLine();
