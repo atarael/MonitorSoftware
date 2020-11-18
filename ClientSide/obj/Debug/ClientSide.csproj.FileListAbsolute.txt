@@ -157,3 +157,5 @@ C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\obj\
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\obj\Debug\ClientSide.pdb
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\obj\Debug\ClientSide.csproj.ResolveComReference.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\obj\Debug\ClientSide.csproj.ResolveComReference.cache

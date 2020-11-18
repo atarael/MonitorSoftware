@@ -119,8 +119,9 @@ namespace ServerSide
             setting += "\r\n";
 
             // insert seven line - report time
-
-
+            int select = chblFrequency.SelectedIndex;
+            ShowErrorDialog("select: "+ select);
+            setting += select + "\r\n";
 
             this.Close();
         }
@@ -173,11 +174,16 @@ namespace ServerSide
             }
             dtgCategorySites.AllowUserToAddRows = false;
 
-
+            
 
 
 
         }
+        public static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
     }
 }
 

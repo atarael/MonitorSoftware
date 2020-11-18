@@ -56,3 +56,5 @@ C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache

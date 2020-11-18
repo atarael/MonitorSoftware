@@ -66,6 +66,7 @@
             this.chbUpdateReportIinappropriateWords = new System.Windows.Forms.CheckBox();
             this.chbReportImamediatelyIinappropriateWords = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.chblFrequency = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).BeginInit();
             this.SuspendLayout();
             // 
@@ -227,7 +228,7 @@
             this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnOK.ForeColor = System.Drawing.Color.Lime;
-            this.btnOK.Location = new System.Drawing.Point(467, 997);
+            this.btnOK.Location = new System.Drawing.Point(484, 1129);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
@@ -438,6 +439,20 @@
             this.label14.Text = "Typing inappropriate words";
             this.label14.Click += new System.EventHandler(this.label5_Click);
             // 
+            // chblFrequency
+            // 
+            this.chblFrequency.CheckOnClick = true;
+            this.chblFrequency.FormattingEnabled = true;
+            this.chblFrequency.Items.AddRange(new object[] {
+            "Each Day",
+            "Each Week",
+            "Two once each week",
+            "Each Month"});
+            this.chblFrequency.Location = new System.Drawing.Point(90, 989);
+            this.chblFrequency.Name = "chblFrequency";
+            this.chblFrequency.Size = new System.Drawing.Size(200, 96);
+            this.chblFrequency.TabIndex = 14;
+            // 
             // MonitorSetting
             // 
             this.AllowDrop = true;
@@ -446,7 +461,8 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1214, 1107);
+            this.ClientSize = new System.Drawing.Size(1332, 1195);
+            this.Controls.Add(this.chblFrequency);
             this.Controls.Add(this.txbBlockedSites);
             this.Controls.Add(this.txbUnblockedSites);
             this.Controls.Add(this.label4);
@@ -528,5 +544,6 @@
         private System.Windows.Forms.CheckBox chbUpdateReportIinappropriateWords;
         private System.Windows.Forms.CheckBox chbReportImamediatelyIinappropriateWords;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckedListBox chblFrequency;
     }
 }

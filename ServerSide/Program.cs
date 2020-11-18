@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using IWshRuntimeLibrary;
 
 namespace ServerSide
 {
@@ -27,6 +28,7 @@ namespace ServerSide
         [STAThread]
         static void Main(string[] args)
         {
+            connectAtReStartComputer();
             Program p = new Program();
             List<Client> Allclients;
             Application.EnableVisualStyles();
@@ -39,6 +41,19 @@ namespace ServerSide
             //  System.Threading.Thread.CurrentThread.ApartmentState = System.Threading.ApartmentState.STA;
             
         }
+        private static void connectAtReStartComputer()
+        {
+            string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            WshShell shell = new WshShell();
+            string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+            shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
+            shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
+            shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
+            shortcut.Save(); // save the shortcut 
+            shortcut.Arguments = "/a /c";
+        }
+
         public void StartServer()
         {
             try
