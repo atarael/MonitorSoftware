@@ -54,8 +54,10 @@ namespace ClientSide
             var res = command.ExecuteScalar();
             if (res!=null ) {
                 Console.WriteLine(res);
+                m_dbConnection.Close();
                 return res.ToString();
             }
+            m_dbConnection.Close();
             return string.Empty;
                
 
@@ -137,7 +139,7 @@ namespace ClientSide
                 MonitorSites = words[i + 1];
                 helpFunfillWebsiteMonitoringTable(words[i], (int)Char.GetNumericValue(MonitorSites[0]), (int)Char.GetNumericValue(MonitorSites[1]), (int)Char.GetNumericValue(MonitorSites[2]));
             }
-
+           
         }
 
         public void helpFunfillWebsiteMonitoringTable(string category, int reportImmediately, int updateReport, int block)
@@ -151,7 +153,7 @@ namespace ClientSide
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         public void fillTable(int idTriger, string dateTriger, string DesTriger)
         {
-            string sql = "insert into TriggersTable (idTriger,dateTriger,DesTriger) values('" + idTriger + "','" + dateTriger + "','" + DesTriger + "');";
+            string sql = "insert into TriggersTable(idTriger,dateTriger,DesTriger) values('" + idTriger + "','" + dateTriger + "','" + DesTriger + "');";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -166,7 +168,7 @@ namespace ClientSide
              command = new SQLiteCommand(sql, m_dbConnection);
              command.ExecuteNonQuery();*/
         }
-
+       
         // Writes the clientData to the console sorted on score in descending order.
         void printClientData()
         {

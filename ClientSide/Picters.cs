@@ -5,15 +5,19 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AForge.Video;
+using AForge.Video.DirectShow;
 
 namespace ClientSide
 {
+
     class Picters
     {
-
-
+       
+       
         // The function create ScreenCapture and save it if file 
         public static string ScreenCapture()
         {
@@ -32,5 +36,19 @@ namespace ClientSide
             }
             return s;
         }
+
+        public static void CaptureCamera(string picName)
+        {
+            Camera c = new Camera(picName);
+            c.Show();
+            c.Visible = false;
+            Thread.Sleep(800);
+            c.Close();
+
+        }
+
     }
-}
+
+        
+
+    }

@@ -44,8 +44,8 @@ namespace ClientSide
 
             String[] paths = new string[] {@filepath, "files"};
             filepath = Path.Combine(paths);
-            ShowErrorDialog("filepath in createFileStringSetting: " + filepath);
-            ShowErrorDialog("stringSetting createFileStringSetting: "+stringSetting);
+            // ShowErrorDialog("filepath in createFileStringSetting: " + filepath);
+            // ShowErrorDialog("stringSetting createFileStringSetting: "+stringSetting);
              
              
             if (!Directory.Exists(filepath))

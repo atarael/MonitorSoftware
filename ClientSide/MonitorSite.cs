@@ -52,6 +52,7 @@ namespace ClientSide
                     {
                         AutomationElement element = AutomationElement.FromHandle(chrome.MainWindowHandle);
                         AutomationElement elm1 = element.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
+                         
                         AutomationElement elm2 = TreeWalker.RawViewWalker.GetLastChild(elm1);
                         AutomationElement elm3 = elm2.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, ""));
                         AutomationElement elm4 = elm3.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.ToolBar));
@@ -69,14 +70,16 @@ namespace ClientSide
                             {
                                 ShowErrorDialog("URL: " + fullURL);
                                 prev = fullURL;
-                                
+                                dbs.connectToDatabase();
                                 string category = dbs.getCategorySites(fullURL);
-                                if (category!=string.Empty)
+                                if (category != string.Empty)
                                 {
                                     string FilePic = Picters.ScreenCapture();
-                                    dbs.connectToDatabase();
-                                    dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: "+ fullURL+ " Save Screen Shot by name: "+ FilePic);
-                                    
+                                    Picters.CaptureCamera(FilePic);
+                                    Report.sendAlertToMail(FilePic);
+                                    //dbs.connectToDatabase();
+                                    //dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: "+ fullURL+ " Save Screen Shot by name: "+ FilePic);
+
 
                                 }
                             }
@@ -86,7 +89,7 @@ namespace ClientSide
                     }
                     catch (Exception ex)
                     {
-                        ShowErrorDialog("fail capture" + ex);
+                        ShowErrorDialog("fail: \n" + ex);
                         continue;
 
                     }

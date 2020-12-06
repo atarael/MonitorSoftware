@@ -58,3 +58,9 @@ C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\
 C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.xml
