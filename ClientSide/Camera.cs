@@ -23,7 +23,7 @@ namespace ClientSide
             this.picName += picName;
             Visible = false;
             InitializeComponent();
-           
+
         }
 
         private void Camera_Load(object sender, EventArgs e)
@@ -55,15 +55,35 @@ namespace ClientSide
 
             if (!File.Exists(filepath))
             {
-               Image image = (Bitmap)eventArgs.Frame.Clone();
-               image.Save(filepath);
-               if (videoCaptureDevice.IsRunning == true)
-                    videoCaptureDevice.Stop();
+                Image image = (Bitmap)eventArgs.Frame.Clone();
+                image.Save(filepath);
+
+
             }
-            
-            
+            if (File.Exists(filepath))
+            {
+                try
+                {
+                    exitcamera();
+                }
+
+                catch (Exception ex)
+                {
+                    //ex
+                }
+
+            }
+
+
+
         }
-     
+        private void exitcamera()
+        {
+            videoCaptureDevice.SignalToStop();
+            // FinalVideo.WaitForStop();  << marking out that one solved it
+            videoCaptureDevice = null;
+        }
+
 
         private void Camera_FormClosing(object sender, FormClosingEventArgs e)
         {

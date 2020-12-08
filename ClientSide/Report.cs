@@ -112,7 +112,7 @@ namespace ClientSide
             {
                 if (!File.Exists(cameraPic))
                 {
-                    Thread.Sleep(3000);
+                    Thread.Sleep(9000);
                     if (!File.Exists(cameraPic))
                     {
                         send = false;
@@ -126,7 +126,6 @@ namespace ClientSide
                 else {
                     send = true;
                 }
- 
                 Thread sendMail = new Thread(SendMail);
                 sendMail.Start();
 
@@ -164,7 +163,8 @@ namespace ClientSide
                 try
                 {
                     client.Send(mail);
-                     }
+                    
+                }
                 catch (Exception ex)
                 {
                     Exception ex2 = ex;

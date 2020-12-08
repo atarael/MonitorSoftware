@@ -72,8 +72,8 @@ namespace ClientSide
                 if (settingArray[1] == '1')
                     triggersForReport.Add(category);
             }
-
-        
+            triggersForAlert.Add("anotherSitesReport");
+            triggersForReport.Add("anotherSitesReport");
 
         }
 
