@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using Condition = System.Windows.Automation.Condition;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 namespace ClientSide
 {
@@ -52,7 +53,10 @@ namespace ClientSide
                     {
                         AutomationElement element = AutomationElement.FromHandle(chrome.MainWindowHandle);
                         AutomationElement elm1 = element.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
-                         
+                        if (element == null)
+                        {
+                            continue;
+                        } 
                         AutomationElement elm2 = TreeWalker.RawViewWalker.GetLastChild(elm1);
                         AutomationElement elm3 = elm2.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, ""));
                         AutomationElement elm4 = elm3.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.ToolBar));
@@ -72,17 +76,37 @@ namespace ClientSide
                                 prev = fullURL;
                                 dbs.connectToDatabase();
                                 string category = dbs.getCategorySites(fullURL);
-                                // check how 
+                                //ShowErrorDialog("categ|"+category+"|");
                                 if (category != string.Empty)
                                 {
 
-                                    string FilePic = Picters.ScreenCapture();
-                                    Picters.CaptureCamera(FilePic);
-                                    Report.sendAlertToMail(FilePic);
-                                    //dbs.connectToDatabase();
-                                    //dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: "+ fullURL+ " Save Screen Shot by name: "+ FilePic);
+                                    ShowErrorDialog(category);
+                                    
+                                    string cat = "";
+                                    foreach (var x in set.triggersForAlert) {
+                                        cat += "|"+x+"| ";
+                                    }
+                                    
+                                    string ignor = "";
+                                    foreach (var x in set.triggersForReport)
+                                    {
+                                        ignor += "|" + x + "| ";
+                                    }
 
+                                    ShowErrorDialog("triggersForAlert: " + cat);
+                                    ShowErrorDialog("triggersForReport: " + ignor);
 
+                                    if (set.triggersForAlert.Contains(category) == true)
+                                       {
+                                         string FilePic = Picters.ScreenCapture();
+                                         Picters.CaptureCamera(FilePic);
+                                         Report.sendAlertToMail(FilePic);
+                                       }
+                                    if (set.triggersForReport.Contains(category) == true)
+                                        {
+                                        dbs.connectToDatabase();
+                                        dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: " + fullURL );
+                                        }
                                 }
                             }
                             
@@ -91,7 +115,7 @@ namespace ClientSide
                     }
                     catch (Exception ex)
                     {
-                        //ShowErrorDialog("fail: \n" + ex);
+                        ShowErrorDialog("fail: \n" + ex);
                         continue;
 
                     }

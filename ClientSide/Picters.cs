@@ -16,8 +16,8 @@ namespace ClientSide
 
     class Picters
     {
-       
-       
+
+
         // The function create ScreenCapture and save it if file 
         public static string ScreenCapture()
         {
@@ -47,7 +47,8 @@ namespace ClientSide
                 Thread.Sleep(800);
                 c.Close();
             }
-            catch(Exception ex ) {
+            catch (Exception ex)
+            {
                 ShowErrorDialog("fail camera");
             }
 
@@ -60,6 +61,6 @@ namespace ClientSide
 
     }
 
-        
 
-    }
+
+}
