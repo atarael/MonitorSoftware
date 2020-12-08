@@ -56,8 +56,8 @@ namespace ClientSide
             String settingFile = Path.Combine(filepath, "setting_" + id + ".txt");
             if (!File.Exists(settingFile))
             {
-                using (StreamWriter sw = File.CreateText(settingFile)) ;
-                File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + stringSetting);
+                using (StreamWriter sw = File.CreateText(settingFile));               
+                File.WriteAllText(settingFile, name + "\r\n" + id.Split('\r', '\n')[0] + "\r\n" + stringSetting);
                 
             }
 

@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace ServerSide
@@ -16,6 +18,8 @@ namespace ServerSide
         public String setting = "";
         private static String clientName = "";
         private List<String> CategorySite;
+        private string addSiteToMonitor = "";
+        private string addSiteToCancelMonitor = "";
 
         public MonitorSetting(String name)
         {
@@ -26,10 +30,9 @@ namespace ServerSide
             CategorySite = new List<String>();
             CategorySite.Add("News");
             CategorySite.Add("Sport");
-            CategorySite.Add("shopping");
+            CategorySite.Add("Shopping");
             CategorySite.Add("Vocation");
             CategorySite.Add("Economy");
-            CategorySite.Add("Email");
             CategorySite.Add("Social");
             CategorySite.Add("Vocation");
 
@@ -47,7 +50,7 @@ namespace ServerSide
                 DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i];
 
                 // insert Category Name
-                setting += row.Cells[0].Value.ToString();
+                setting += row.Cells[0].Value.ToString().ToLower() + " ";
 
                 // Report immediately
                 if (row.Cells["ReportImmediately"].Value != null)
@@ -68,10 +71,10 @@ namespace ServerSide
             setting += "\r\n";
 
             // insert second line - link to another sites to block             
-            setting += addSiteToSystem(txbBlockedSites.Text) + "\r\n";
+            setting += addSiteToMonitor + "\r\n";
 
             // insert third line - link to sites to unblock
-            setting += addSiteToSystem(txbUnblockedSites.Text) + "\r\n";
+            setting += addSiteToCancelMonitor + "\r\n";
 
             // insert forth line - application installation.  format: XXX, where X is 1-selected or 0-not selected
             if (chbReportImmediatelyLimitApp.Checked)
@@ -120,29 +123,46 @@ namespace ServerSide
 
             // insert seven line - report time
             int select = chblFrequency.SelectedIndex;
-            ShowErrorDialog("select: "+ select);
-            setting += select + "\r\n";
-
-            this.Close();
-        }
-
-        private string addSiteToSystem(String Sites)
-        {
-            String subSys = "";
-            if (Sites.Length == 0)
-            {
-                return "NULL";
-            }
-
+            if (select < 0)
+                ShowErrorDialog("Must Select Frequency to get report");
             else
             {
-                string[] SitesToAdd = Sites.Split('\n', ' ', '\r');
-                for (int i = 0; i < SitesToAdd.Length; i++)
-                {
-                    subSys += SitesToAdd[i] + " ";
-                }
+                setting += select + "\r\n";
+                this.Close();
             }
-            return subSys;
+
+
+        }
+
+         
+        
+        private string correctURL(string url)
+        {
+            
+            if (!url.StartsWith("http"))
+            {
+                url = "http://" + url;
+            }
+
+            bool isUri = UrlIsValid(url);
+            if (!isUri)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                if (url.StartsWith("http"))
+                    url = url.Replace("//", "-").Split(new Char[] { '-' }, 2)[1];
+                if (url.StartsWith("www"))
+                    url = url.Replace("www.", "-").Split(new Char[] { '-' }, 2)[1];
+
+                return url;
+            }
+
+        }
+        private static bool IsValidDomainName(string name)
+        {
+            return Uri.CheckHostName(name) != UriHostNameType.Unknown;
         }
 
         private string rangeOfTime(DateTimePicker dtpFrom, DateTimePicker dtpTo)
@@ -166,6 +186,8 @@ namespace ServerSide
 
         private void MonitorSystem_Load(object sender, EventArgs e)
         {
+            addSiteToMonitor = "";
+            addSiteToCancelMonitor = "";
             for (int i = 0; i < CategorySite.Count; i++)
             {
                 DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i].Clone();
@@ -174,7 +196,7 @@ namespace ServerSide
             }
             dtgCategorySites.AllowUserToAddRows = false;
 
-            
+
 
 
 
@@ -184,6 +206,84 @@ namespace ServerSide
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        private void chblFrequency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int select = chblFrequency.SelectedIndex;
+
+            for (int i = 0; i < chblFrequency.Items.Count; i++)
+                if (select != i)
+                    chblFrequency.SetItemChecked(i, false);
+        }
+
+        private void btnAddSiteToMonitoring_Click(object sender, EventArgs e)
+        {
+
+            string url = correctURL(txbBlockedSites.Text);
+            if (url == string.Empty)
+            {
+                ShowErrorDialog("URL: " + url + " invalid, insert again!");
+            }
+            else
+            {
+                addSiteToMonitor += url + " ";
+                txbBlockedSites.Text = "";
+            }
+
+        }
+        private void btnAddSiteToCancelMonitoring_Click(object sender, EventArgs e)
+        {
+
+            string url = correctURL(txbUnblockedSites.Text);
+            if (url == string.Empty)
+            {
+                ShowErrorDialog("URL: " + url + " invalid, insert again!");
+            }
+            else
+            {
+                addSiteToCancelMonitor += url + " ";
+                txbUnblockedSites.Text = "";
+            }
+        }
+
+        public bool UrlIsValid(string url)
+        {
+            try
+            {
+                HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+                request.Method = "HEAD"; //Get only the header information -- no need to download any content
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    int statusCode = (int)response.StatusCode;
+                    if (statusCode >= 100 && statusCode < 400) //Good requests
+                    {
+                        return true;
+                    }
+                    else if (statusCode >= 500 && statusCode <= 510) //Server Errors
+                    {
+                        //log.Warn(String.Format("The remote server has thrown an internal error. Url is not valid: {0}", url));
+                        ShowErrorDialog(String.Format("The remote server has thrown an internal error. Url is not valid: {0}", url));
+                        return false;
+                    }
+                }
+
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError) //400 errors
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return false;
+        }
+
+      
     }
 }
 

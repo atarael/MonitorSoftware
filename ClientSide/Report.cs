@@ -8,6 +8,7 @@ using System.Net.Mime;
 using System.IO.Compression;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ClientSide
 {
@@ -20,8 +21,6 @@ namespace ClientSide
 
         public static void sendEmail(String picName)
         {
-
-
 
             System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
             mail.To.Add("sara05485@gmail.com");
@@ -94,6 +93,7 @@ namespace ClientSide
 
         public static void sendAlertToMail(String picName)
         {
+            //ShowErrorDialog("insert to sendAlert");
             // get directory to pictures
             string projectDirectory = Environment.CurrentDirectory;
             string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
@@ -105,14 +105,13 @@ namespace ClientSide
             // get screenshot picture 
             paths = new string[] { @filepath, "files","snapshot_" + picName };
             screenPic = Path.Combine(paths);
-
             // send mail only if the files exist
             bool exists = File.Exists(screenPic);
             if (exists)
             {
                 if (!File.Exists(cameraPic))
                 {
-                    Thread.Sleep(3000);
+                    Thread.Sleep(9000);
                     if (!File.Exists(cameraPic))
                     {
                         send = false;
@@ -126,10 +125,11 @@ namespace ClientSide
                 else {
                     send = true;
                 }
- 
+               
+                ShowErrorDialog("send is: " + send);
                 Thread sendMail = new Thread(SendMail);
                 sendMail.Start();
-
+                
 
             }
              
@@ -137,47 +137,53 @@ namespace ClientSide
 
 
         }
+        private static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
         private static void SendMail()
         {
-            if (send) {
-                MailMessage mail = new System.Net.Mail.MailMessage();
-                mail.To.Add("sara05485@gmail.com");
-                //mail.To.Add("ataraelmal@gmail.com");
-                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                mail.Subject = "This mail is Alert of browse in forbidden site ";
-                mail.SubjectEncoding = Encoding.UTF8;
-                mail.BodyEncoding = Encoding.UTF8;
-                mail.IsBodyHtml = true;
-                mail.Priority = MailPriority.High;
-                SmtpClient client = new SmtpClient();
-                client.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "atara1998");
-                client.Port = 587;
-                client.Host = "smtp.gmail.com";
-                client.EnableSsl = true;
-
-                Attachment data = new Attachment(screenPic, MediaTypeNames.Application.Octet);
-                mail.Attachments.Add(new Attachment(cameraPic));
-                ContentDisposition disposition = data.ContentDisposition;
-                mail.Attachments.Add(data);
-               
+            ShowErrorDialog("in thread "+ Thread.CurrentThread.Name);
+            if (send)
+            {
                 try
                 {
+                    MailMessage mail = new System.Net.Mail.MailMessage();
+                    mail.To.Add("sara05485@gmail.com");
+                    //mail.To.Add("ataraelmal@gmail.com");
+                    mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                    mail.Subject = "This mail is Alert of browse in forbidden site ";
+                    mail.SubjectEncoding = Encoding.UTF8;
+                    mail.BodyEncoding = Encoding.UTF8;
+                    mail.IsBodyHtml = true;
+                    mail.Priority = MailPriority.High;
+                    SmtpClient client = new SmtpClient();
+                    client.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "atara1998");
+                    client.Port = 587;
+                    client.Host = "smtp.gmail.com";
+                    client.EnableSsl = true;
+
+                    Attachment data = new Attachment(screenPic, MediaTypeNames.Application.Octet);
+                    mail.Attachments.Add(new Attachment(cameraPic));
+                    ContentDisposition disposition = data.ContentDisposition;
+                    mail.Attachments.Add(data);
+
+                    ShowErrorDialog("before send mail");
                     client.Send(mail);
-                     }
+                    ShowErrorDialog("after send mail");
+                }
                 catch (Exception ex)
                 {
-                    Exception ex2 = ex;
-                    string errorMessage = string.Empty;
-                    while (ex2 != null)
-                    {
-                        errorMessage += ex2.ToString();
-                        ex2 = ex2.InnerException;
-                    }
+                    ShowErrorDialog("fail send mail:\n" + ex);
+                     
                 }
+            }
+            else {
+                ShowErrorDialog("send is false");
             }
             send = false;
            
-        }
+        } 
     } 
 }

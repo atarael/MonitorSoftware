@@ -72,8 +72,10 @@ namespace ClientSide
                                 prev = fullURL;
                                 dbs.connectToDatabase();
                                 string category = dbs.getCategorySites(fullURL);
+                                // check how 
                                 if (category != string.Empty)
                                 {
+
                                     string FilePic = Picters.ScreenCapture();
                                     Picters.CaptureCamera(FilePic);
                                     Report.sendAlertToMail(FilePic);
@@ -89,7 +91,7 @@ namespace ClientSide
                     }
                     catch (Exception ex)
                     {
-                        ShowErrorDialog("fail: \n" + ex);
+                        //ShowErrorDialog("fail: \n" + ex);
                         continue;
 
                     }
