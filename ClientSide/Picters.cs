@@ -39,23 +39,12 @@ namespace ClientSide
 
         public static void CaptureCamera(string picName)
         {
-            try
-            {
-                Camera c = new Camera(picName);
-                c.Show();
-                c.Visible = false;
-                Thread.Sleep(800);
-                c.Close();
-            }
-            catch(Exception ex ) {
-                ShowErrorDialog("fail camera");
-            }
+            Camera c = new Camera(picName);
+            c.Show();
+            c.Visible = false;
+            Thread.Sleep(800);
+            c.Close();
 
-        }
-
-        public static void ShowErrorDialog(string message)
-        {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }

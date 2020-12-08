@@ -1,0 +1,10 @@
+k
+23
+News 110 Sport 000 shopping 000 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000 
+report 
+ignored 
+000
+00
+0
+NULL NULL NULL 
+-1

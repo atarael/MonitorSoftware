@@ -1,28 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisioForge.Tools.TagLib.Riff;
 
 namespace ClientSide
 {
    public class setSetting
     {
        private  string settingString="";
-        private string[] triggersImmediateReport;//Triggers for immediate reporting
-        private string[] triggersForReport; //Triggers for  reporting
-        private string[] triggersForBlock;//Triggers to block operation
-        private string sitesBlockReport; //Sites to block
-        private string[] sitesEnable; //Sites to enable
+        public  List<string> triggersForAlert = new List<string>();  //Triggers for immediate reporting
+        public List<string> triggersForReport = new List<string>();
+        public List<string> anotherSitesReport = new List<string>();  //another sites to monitoring -Sites that are not included in the categories
+        public List<string> anotherSitesIgnore = new List<string>();//Sites that the server does not want to be reported
         private string[] wordImmediateReport= { "kill", "ostracism", "stab" };
 
         public setSetting(string settingString, string name, string id)
         {
+            this.settingString = settingString;
             createFileStringSetting(settingString, name, id);
-            //createSettingFeature(settingString);
+            buildCategoryList();// build triggersForAlert list and triggersForRepor list 
+            buildAnotherSitesReportList();
+           buildAnotherSitesIgnoreList();
         }
+
+        private void buildAnotherSitesIgnoreList()
+        {
+            string [] settingStringArray = settingString.Split('\n')[2].Split(' ');
+            foreach (var word in settingStringArray)
+            {
+                if (word != ""&&word!="\n") 
+                {
+                    anotherSitesIgnore.Add(word);
+                    ShowErrorDialog("ignored Sites: " + word + "|");
+                }
+               
+            }
+        }
+
+        private void buildAnotherSitesReportList()
+        {
+           string  [] settingStringArray = settingString.Split('\n')[1].Split(' ');
+            foreach (var word in settingStringArray)
+            {
+                if (word != "" && word != "\t")
+                {
+                    anotherSitesReport.Add(word);
+                    ShowErrorDialog("report Sites: " + word + "|"); 
+                }
+            
+            }
+            //ShowErrorDialog("report Sites: " + arr[1]);
+        }
+
+        //The method gets the settings string and builds a list that contains all the categories of sites 
+        //that the user surfsthat require an alert and another list for all the categories that require reporting
+        private void buildCategoryList()
+        {
+            string [] settingStringArray = settingString.Split('\n')[0].Split(' ');
+            for(int i=0;i< settingStringArray.Length-1; i=i+2)
+            {
+                string category = settingStringArray[i];
+                string settingArray = settingStringArray[i+1];
+                
+                if (settingArray[0] == '1')
+                    triggersForAlert.Add(category);
+                if (settingArray[1] == '1')
+                    triggersForReport.Add(category);
+            }
+
+        
+
+        }
+
+
+      
         public string[] getWord()
         {
 
@@ -54,10 +110,11 @@ namespace ClientSide
             }
 
             String settingFile = Path.Combine(filepath, "setting_" + id + ".txt");
-            if (!File.Exists(settingFile))
+            if (!System.IO.File.Exists(settingFile))
             {
-                using (StreamWriter sw = File.CreateText(settingFile));               
-                File.WriteAllText(settingFile, name + "\r\n" + id.Split('\r', '\n')[0] + "\r\n" + stringSetting);
+                using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
+
+                System.IO.File.WriteAllText(settingFile, name + "\r\n" + id+ "\r\n" + stringSetting);
                 
             }
 

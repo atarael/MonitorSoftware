@@ -173,3 +173,17 @@ C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\bin\Debug\AForge.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.DirectShow.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\obj\Debug\ClientSide.Camera.resources
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Controls.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Controls.UI.Dialogs.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Controls.UI.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.MediaFramework.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Shared.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Tools.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\VisioForge.Types.dll
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.xml
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.xml
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\bin\Debug\AForge.Video.DirectShow.xml
+C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ClientSide\obj\Debug\ClientSide.Camera.resources

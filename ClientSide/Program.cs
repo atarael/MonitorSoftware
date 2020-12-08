@@ -91,6 +91,7 @@ namespace ClientSide
                 if (dataFromServer[0] == "setting")
                 {
                     String setting = dataFromServer[1].Split('\0')[0];
+                    setting=setting.Substring(setting.IndexOf("\n") + 1);
                     playMonitor(setting); //This method obtains the settings string from the server
 
                 }
@@ -125,6 +126,10 @@ namespace ClientSide
             if (dbs == null) {
                 dbs = new DBclient(name);
             }
+            dbs.connectToDatabase();
+
+            dbs.removeIgnoredSites(set.anotherSitesIgnore.ToArray());
+            dbs.funAddCategorySiteTable(set.anotherSitesReport.ToArray(), "anotherSitesReport");
 
             // here will play all triggers:
 
@@ -269,7 +274,7 @@ namespace ClientSide
                         while ((line = sr.ReadLine()) != null)
                         { 
                             //ShowErrorDialog("line\n" + line);
-                            set += line;
+                            set += line+"\r\n";
                         }
                     }
                     

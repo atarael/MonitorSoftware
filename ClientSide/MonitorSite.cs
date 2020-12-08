@@ -72,17 +72,22 @@ namespace ClientSide
                                 prev = fullURL;
                                 dbs.connectToDatabase();
                                 string category = dbs.getCategorySites(fullURL);
-                                // check how 
+                                ShowErrorDialog("categ|"+category+"|");
                                 if (category != string.Empty)
                                 {
-
                                     string FilePic = Picters.ScreenCapture();
-                                    Picters.CaptureCamera(FilePic);
-                                    Report.sendAlertToMail(FilePic);
-                                    //dbs.connectToDatabase();
-                                    //dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: "+ fullURL+ " Save Screen Shot by name: "+ FilePic);
+                                    ShowErrorDialog("alert|"+set.triggersForAlert[0]+"|");
 
-
+                                    if (set.triggersForAlert.Contains(category) == true)
+                                       {
+                                         Picters.CaptureCamera(FilePic);
+                                         Report.sendAlertToMail(FilePic);
+                                       }
+                                    if (set.triggersForReport.Contains(category) == true)
+                                        {
+                                        dbs.connectToDatabase();
+                                        dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: " + fullURL + " Save Screen Shot by name: " + FilePic);
+                                        }
                                 }
                             }
                             
@@ -91,7 +96,7 @@ namespace ClientSide
                     }
                     catch (Exception ex)
                     {
-                        //ShowErrorDialog("fail: \n" + ex);
+                        ShowErrorDialog("fail: \n" + ex);
                         continue;
 
                     }

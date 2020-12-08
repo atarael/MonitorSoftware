@@ -17,7 +17,6 @@ namespace ClientSide
     {
         System.Data.SQLite.SQLiteConnection m_dbConnection;
         private String DB = "";
-        string url = "ynet.co.il/news";
         string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
 
         public string[] newSites = { "ynet.co.il/news", "news.walla.co.il" , "maariv.co.il" , "haaretz.co.il/news" , "israelhayom.co.il" , "makorrishon.co.il", "n12.co.il" , "glz.co.il","kan.org.il/live/radio.aspx?stationid=3","kan.org.il/live/radio.aspx?stationid=3","debka.co.il","kikar.co.il","0404.co.il",
@@ -30,7 +29,7 @@ namespace ClientSide
         public string[] SocialSites = { "facebook.com", "twitter.com", "instagram.com", "linkedin.com", "cafe.themarker.com", "pinterest.com", "so.cl", "secure.tagged.com", "badoo.com", "bizmakebiz.co.il",
             "camoni.co.il","facebook.com/lan2lan.StatusHunter","youtube.com","vimeo.com","flickr.com","flix.tapuz.co.il","skype.com/he","whatsapp.com/?l=he" ,"messenger.com","yahav.org" };
         public string[] VocationSites = { "lametayel.co.il", "masa.co.il", "ynet.co.il/vacation", "megalim.co.il", "travel.walla.co.il", "gotravel.co.il", "gotravel.co.il", "mako.co.il/travel", "mouse.co.il/world", "worldtravelguide.net", "tripadvisor.com", "travel.yahoo.com" };
-        public string[] emailSites = { };
+       
         public DBclient(string clientName)
 
         {
@@ -62,10 +61,18 @@ namespace ClientSide
                
 
 
-
+        }
+        public void removeIgnoredSites(string [] IgnoredSites)
+        {
+            foreach (var url in IgnoredSites)
+            {
+                string sql = "DELETE FROM SiteLinkTable  WHERE link='" + url + "'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                var res = command.ExecuteScalar();
+            }
         }
 
-       
+
 
         private void createSiteLinkTable()
         {
@@ -75,17 +82,18 @@ namespace ClientSide
         }
         public void fillSiteLinkTable()
         {
-            funHelpfiilSiteTable(newSites, "news");
-            funHelpfiilSiteTable(shopingSites, "shoping");
-            funHelpfiilSiteTable(sportSites, "sport");
-            funHelpfiilSiteTable(EconomySites, "Economy");
-            funHelpfiilSiteTable(SocialSites, "Social");
-            funHelpfiilSiteTable(emailSites, "email");
+            funAddCategorySiteTable(newSites, "news");
+            funAddCategorySiteTable(shopingSites, "shopping");
+            funAddCategorySiteTable(sportSites, "sport");
+            funAddCategorySiteTable(EconomySites, "economy");
+            funAddCategorySiteTable(SocialSites, "social");
+            funAddCategorySiteTable(VocationSites, "vacation");
+         
 
 
         }
 
-        private void funHelpfiilSiteTable(string[] category, string nameCategory)
+        public void funAddCategorySiteTable(string[] category, string nameCategory)
         {
             for (int i = 0; i < category.Length; i++)
             {
