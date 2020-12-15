@@ -1,0 +1,10 @@
+sara
+0
+news 110 sport 110 shopping 110 vocation 110 economy 000 social 000 vocation 000 
+
+
+000
+00
+0
+NULL NULL NULL 
+0
