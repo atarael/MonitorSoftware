@@ -19,14 +19,15 @@ namespace ClientSide
         public List<string> anotherSitesReport;  //another sites to monitoring -Sites that are not included in the categories
         public List<string> anotherSitesIgnore;//Sites that the server does not want to be reported
         private string[] wordImmediateReport = { "kill", "ostracism", "stab" };
-        private string timeToReport = "";
-        private double reportFrequency;
+        public string futureDateToReport = "";//Future date for reporting in string
+        public double reportFrequencyInSecond;//Frequency of reporting in seconds
+        public string reportFrequencyInWord = "";//daily,weekly..
         public setSetting(string settingString, string name, string id)
         {
 
             createFileStringSetting(settingString, name, id);
             this.settingString = settingString;
-            this.reportFrequency = buildReportFrequency();
+            this.reportFrequencyInSecond = buildReportFrequency();
 
             this.anotherSitesReport = buildAnotherSitesReportList();
             this.anotherSitesIgnore = buildAnotherSitesIgnoreList();
@@ -46,26 +47,30 @@ namespace ClientSide
             int frequency = int.Parse(settingString.Split('\n')[7]);
             if (frequency == 0)//if frequency=each day
             {
+                reportFrequencyInWord = "daily";
                 second = 60 * 60 * 24;
                 updateDate = updateDate.AddDays(1);
             }
 
             if (frequency == 1)//if frequency=each week
             {
+                reportFrequencyInWord = "weekly";
                 second = 60 * 60 * 24 * 7;
                 updateDate = updateDate.AddDays(7);
             }
             if (frequency == 2)//if frequency=once a  two weeks 
             {
+                reportFrequencyInWord = "bi-monthly";
                 second = 60 * 60 * 24 * 14;
                 updateDate = updateDate.AddDays(14);
             }
             if (frequency == 3)
             {
+                reportFrequencyInWord = "monthly";
                 second = 60 * 60 * 24 * 30;//if frequency=once a month
                 updateDate = updateDate.AddMonths(1);
             }
-            this.timeToReport = updateDate.ToString();
+            this.futureDateToReport = updateDate.ToString();
             //ShowErrorDialog("jjj"+updateDate.ToString());
             return Convert.ToDouble(second);
 

@@ -71,7 +71,7 @@ namespace ClientSide
                                  {
                                      ShowErrorDialog("bad word insert");
                                      dbs.connectToDatabase();
-                                     dbs.fillTable(1, DateTime.Now.ToString(), x + " " + "in process chrome");
+                                     dbs.fillTable(1, DateTime.Now.ToString(),"\"" +x +"\"");
                                      //string AllApp = ShowAllProcess.ListAllWebSite();
                                      //ShowErrorDialog("ListAllWebSite: \n" + AllApp);
 

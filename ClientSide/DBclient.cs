@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.Data.Sqlite;
+using System.Windows.Forms;
 
 namespace ClientSide
 {
@@ -125,7 +126,7 @@ namespace ClientSide
         public void createTable()
         {
             //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
-            string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTriger INTEGER ,dateTriger TEXT, DesTriger TEXT)";
+            string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTrigger INTEGER ,dateTrigger TEXT, DesTrigger TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -159,9 +160,9 @@ namespace ClientSide
         }
         // Inserts some values in the clientData table.
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
-        public void fillTable(int idTriger, string dateTriger, string DesTriger)
+        public void fillTable(int idTrigger, string dateTrigger, string DesTrigger)
         {
-            string sql = "insert into TriggersTable(idTriger,dateTriger,DesTriger) values('" + idTriger + "','" + dateTriger + "','" + DesTriger + "');";
+            string sql = "insert into TriggersTable(idTrigger,dateTrigger,DesTrigger) values('" + idTrigger + "','" + dateTrigger + "','" + DesTrigger + "');";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -178,18 +179,42 @@ namespace ClientSide
         }
        
         // Writes the clientData to the console sorted on score in descending order.
-        void printClientData()
+        public string  getTriggerTable()
         {
+            connectToDatabase();
             string Text = "";
-            string sql = "select * from  TriggersTable order by idTriger";
+            string sql = "select * from  TriggersTable order by idTrigger";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Text += "id: " + reader["idTriger"] + "date: " + reader["dateTriger"] + "\tdescription: " + reader["DesTriger"] + "\n";
+                Text += "id: " + reader["idTrigger"] + "date: " + reader["dateTrigger"] + "\tdescription: " + reader["DesTrigger"] + "\n";
             }
 
+            return Text;
+
+           
+        }
+        public string getTriggerById(int idTrigger)
+        {
+            connectToDatabase();
+            string Text = "";
+            string sql = "SELECT  * FROM TriggersTable WHERE idTrigger='" + idTrigger + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                
+                Text +=  reader["dateTrigger"] + "\t  " + reader["DesTrigger"] + "\n";
+            }
+   
+            return Text;
+
             //m_dbConnection.Close();
+        }
+        public static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IWshRuntimeLibrary;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ClientSide
@@ -190,10 +191,18 @@ namespace ClientSide
             // files and program
             string allProc = ShowAllProcess.ListAllProcesses();
             // installations 
+       //   string s= MonitorInstallations.GetDownloadFolderPath();
+            MonitorInstallations.GetInstalledApps();
+            
+
+           
+            
+           
 
             // Report
             // Report.sendAlertToMail(set.timeToReport, set.frequncy);
-            // Report.setReportFrequency("09/12/2020 21:32:30", 5.0);
+            
+             Report.setReportFrequency("09/12/2020 21:32:30", set.reportFrequencyInSecond,set.reportFrequencyInWord,dbs);
 
 
 
@@ -380,7 +389,7 @@ namespace ClientSide
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 buffer = new byte[clientSocket.ReceiveBufferSize];
 
-                ShowErrorDialog("reConnect in socket: " + clientSocket.RemoteEndPoint);
+              //  ShowErrorDialog("reConnect in socket: " + clientSocket.RemoteEndPoint);
                 // Connect To Server 
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
@@ -388,12 +397,12 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
+                //ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
 
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+               // ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
         }
 

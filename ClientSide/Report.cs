@@ -10,9 +10,24 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Drawing;
-using System;
-using Microsoft.Win32.TaskScheduler;
-using static System.Net.Mime.MediaTypeNames;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Parsing;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Grid;
+using GemBox.Document;
+using PdfSharp.Drawing;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Paragraph = iTextSharp.text.Paragraph;
+using Image = iTextSharp.text.Image;
+using Rectangle = iTextSharp.text.Rectangle;
+using Color = iTextSharp.text.Color;
+using Element = iTextSharp.text.Element;
+using Spire.Pdf.Exporting.XPS.Schema;
+using Path = System.IO.Path;
+using Font = iTextSharp.text.Font;
+using BaseLib.Graphic;
+using System.Runtime.CompilerServices;
 
 namespace ClientSide
 {
@@ -33,7 +48,8 @@ namespace ClientSide
         private static Timer _timer;
         private static DateTime timetoReport;
         private static int count = 1;
-
+        public static double frequencySecond;
+        public static string frequencyWord;
         public static void sendAlertToMail(String picName)
         {
             Debug.WriteLine("insert to sendAlertToMail");
@@ -127,24 +143,55 @@ namespace ClientSide
            
         }
        
-        public void setReportFrequency(string reportTime, double frequency)
+        public  static void setReportFrequency(string reportTime, double frequencySecond1, string frequencyWord1 , DBclient db)
         {
-            DateTime timeToReport = DateTime.Parse(reportTime);
-            double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
+            frequencySecond = frequencySecond1;
+            frequencyWord = frequencyWord1;
+            createReportFile(db);
+           // DateTime timeToReport = DateTime.Parse(reportTime);
+           // double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
             //Initialization of _timer   
-            _timer = new Timer(x => { callTimerMethode(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(5));
+            //_timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(5));
              
         }
 
-        private static void callTimerMethode()
+        private static void createReportFile(DBclient db) 
         {
-            Console.WriteLine(string.Format("Timer Executed {0}   times.", count));
-            count = count + 1;
-            // save new time to report
+            var doc1 = new Document();
+
+            String projectDirectory = Environment.CurrentDirectory;
+            string path = Directory.GetParent(projectDirectory).Parent.FullName;
+            
+            PdfWriter.GetInstance(doc1, new FileStream(path + "/Doc1.pdf", FileMode.Create));
+            //PdfWriter.GetInstance(doc1, new FileStream(path + "/logo.JPG", FileMode.Create));
+
+            doc1.Open();
+            Image jpg = Image.GetInstance(path + "/logo.JPG");
+            jpg.ScalePercent(12f);
+            jpg.SetAbsolutePosition(doc1.PageSize.Width - 410f,
+                  doc1.PageSize.Height - 130f );
+
+            doc1.Add(jpg);
+            doc1.Add(new Paragraph(DateTime.Now.ToString()));
+            string userName = Environment.UserName;
+            doc1.Add(new Paragraph("\n\n\n\n\n"+frequencyWord + " report for user: "+userName));
+            doc1.Add(new Paragraph("\nOn the dates listed, the following words were typed:"));
+            doc1.Add(new Paragraph(db.getTriggerById(1)));
+            doc1.Add(new Paragraph("\nOn the dates listed the user browsed the following sites:"));
+            doc1.Add(new Paragraph(db.getTriggerById(2)));
+            doc1.Add(new Paragraph("\nOn the dates listed The user has downloaded the following software:"));
+            doc1.Add(new Paragraph(db.getTriggerById(3)));
+            doc1.Close();
+
+
+            //db.printClientData();
 
         }
 
-
-
+     /*   private static string editTriggerById(int id, DBclient db)
+        {
+            string editTableTrigger = db.getTriggerById(id);
+            return editTableTrigger;
+        }*/
     }
 }

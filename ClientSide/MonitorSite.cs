@@ -107,7 +107,7 @@ namespace ClientSide
                                     if (set.triggersForReport.Contains(category) == true)
                                         {
                                         dbs.connectToDatabase();
-                                        dbs.fillTable(2, DateTime.Now.ToString(), "User browes in site: " + fullURL );
+                                        dbs.fillTable(2, DateTime.Now.ToString(),  fullURL );
                                         }
                                 }
                             }

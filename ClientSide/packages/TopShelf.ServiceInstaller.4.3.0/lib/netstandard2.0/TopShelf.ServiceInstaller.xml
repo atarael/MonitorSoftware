@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TopShelf.ServiceInstaller</name>
+    </assembly>
+    <members>
+        <member name="M:System.Configuration.Install.ComponentInstaller.CopyFromComponent(System.ComponentModel.IComponent)">
+            <summary>When overridden in a derived class, copies all the properties that are required at install time from the specified component.</summary>
+            <param name="component">The component to copy from. </param>
+        </member>
+        <member name="M:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller(System.Configuration.Install.ComponentInstaller)">
+            <summary>Determines if the specified installer installs the same object as this installer.</summary>
+            <returns>true if this installer and the installer specified by the <paramref name="otherInstaller" /> parameter install the same object; otherwise, false.</returns>
+            <param name="otherInstaller">The installer to compare. </param>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.AfterInstall">
+            <summary>Occurs after the <see cref="M:System.Configuration.Install.Installer.Install(System.Collections.IDictionary)" /> methods of all the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property have run.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.AfterRollback">
+            <summary>Occurs after the installations of all the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are rolled back.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.AfterUninstall">
+            <summary>Occurs after all the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property perform their uninstallation operations.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.Committing">
+            <summary>Occurs before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property committ their installations.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.BeforeInstall">
+            <summary>Occurs before the <see cref="M:System.Configuration.Install.Installer.Install(System.Collections.IDictionary)" /> method of each installer in the installer collection has run.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.BeforeRollback">
+            <summary>Occurs before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are rolled back.</summary>
+        </member>
+        <member name="E:System.Configuration.Install.Installer.BeforeUninstall">
+            <summary>Occurs before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property perform their uninstall operations.</summary>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnAfterInstall(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.AfterInstall" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer after all the installers contained in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property have completed their installations. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnAfterRollback(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.AfterRollback" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer after the installers contained in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are rolled back. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnAfterUninstall(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.AfterUninstall" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer after all the installers contained in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are uninstalled. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnCommitting(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.Committing" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are committed. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnBeforeInstall(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.BeforeInstall" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are installed. This <see cref="T:System.Collections.IDictionary" /> object should be empty at this point. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnBeforeRollback(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.BeforeRollback" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property are rolled back. </param>
+        </member>
+        <member name="M:System.Configuration.Install.Installer.OnBeforeUninstall(System.Collections.IDictionary)">
+            <summary>Raises the <see cref="E:System.Configuration.Install.Installer.BeforeUninstall" /> event.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the state of the computer before the installers in the <see cref="P:System.Configuration.Install.Installer.Installers" /> property uninstall their installations. </param>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.CategoryResourceFile">
+            <summary>Gets or sets the path of the resource file that contains category strings for the source.</summary>
+            <returns>The path of the category resource file. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.CategoryCount">
+            <summary>Gets or sets the number of categories in the category resource file.</summary>
+            <returns>The number of categories in the category resource file. The default value is zero.</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.Log">
+            <summary>Gets or sets the name of the log to set the source to.</summary>
+            <returns>The name of the log. This can be Application, System, or a custom log name. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.MessageResourceFile">
+            <summary>Gets or sets the path of the resource file that contains message formatting strings for the source.</summary>
+            <returns>The path of the message resource file. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.ParameterResourceFile">
+            <summary>Gets or sets the path of the resource file that contains message parameter strings for the source.</summary>
+            <returns>The path of the message parameter resource file. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.Source">
+            <summary>Gets or sets the source name to register with the log.</summary>
+            <returns>The name to register with the event log as a source of entries. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.Diagnostics.EventLogInstaller.UninstallAction">
+            <summary>Gets or sets a value that indicates whether the Installutil.exe (Installer Tool) should remove the event log or leave it in its installed state at uninstall time.</summary>
+            <returns>One of the <see cref="T:System.Configuration.Install.UninstallAction" /> values that indicates what state to leave the event log in when the <see cref="T:System.Diagnostics.EventLog" /> is uninstalled. The default is Remove.</returns>
+            <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">
+              <see cref="P:System.Diagnostics.EventLogInstaller.UninstallAction" /> contains an invalid value. The only valid values for this property are Remove and NoAction.</exception>
+        </member>
+        <member name="M:System.Diagnostics.EventLogInstaller.CopyFromComponent(System.ComponentModel.IComponent)">
+            <summary>Copies the property values of an <see cref="T:System.Diagnostics.EventLog" /> component that are required at installation time for an event log.</summary>
+            <param name="component">An <see cref="T:System.ComponentModel.IComponent" /> to use as a template for the <see cref="T:System.Diagnostics.EventLogInstaller" />. </param>
+            <exception cref="T:System.ArgumentException">The specified component is not an <see cref="T:System.Diagnostics.EventLog" />.-or- The <see cref="P:System.Diagnostics.EventLog.Log" /> or <see cref="P:System.Diagnostics.EventLog.Source" /> property of the specified component is either null or empty. </exception>
+        </member>
+        <member name="M:System.Diagnostics.EventLogInstaller.Install(System.Collections.IDictionary)">
+            <summary>Performs the installation and writes event log information to the registry.</summary>
+            <param name="stateSaver">An <see cref="T:System.Collections.IDictionary" /> used to save information needed to perform a rollback or uninstall operation. </param>
+            <exception cref="T:System.PlatformNotSupportedException">The platform the installer is trying to use is not Windows NT 4.0 or later. </exception>
+            <exception cref="T:System.ArgumentException">The name specified in the <see cref="P:System.Diagnostics.EventLogInstaller.Source" />  property is already registered for a different event log.</exception>
+        </member>
+        <member name="M:System.Diagnostics.EventLogInstaller.IsEquivalentInstaller(System.Configuration.Install.ComponentInstaller)">
+            <summary>Determines whether an installer and another specified installer refer to the same source.</summary>
+            <returns>true if this installer and the installer specified by the <paramref name="otherInstaller" /> parameter would install or uninstall the same source; otherwise, false.</returns>
+            <param name="otherInstaller">The installer to compare. </param>
+        </member>
+        <member name="M:System.Diagnostics.EventLogInstaller.Rollback(System.Collections.IDictionary)">
+            <summary>Restores the computer to the state it was in before the installation by rolling back the event log information that the installation procedure wrote to the registry.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the pre-installation state of the computer. </param>
+        </member>
+        <member name="M:System.Diagnostics.EventLogInstaller.Uninstall(System.Collections.IDictionary)">
+            <summary>Removes an installation by removing event log information from the registry.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the pre-installation state of the computer. </param>
+        </member>
+        <member name="T:System.Diagnostics.UninstallAction">
+            <summary>Specifies what an installer should do during an uninstallation.</summary>
+        </member>
+        <member name="F:System.Diagnostics.UninstallAction.Remove">
+            <summary>Removes the resource the installer created.</summary>
+        </member>
+        <member name="F:System.Diagnostics.UninstallAction.NoAction">
+            <summary>Leaves the resource created by the installer as is.</summary>
+        </member>
+        <member name="F:System.ServiceProcess.ServiceAccount.LocalService">
+            <summary>An account that acts as a non-privileged user on the local computer, and presents anonymous credentials to any remote server.</summary>
+        </member>
+        <member name="F:System.ServiceProcess.ServiceAccount.NetworkService">
+            <summary>An account that provides extensive local privileges, and presents the computer's credentials to any remote server.</summary>
+        </member>
+        <member name="F:System.ServiceProcess.ServiceAccount.LocalSystem">
+            <summary>An account, used by the service control manager, that has extensive privileges on the local computer and acts as the computer on the network.</summary>
+        </member>
+        <member name="F:System.ServiceProcess.ServiceAccount.User">
+            <summary>An account defined by a specific user on the network. Specifying User for the <see cref="P:System.ServiceProcess.ServiceProcessInstaller.Account" /> member causes the system to prompt for a valid user name and password when the service is installed, unless you set values for both the <see cref="P:System.ServiceProcess.ServiceProcessInstaller.Username" /> and <see cref="P:System.ServiceProcess.ServiceProcessInstaller.Password" /> properties of your <see cref="T:System.ServiceProcess.ServiceProcessInstaller" /> instance.</summary>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.DisplayName">
+            <summary>Indicates the friendly name that identifies the service to the user.</summary>
+            <returns>The name associated with the service, used frequently for interactive tools.</returns>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.Description">
+            <summary>Gets or sets the description for the service.</summary>
+            <returns>The description of the service. The default is an empty string ("").</returns>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.ServicesDependedOn">
+            <summary>Indicates the services that must be running for this service to run.</summary>
+            <returns>An array of services that must be running before the service associated with this installer can run.</returns>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.ServiceName">
+            <summary>Indicates the name used by the system to identify this service. This property must be identical to the <see cref="P:System.ServiceProcess.ServiceBase.ServiceName" /> of the service you want to install.</summary>
+            <returns>The name of the service to be installed. This value must be set before the install utility attempts to install the service.</returns>
+            <exception cref="T:System.ArgumentException">The <see cref="P:System.ServiceProcess.ServiceInstaller.ServiceName" /> property is invalid. </exception>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.StartType">
+            <summary>Indicates how and when this service is started.</summary>
+            <returns>A <see cref="T:System.ServiceProcess.ServiceStartMode" /> that represents the way the service is started. The default is Manual, which specifies that the service will not automatically start after reboot.</returns>
+            <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The start mode is not a value of the <see cref="T:System.ServiceProcess.ServiceStartMode" /> enumeration.</exception>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+            </PermissionSet>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceInstaller.DelayedAutoStart">
+            <summary>Gets or sets a value that indicates whether the service should be delayed from starting until other automatically started services are running.</summary>
+            <returns>true to delay automatic start of the service; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:System.ServiceProcess.ServiceInstaller" /> class.</summary>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.CopyFromComponent(System.ComponentModel.IComponent)">
+            <summary>Copies properties from an instance of <see cref="T:System.ServiceProcess.ServiceBase" /> to this installer.</summary>
+            <param name="component">The <see cref="T:System.ComponentModel.IComponent" /> from which to copy. </param>
+            <exception cref="T:System.ArgumentException">The component you are associating with this installer does not inherit from <see cref="T:System.ServiceProcess.ServiceBase" />. </exception>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)">
+            <summary>Installs the service by writing service application information to the registry. This method is meant to be used by installation tools, which process the appropriate methods automatically.</summary>
+            <param name="stateSaver">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation. </param>
+            <exception cref="T:System.InvalidOperationException">The installation does not contain a <see cref="T:System.ServiceProcess.ServiceProcessInstaller" /> for the executable.-or- The file name for the assembly is null or an empty string.-or- The service name is invalid.-or- The Service Control Manager could not be opened. </exception>
+            <exception cref="T:System.ArgumentException">The display name for the service is more than 255 characters in length.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">The system could not generate a handle to the service. -or-A service with that name is already installed.</exception>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+              <IPermission class="System.Security.Permissions.UIPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.IsEquivalentInstaller(System.Configuration.Install.ComponentInstaller)">
+            <summary>Indicates whether two installers would install the same service.</summary>
+            <returns>true if calling <see cref="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)" /> on both of these installers would result in installing the same service; otherwise, false.</returns>
+            <param name="otherInstaller">A <see cref="T:System.Configuration.Install.ComponentInstaller" /> to which you are comparing the current installer. </param>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.Rollback(System.Collections.IDictionary)">
+            <summary>Rolls back service application information written to the registry by the installation procedure. This method is meant to be used by installation tools, which process the appropriate methods automatically.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation. </param>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+              <IPermission class="System.ServiceProcess.ServiceControllerPermission, System.ServiceProcess, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceInstaller.Uninstall(System.Collections.IDictionary)">
+            <summary>Uninstalls the service by removing information about it from the registry.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation. </param>
+            <exception cref="T:System.ComponentModel.Win32Exception">The Service Control Manager could not be opened.-or- The system could not get a handle to the service. </exception>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+              <IPermission class="System.ServiceProcess.ServiceControllerPermission, System.ServiceProcess, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceProcessInstaller.HelpText">
+            <summary>Gets help text displayed for service installation options.</summary>
+            <returns>Help text that provides a description of the steps for setting the user name and password in order to run the service under a particular account.</returns>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+            </PermissionSet>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceProcessInstaller.Password">
+            <summary>Gets or sets the password associated with the user account under which the service application runs.</summary>
+            <returns>The password associated with the account under which the service should run. The default is an empty string (""). The property is not public, and is never serialized.</returns>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Security.Permissions.UIPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceProcessInstaller.Account">
+            <summary>Gets or sets the type of account under which to run this service application.</summary>
+            <returns>A <see cref="T:System.ServiceProcess.ServiceAccount" /> that defines the type of account under which the system runs this service. The default is User.</returns>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Security.Permissions.UIPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="P:System.ServiceProcess.ServiceProcessInstaller.Username">
+            <summary>Gets or sets the user account under which the service application will run.</summary>
+            <returns>The account under which the service should run. The default is an empty string ("").</returns>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Security.Permissions.UIPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceProcessInstaller.CopyFromComponent(System.ComponentModel.IComponent)">
+            <summary>Implements the base class <see cref="M:System.Configuration.Install.ComponentInstaller.CopyFromComponent(System.ComponentModel.IComponent)" /> method with no <see cref="T:System.ServiceProcess.ServiceProcessInstaller" /> class-specific behavior.</summary>
+            <param name="comp">The <see cref="T:System.ComponentModel.IComponent" /> that represents the service process. </param>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceProcessInstaller.Install(System.Collections.IDictionary)">
+            <summary>Writes service application information to the registry. This method is meant to be used by installation tools, which call the appropriate methods automatically.</summary>
+            <param name="stateSaver">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation. </param>
+            <exception cref="T:System.ArgumentException">The <paramref name="stateSaver" /> is null. </exception>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+              <IPermission class="System.Security.Permissions.UIPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="M:System.ServiceProcess.ServiceProcessInstaller.Rollback(System.Collections.IDictionary)">
+            <summary>Rolls back service application information written to the registry by the installation procedure. This method is meant to be used by installation tools, which process the appropriate methods automatically.</summary>
+            <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation. </param>
+            <exception cref="T:System.ArgumentException">The <paramref name="savedState" /> is null.-or- The <paramref name="savedState" /> is corrupted or non-existent. </exception>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+            </PermissionSet>
+        </member>
+    </members>
+</doc>
