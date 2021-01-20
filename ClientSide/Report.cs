@@ -28,6 +28,8 @@ using Path = System.IO.Path;
 using Font = iTextSharp.text.Font;
 using BaseLib.Graphic;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 namespace ClientSide
 {
@@ -39,7 +41,6 @@ namespace ClientSide
 
     class Report
     {
-        private static bool send;
         private static string screenPic;
         private static string cameraPic;
         static System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
@@ -50,9 +51,10 @@ namespace ClientSide
         private static int count = 1;
         public static double frequencySecond;
         public static string frequencyWord;
-        public static void sendAlertToMail(String picName)
+       
+        public static void sendAlertToMail(string picName, string TriggerDescription)
         {
-            Debug.WriteLine("insert to sendAlertToMail");
+            
             // get directory to pictures
             string projectDirectory = Environment.CurrentDirectory;
             string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
@@ -66,132 +68,178 @@ namespace ClientSide
             screenPic = Path.Combine(paths);
             // send mail only if the files exist
             
-            bool exists = File.Exists(screenPic);
+            try{
+                Thread.Sleep(6000);
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                mail.To.Add("sara05485@gmail.com");
+                mail.Subject = "Alert " + TriggerDescription;
+
+
+                Attachment attachment;
+                attachment = new Attachment(cameraPic);
+                mail.Attachments.Add(attachment);
+                Debug.WriteLine("add camera pic");
+
+                Attachment attachment2;
+                attachment2 = new Attachment(screenPic);
+                mail.Attachments.Add(attachment2);
+
+                Debug.WriteLine("add screen pic");
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "atara1998");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                Debug.WriteLine("send email seccess");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("fail send mail: \n" + ex);
+                ShowErrorDialog("fail send mail: \n" + ex);
+            }
+
             
-                 if (exists)
-                 {
-                     if (!File.Exists(cameraPic))
-                     {
-                         Thread.Sleep(9000);
-                         if (!File.Exists(cameraPic))
-                         {
-                             send = false;
-                             Debug.WriteLine("files not exist");
-                         }
-                         else
-                         {
-                             send = true;
-
-                         }
-
-                     }
-                     else
-                     {
-                         send = true;
-                     }
-                    Debug.WriteLine("send is: "+send);
-                    Thread sendMail = new Thread(SendMail);
-                    sendMail.Start();
-                 }
-                 else {
-                     Debug.WriteLine("notttttttttttttttttttt");
-                 }
+           
              
            
 
 
         }
-
-        private static void SendMail()
+       
+        public static void sendReportFileToMail()
         {
-           
-            if (send) {
+            Debug.WriteLine("insert to sendAlertToMail");
+            // get directory to report
+            string projectDirectory = Environment.CurrentDirectory;
+            string reportPath = Directory.GetParent(projectDirectory).Parent.FullName;
+               
+            // get report file
+            string[] paths = new string[] { @reportPath,  "Report.pdf"};
+            reportPath = Path.Combine(paths);
+
+
+            bool exists = File.Exists(reportPath);
+
+            if (exists)
+            {
                 try
                 {
-                    MailMessage mail = new MailMessage();
-                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                    mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                    mail.To.Add("sara05485@gmail.com");
-                    mail.Subject = "This mail is Alert of browse in forbidden site ";
- 
+                    using (MailMessage mail = new MailMessage())
+                    using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
+                    {
 
-                    System.Net.Mail.Attachment attachment;
-                    attachment = new System.Net.Mail.Attachment(cameraPic);
-                    mail.Attachments.Add(attachment);
-                    Debug.WriteLine("add camera pic");
-                    
-                    System.Net.Mail.Attachment attachment2;
-                    attachment2 = new System.Net.Mail.Attachment(screenPic);
-                    mail.Attachments.Add(attachment2);
-                    
-                    Debug.WriteLine("add screen pic");
+                        mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                        mail.To.Add("sara05485@gmail.com");
+                        mail.Subject = "Report File ";
 
-                    SmtpServer.Port = 587;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "atara1998");
-                    SmtpServer.EnableSsl = true;
+                        Attachment attachment;
+                        attachment = new Attachment(reportPath);
+                        mail.Attachments.Add(attachment);
 
-                    SmtpServer.Send(mail);
-                    Debug.WriteLine("send email seccess");
+                        SmtpServer.Port = 587;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "atara1998");
+                        SmtpServer.EnableSsl = true;
+
+                        SmtpServer.Send(mail);
+                        Debug.WriteLine("send email seccess");
+
+                        if (File.Exists(reportPath))
+                        {
+                            try {
+                                File.Delete(reportPath);
+                            }
+                            catch (Exception ex) {
+                                ShowErrorDialog("fail delete report adter send:\n"+ex);
+                            }
+
+                       
+
+                        }
+                }
+
+                   
 
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("fail send mail: \n" +ex);
+                    Debug.WriteLine("fail send mail: \n" + ex);
+                    ShowErrorDialog("fail send Report to mail: \n" + ex);
                 }
             }
-            send = false;
-           
+            else
+            {
+                Debug.WriteLine("report file not exist");
+            }
+
+
+
+
         }
-       
-        public  static void setReportFrequency(string reportTime, double frequencySecond1, string frequencyWord1 , DBclient db)
+ 
+        public static void setReportFrequency(string reportTime, double frequencySecond1, string frequencyWord1 , DBclient db)
         {
             frequencySecond = frequencySecond1;
-            frequencyWord = frequencyWord1;
-            createReportFile(db);
-           // DateTime timeToReport = DateTime.Parse(reportTime);
-           // double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
-            //Initialization of _timer   
-            //_timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(5));
-             
+            frequencyWord = frequencyWord1; // dayly or weekly.. 
+            //createReportFile(db);
+            DateTime timeToReport = DateTime.Parse(reportTime);
+            double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
+            //ShowErrorDialog(timeToReport.ToString());
+            //ShowErrorDialog(""+tickTime);
+
+            // Initialization of _timer   
+            //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
+            _timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
+
+
+
+
         }
 
         private static void createReportFile(DBclient db) 
         {
-            var doc1 = new Document();
+            var Report = new Document();
 
             String projectDirectory = Environment.CurrentDirectory;
             string path = Directory.GetParent(projectDirectory).Parent.FullName;
             
-            PdfWriter.GetInstance(doc1, new FileStream(path + "/Doc1.pdf", FileMode.Create));
-            //PdfWriter.GetInstance(doc1, new FileStream(path + "/logo.JPG", FileMode.Create));
+            PdfWriter.GetInstance(Report, new FileStream(path + "/Report.pdf", FileMode.Create));
+            //PdfWriter.GetInstance(Report, new FileStream(path + "/logo.JPG", FileMode.Create));
 
-            doc1.Open();
+            Report.Open();
             Image jpg = Image.GetInstance(path + "/logo.JPG");
             jpg.ScalePercent(12f);
-            jpg.SetAbsolutePosition(doc1.PageSize.Width - 410f,
-                  doc1.PageSize.Height - 130f );
+            jpg.SetAbsolutePosition(Report.PageSize.Width - 410f,
+                  Report.PageSize.Height - 130f );
 
-            doc1.Add(jpg);
-            doc1.Add(new Paragraph(DateTime.Now.ToString()));
+            Report.Add(jpg);
+            Report.Add(new Paragraph(DateTime.Now.ToString()));
             string userName = Environment.UserName;
-            doc1.Add(new Paragraph("\n\n\n\n\n"+frequencyWord + " report for user: "+userName));
-            doc1.Add(new Paragraph("\nOn the dates listed, the following words were typed:"));
-            doc1.Add(new Paragraph(db.getTriggerById(1)));
-            doc1.Add(new Paragraph("\nOn the dates listed the user browsed the following sites:"));
-            doc1.Add(new Paragraph(db.getTriggerById(2)));
-            doc1.Add(new Paragraph("\nOn the dates listed The user has downloaded the following software:"));
-            doc1.Add(new Paragraph(db.getTriggerById(3)));
-            doc1.Close();
+            Report.Add(new Paragraph("\n\n\n\n\n"+frequencyWord + " report for user: "+userName));
+            Report.Add(new Paragraph("\nOn the dates listed, the following words were typed:"));
+            Report.Add(new Paragraph(db.getTriggerById(1)));
+            Report.Add(new Paragraph("\nOn the dates listed the user browsed the following sites:"));
+            Report.Add(new Paragraph(db.getTriggerById(2)));
+            Report.Add(new Paragraph("\nOn the dates listed The user has downloaded the following software:"));
+            Report.Add(new Paragraph(db.getTriggerById(3)));
+            Report.Close();
 
+            ShowErrorDialog("report created, send mail");
+            sendReportFileToMail();
 
             //db.printClientData();
-
+          
+                
         }
 
-     /*   private static string editTriggerById(int id, DBclient db)
+        private static void ShowErrorDialog(string message)
         {
-            string editTableTrigger = db.getTriggerById(id);
-            return editTableTrigger;
-        }*/
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+ 
     }
 }

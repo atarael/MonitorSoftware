@@ -24,14 +24,13 @@ namespace ClientSide
 
         public DBclient dbs;
         public setSetting set;
-        public bool monitor;
+        public bool monitorSiteAlive;
 
         public MonitorSite(DBclient dbs, setSetting set)
         {
             this.dbs = dbs;
             this.set = set;
-            monitor = true;
-           
+            monitorSiteAlive = true;           
             Thread siteMonitor = new Thread(playSiteMonitor);
             siteMonitor.Start();
 
@@ -39,7 +38,7 @@ namespace ClientSide
          
         public void playSiteMonitor() {
             string prev = "";
-            while (monitor)
+            while (monitorSiteAlive)
             {
                 Process[] procsChrome = Process.GetProcessesByName("chrome");
                 foreach (Process chrome in procsChrome)
@@ -97,18 +96,8 @@ namespace ClientSide
 
                                     //ShowErrorDialog("triggersForAlert: " + cat);
                                     //ShowErrorDialog("triggersForReport: " + ignor);
-
-                                    if (set.triggersForAlert.Contains(category) == true)
-                                       {
-                                         string FilePic = Picters.ScreenCapture();
-                                         Picters.CaptureCamera(FilePic);
-                                         Report.sendAlertToMail(FilePic);
-                                       }
-                                    if (set.triggersForReport.Contains(category) == true)
-                                        {
-                                        dbs.connectToDatabase();
-                                        dbs.fillTable(2, DateTime.Now.ToString(),  fullURL );
-                                        }
+                                    reportOrSendAlert(category, fullURL);
+                                    
                                 }
                             }
                             
@@ -124,18 +113,28 @@ namespace ClientSide
 
                 }
             }
+        }
+       
+        private void reportOrSendAlert(string category, string fullURL)
+        {
+            if (set.triggersForAlert.Contains(category) == true)
+            {
+                string FilePic = Picters.ScreenCapture();
+                Picters.CaptureCamera(FilePic);
+                Report.sendAlertToMail(FilePic, "Site trigger occur");
+                ShowErrorDialog("send alert to mail\nSite trigger occur\ncategory: " + category +", path: "+ fullURL);
+            }
 
+            if (set.triggersForReport.Contains(category) == true)
+            {
+                dbs.connectToDatabase();
+                dbs.fillTable(2, DateTime.Now.ToString(), fullURL);
+                ShowErrorDialog("update DB \nSite trigger occur\ncategory: " + category + ", path: " + fullURL);
 
-
+            }
         }
 
       
-
-        private static void killTab(string fullURL)
-        {
-          
-            
-        }
       
 
         private static string findHostName(string sURL)

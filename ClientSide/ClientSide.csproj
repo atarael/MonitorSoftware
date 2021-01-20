@@ -191,12 +191,10 @@
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DBclient.cs" />
-    <Compile Include="KeyLogger.cs" />
+    <Compile Include="MonitorTyping.cs" />
     <Compile Include="MonitorInstallations.cs" />
+    <Compile Include="MonitorProccess.cs" />
     <Compile Include="MonitorSite.cs" />
-    <Compile Include="MyInstallerClass.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Picters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

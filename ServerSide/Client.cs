@@ -52,28 +52,33 @@ namespace ServerSide
         }
 
         public void openCurrentStateForm(string data) {
-
-            if (data.Split('\0')[0] == "open CurrentState form") {
+            // ShowErrorDialog("client send  live:\n  |" + data + "|");
+            if (data.Split('\0')[0] == "open CurrentState form")
+            {
                 currentStateForm = new CurrentState();
                 currentStateForm.Text = "Current State from client: " + Name + ", ID:" + id;
                 currentStateForm.ShowDialog();
             }
-            FormCollection fc = Application.OpenForms;
+            else {
+                FormCollection fc = Application.OpenForms;
 
-            foreach (Form frm in fc)
-            {
-                //iterate through
-                if (frm.Name == "CurrentState")
+                foreach (Form frm in fc)
                 {
-                    isOpen = true;
-                    currentStateForm.addText(data);
+                    //iterate through
+                    if (frm.Name == "CurrentState")
+                    {
+                        isOpen = true;
+                        currentStateForm.addText(data);
+                    }
+                }
+                if (!isOpen)
+                {
+                    currentStateForm.ShowDialog();
+
+
                 }
             }
-            if (!isOpen) {
-                currentStateForm.ShowDialog();
-              
-
-            }
+            
             
             
              

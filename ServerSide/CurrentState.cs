@@ -32,6 +32,7 @@ namespace ServerSide
         }
         public void addText(string str)
         {
+
             string[] add = str.Split(new[] { '\r', '\0' }, 2);
             if (add.Length >= 2) {
                 string data = add[1].Split(new[] { '\0' }, 2)[0];
@@ -40,9 +41,9 @@ namespace ServerSide
                     if (add[0] == "keyBoard")
                         txbTyped.AppendText(data + " ");
                     if (add[0] == "processes")
-                        txbProcesses.AppendText(data);
+                        txbProcesses.Text = data;                      
                     if (add[0] == "site")
-                        txbSites.AppendText(data + "\n");
+                        txbSites.AppendText(data + "\r");
                 });
             }
            

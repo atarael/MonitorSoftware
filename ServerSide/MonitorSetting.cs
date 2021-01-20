@@ -21,7 +21,7 @@ namespace ServerSide
         private List<String> CategorySite;
         private string addSiteToMonitor = "";
         private string addSiteToCancelMonitor = "";
- 
+        private string AddBadWords = "";
         public MonitorSetting(String name)
         {
             InitializeComponent();
@@ -61,13 +61,10 @@ namespace ServerSide
                 if (row.Cells["UpdateReport"].Value != null)
                     setting += "1";
                 else setting += "0";
-                // Blocked
-                if (row.Cells["Blocked"].Value != null)
-                    setting += "1";
-                else setting += "0";
+               
+                
                 setting += " ";
             }
-
 
             setting += "\r\n";
 
@@ -78,49 +75,27 @@ namespace ServerSide
             setting += addSiteToCancelMonitor + "\r\n";
 
             // insert forth line - application installation.  format: XXX, where X is 1-selected or 0-not selected
-            if (chbReportImmediatelyLimitApp.Checked)
+            if (chbAppInstallUpdate.Checked)
                 setting += "1";
             else setting += "0";
-            if (chbUpdateReportLimitApp.Checked)
+            if (chbAppInstallReport.Checked)
                 setting += "1";
             else setting += "0";
-            if (chbBlockLimitApp.Checked)
-                setting += "1";
-            else setting += "0";
-
+         
             setting += "\r\n";
 
-            // insert five line -  Typing inappropriate words
-            if (chbUpdateReportIinappropriateWords.Checked)
+            // insert five line - Typing inappropriate words
+            if (chbBadWordUpdate.Checked)
                 setting += "1";
             else setting += "0";
-            if (chbUpdateReportIinappropriateWords.Checked)
+            if (chbBadWordUpdate.Checked)
                 setting += "1";
             else setting += "0";
-
             setting += "\r\n";
 
-            // insert six line - num of dayly hour to limit
-            if (txbNumOfLimitHours.Text.Equals(""))
-                setting += "0\r\n";
-            else
-                setting += txbNumOfLimitHours.Text + "\r\n";
-
-
-            // insert seven line -  Hours of use limitation
-            // range1
-            String range = rangeOfTime(dtpFrom1, dtpTo1);
-            setting += range + " ";
-
-            // range2
-            range = rangeOfTime(dtpFrom2, dtpTo2);
-            setting += range + " ";
-
-            // range3
-            range = rangeOfTime(dtpFrom3, dtpTo3);
-            setting += range + " ";
-
-            setting += "\r\n";
+            // insert six line -  Typing inappropriate words
+            setting += AddBadWords + "\r\n";
+             
 
             // insert seven line - report time
             int select = chblFrequency.SelectedIndex;
@@ -132,6 +107,7 @@ namespace ServerSide
                 this.Close();
             }
 
+            ShowErrorDialog("setting string file:\n" + setting);
 
         }
 
@@ -284,8 +260,11 @@ namespace ServerSide
             return false;
         }
 
-        
-       
+        private void btnAddBadWords_Click(object sender, EventArgs e)
+        {
+            AddBadWords += " " + txbAddBadWords.Text;
+            txbAddBadWords.Text = "";
+        }
     }
 }
 

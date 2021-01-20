@@ -36,7 +36,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnGetCurrentState = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnRemoveClient = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,7 +120,7 @@
             this.btnGetCurrentState.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGetCurrentState.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnGetCurrentState.ForeColor = System.Drawing.Color.Lime;
-            this.btnGetCurrentState.Location = new System.Drawing.Point(902, 410);
+            this.btnGetCurrentState.Location = new System.Drawing.Point(902, 412);
             this.btnGetCurrentState.Name = "btnGetCurrentState";
             this.btnGetCurrentState.Size = new System.Drawing.Size(274, 72);
             this.btnGetCurrentState.TabIndex = 5;
@@ -128,21 +128,21 @@
             this.btnGetCurrentState.UseVisualStyleBackColor = false;
             this.btnGetCurrentState.Click += new System.EventHandler(this.btnGetCurrentState_Click);
             // 
-            // button4
+            // btnRemoveClient
             // 
-            this.button4.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button4.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.button4.ForeColor = System.Drawing.Color.Lime;
-            this.button4.Location = new System.Drawing.Point(902, 686);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(274, 72);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Remove Client";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.btnSetSystem_Click);
+            this.btnRemoveClient.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnRemoveClient.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.btnRemoveClient.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRemoveClient.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRemoveClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.btnRemoveClient.ForeColor = System.Drawing.Color.Lime;
+            this.btnRemoveClient.Location = new System.Drawing.Point(902, 686);
+            this.btnRemoveClient.Name = "btnRemoveClient";
+            this.btnRemoveClient.Size = new System.Drawing.Size(274, 72);
+            this.btnRemoveClient.TabIndex = 5;
+            this.btnRemoveClient.Text = "Remove Client";
+            this.btnRemoveClient.UseVisualStyleBackColor = false;
+            this.btnRemoveClient.Click += new System.EventHandler(this.btnRemoveClient_Click);
             // 
             // ServerForm
             // 
@@ -154,7 +154,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnGetCurrentState);
             this.Controls.Add(this.btnSetSystem);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnRemoveClient);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -173,7 +173,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnGetCurrentState;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnRemoveClient;
     }
 }
 

@@ -16,9 +16,9 @@ namespace ClientSide
 {
     public class DBclient
     {
-        System.Data.SQLite.SQLiteConnection m_dbConnection;
+        SQLiteConnection m_dbConnection;
         private String DB = "";
-        string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
+        //string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
 
         public string[] newSites = { "ynet.co.il/news", "news.walla.co.il" , "maariv.co.il" , "haaretz.co.il/news" , "israelhayom.co.il" , "makorrishon.co.il", "n12.co.il" , "glz.co.il","kan.org.il/live/radio.aspx?stationid=3","kan.org.il/live/radio.aspx?stationid=3","debka.co.il","kikar.co.il","0404.co.il",
             "megafon-news.co.il/asys","al-monitor.com/pulse/iw/israel-pulse","972mag.com","al-monitor.com/pulse/iw/israel-pulse","jpost.com","news.google.com","timesofisrael.com"
@@ -41,7 +41,7 @@ namespace ClientSide
             createSiteLinkTable();
             fillSiteLinkTable();
             createWebsiteMonitoringTable();
-            fillWebsiteMonitoringTable(d);
+            //fillWebsiteMonitoringTable(d);
             //getCategorySites(url);
         }
 
@@ -138,6 +138,7 @@ namespace ClientSide
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
+       
         public void fillWebsiteMonitoringTable(string s)
         {
             string[] words = s.Split(' ');
@@ -201,10 +202,11 @@ namespace ClientSide
             string Text = "";
             string sql = "SELECT  * FROM TriggersTable WHERE idTrigger='" + idTrigger + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+             
             SQLiteDataReader reader = command.ExecuteReader();
+
             while (reader.Read())
-            {
-                
+            {                
                 Text +=  reader["dateTrigger"] + "\t  " + reader["DesTrigger"] + "\n";
             }
    

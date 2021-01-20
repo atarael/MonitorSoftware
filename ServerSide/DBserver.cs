@@ -13,6 +13,7 @@ namespace ServerSide
     {
         System.Data.SQLite.SQLiteConnection m_dbConnection;
         public String DB = "";
+        public List<Client> Allclients = new List<Client>();
         public DBserver(){
     
             this.DB = "DBServer.sqlite";
@@ -136,7 +137,30 @@ namespace ServerSide
              m_dbConnection.Close();
          }*/
         }
-       
+
+        public void removeClient(string id)
+        {
+            removeClientFromDB(id);
+            removeClientfromMemory(id);
+        }
+        private void removeClientFromDB(string id)
+        {
+            string sql = "DELETE FROM clientData  WHERE id='" + id + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            var res = command.ExecuteScalar();
+        }
+        private void removeClientfromMemory(string id)
+        {
+            foreach (Client client in Allclients)
+            {
+                if (client.id.ToString() == id)
+                {
+                    Allclients.Remove(client);
+                    return;
+
+                }
+            }
+        }
     }
 }
 

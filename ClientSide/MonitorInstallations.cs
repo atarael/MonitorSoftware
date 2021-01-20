@@ -1,177 +1,563 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using iTextSharp.text;
 using System.IO;
-using iTextSharp.text.pdf;
-using System.Management;
-using System;
+using System.Linq;
 using System.Runtime.InteropServices;
-using Microsoft.WindowsAPICodePack.Shell;
-using System.Windows.Media;
-using VisioForge.Shared.MediaFoundation.OPM;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClientSide
 {
+
     class MonitorInstallations
     {
+        public DBclient dbs;
+        public setSetting set;
+        public Thread monitorInstallations;
+        public string input = "";
+        public bool monitorInstallationsAlive;
 
-
-
-
-        public static string ListAllApplications()
+        public MonitorInstallations(DBclient dbs, setSetting set)
         {
-            StringBuilder sb = new StringBuilder();
+            monitorInstallationsAlive = true;
+            this.dbs = dbs;
+            this.set = set;
+            monitorInstallations = new Thread(playMonitorInstallations);
+            monitorInstallations.Start();
+        }
 
-            foreach (Process p in Process.GetProcesses("."))
+
+        /*
+        Thread(true) { 
+        1. if live - SendKeys cureent procs
+        2. if desktop or file system if download software file 
+                    check if install and insert into trigers table                            
+        }
+        */
+
+
+
+        public void playMonitorInstallations()
+        {
+            int hour = 60000;
+            while (monitorInstallationsAlive)
             {
-
-                try
+                bool install = false;
+                // get list of app install files from recent hour 
+                List<FileInfo> resentAppOrTool = recentFiles();
+                // check if have new installation files
+                if (resentAppOrTool != null)
                 {
-
-                    if (p.MainWindowTitle.Length > 0)
+                    foreach (FileInfo fi in resentAppOrTool)
                     {
-                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
-                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
-                        sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
-                        sb.Append("Memory Allocation:\t" + p.PrivateMemorySize64.ToString() + Environment.NewLine);
-                        sb.Append("Memory Allocation:\t" + p.Handle.ToString() + Environment.NewLine);
+                        string progNmae = orderProgramName(fi.Name);
+                        ShowErrorDialog("progNmae: " + progNmae + "\nfi.Name: " + fi.Name);
+                        if (IsSoftwareInstalled(progNmae))
+                        {
+                            install = true;
+                        }
+                        addInstallationTriger(fi.Name, install);
 
-
-                        sb.Append(Environment.NewLine);
                     }
                 }
-                catch { }
+                Thread.Sleep(hour); // 3,600,000 ms = 1 hr
             }
 
-            return sb.ToString();
+
+
         }
-        public static bool IsProgramInstalled()
+
+        private string orderProgramName(string programName)
+        {
+            string[] progNameSplited = programName.Replace('-', ' ').Replace('_', ' ').Split(' ');
+            if (progNameSplited.Length >= 2)
+            {
+                //return "" + progNameSplited[0] + " " + progNameSplited[1];
+            }
+            return progNameSplited[0];
+        }
+
+        private void addInstallationTriger(string programName, bool install)
+        {
+            string statusInstall = "";
+            if (install)
+            {
+                statusInstall = "and inatall in computer";
+            }
+
+            dbs.connectToDatabase();
+            dbs.fillTable(4, DateTime.Now.ToString(), programName + " download " + statusInstall);
+
+        }
+
+        public static bool IsSoftwareInstalled(string softwareName)
+        {
+            string registry_key = @"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+            string allProgs = "";
+            bool display = false;
+
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    //ShowErrorDialog("subkey_name: " + subkey_name);
+
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        // check if softwareName display in DisplayName 
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            string DisplayName = subkey.GetValue("DisplayName").ToString().ToLower();
+                            DisplayName.Replace('-', ' ');
+                            allProgs += "DisplayName: " + DisplayName + "\n";
+                            if (string.Equals(DisplayName, softwareName) || DisplayName.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayName))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+                        // check if softwareName display in Publisher
+                        if (subkey.GetValue("Publisher") != null)
+                        {
+                            string Publisher = subkey.GetValue("Publisher").ToString().ToLower();
+                            Publisher.Replace('-', ' ');
+                            allProgs += "Publisher: " + Publisher + "\n";
+                            if (string.Equals(Publisher, softwareName) || Publisher.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(Publisher))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+                        // check if softwareName display in Icon
+                        if (subkey.GetValue("DisplayIcon") != null)
+                        {
+                            string DisplayIcon = subkey.GetValue("DisplayIcon").ToString().ToLower();
+                            DisplayIcon.Replace('-', ' ');
+                            allProgs += "DisplayIcon: " + DisplayIcon + "\n";
+                            if (string.Equals(DisplayIcon, softwareName) || DisplayIcon.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayIcon))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+                        if (subkey != null)
+                        {
+                            allProgs += "subkey: " + subkey + "\n";
+                            if (string.Equals(subkey, softwareName) || subkey.ToString().Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(subkey.ToString()))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+
+
+
+                    }
+                }
+            }
+
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    //ShowErrorDialog("subkey_name: " + subkey_name);
+
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        // check if softwareName display in DisplayName 
+                        if (subkey.GetValue("\nDisplayName") != null)
+                        {
+                            string DisplayName = subkey.GetValue("DisplayName").ToString().ToLower();
+                            allProgs += "DisplayName: " + DisplayName + "\n";
+                            if (string.Equals(DisplayName, softwareName) || DisplayName.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayName))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+                        // check if softwareName display in Publisher
+                        if (subkey.GetValue("Publisher") != null)
+                        {
+                            string Publisher = subkey.GetValue("Publisher").ToString().ToLower();
+                            allProgs += "Publisher: " + Publisher + "\n";
+                            if (string.Equals(Publisher, softwareName) || Publisher.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(Publisher))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+                        if (subkey != null)
+                        {
+                            allProgs += "subkey: " + subkey + "\n";
+                            if (string.Equals(subkey, softwareName) || subkey.ToString().Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(subkey.ToString()))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+                        // check if softwareName display in Icon
+                        if (subkey.GetValue("DisplayIcon") != null)
+                        {
+                            string DisplayIcon = subkey.GetValue("DisplayIcon").ToString().ToLower();
+                            DisplayIcon.Replace('-', ' ');
+                            allProgs += "DisplayIcon: " + DisplayIcon + "\n";
+                            if (string.Equals(DisplayIcon, softwareName) || DisplayIcon.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayIcon))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+
+                    }
+                }
+            }
+
+            ShowErrorDialog(allProgs);
+
+            string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\Allproc.txt";
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine(allProgs);
+                    sw.Close();
+                }
+
+            }
+
+
+            return display;
+        }
+
+        public static List<string> InstalledProgram()
+        {
+            string registry_key = @"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+            string allProgs = "";
+            List<string> InstalledProgram = new List<string>();
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    //ShowErrorDialog("subkey_name: " + subkey_name);
+
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        // check if softwareName display in DisplayName 
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("DisplayName").ToString());
+                        }
+                        // check if softwareName display in Publisher
+                        if (subkey.GetValue("Publisher") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("Publisher").ToString());
+                        }
+
+                        // check if softwareName display in Icon
+                        if (subkey.GetValue("DisplayIcon") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("DisplayIcon").ToString());
+                        }
+
+                        if (subkey != null)
+                        {
+                            InstalledProgram.Append(subkey.ToString());
+                        }
+
+
+
+
+                    }
+                }
+            }
+
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    //ShowErrorDialog("subkey_name: " + subkey_name);
+
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        // check if softwareName display in DisplayName 
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("DisplayName").ToString());
+                        }
+                        // check if softwareName display in Publisher
+                        if (subkey.GetValue("Publisher") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("Publisher").ToString());
+                        }
+
+                        // check if softwareName display in Icon
+                        if (subkey.GetValue("DisplayIcon") != null)
+                        {
+                            InstalledProgram.Append(subkey.GetValue("DisplayIcon").ToString());
+                        }
+
+                        if (subkey != null)
+                        {
+                            InstalledProgram.Append(subkey.ToString());
+                        }
+
+
+
+                    }
+                }
+            }
+
+            return InstalledProgram;
+        }
+
+        public static List<FileInfo> recentFiles()
         {
 
 
-            foreach (var item in Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").GetSubKeyNames())
+            string downloadsPath = GetPath(KnownFolder.Downloads);
+            var directory = new DirectoryInfo(downloadsPath);
+
+
+            ShowErrorDialog(DateTime.Now.AddHours(-1).ToString());
+
+            List<FileInfo> myFile = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string desktop = GetPath(KnownFolder.Desktop);
+            directory = new DirectoryInfo(desktop);
+
+            List<FileInfo> myFile1 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string docs = GetPath(KnownFolder.Documents);
+            directory = new DirectoryInfo(docs);
+
+            List<FileInfo> myFile2 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string allFI = "";
+            foreach (FileInfo fi in myFile)
             {
-
-                string programName = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + item).GetValue("DisplayName").ToString();
-
-                ShowErrorDialog(programName);
-
-                /* if (string.Equals(programName, programDisplayName))
-                 {
-                     Console.WriteLine("Install status: INSTALLED");
-                     return true;
-                 }*/
+                myFile.Append(fi);
+                allFI += fi.Name + "\n";
             }
 
-            return false;
-        }
 
-        public static string GetDownloadFolderPath()
-        {
-            return Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", String.Empty).ToString();
-        }
-        public static void ListAll()
-        {
-            string h = "";
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Product");
-            foreach (ManagementObject mgmtObjectin in searcher.Get())
-            {
-                if (mgmtObjectin["Name"] != null)
-                    h += mgmtObjectin["Name"].ToString() + "\n";
-            }
-            
-
-        }
-        public static void createFileStringSetting(string stringSetting, string name, string id)
-        {
-
-            String projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-
-
-            String[] paths = new string[] { @filepath, "hhh" };
-            filepath = Path.Combine(paths);
-            // ShowErrorDialog("filepath in createFileStringSetting: " + filepath);
-            // ShowErrorDialog("stringSetting createFileStringSetting: "+stringSetting);
-
-
-            if (!Directory.Exists(filepath))
-            {
-                Directory.CreateDirectory(filepath);
-            }
-
-            String settingFile = Path.Combine(filepath, "setting_" + id + ".txt");
-            if (!System.IO.File.Exists(settingFile))
-            {
-                using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
-
-                System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + stringSetting);
-
-            }
-
+            ShowErrorDialog("app installations:\n" + allFI);
 
             /*
-            if (!File.Exists(filepath))
+            string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\Allproc.txt";
+            if (!File.Exists(path))
             {
-                using (StreamWriter sw = File.CreateText(filepath)) ;
-            }
-            using (FileStream sw = File.OpenWrite(filepath))
-            {
-                //  sw.Write(stringSetting,0,stringSetting.Length);
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine(allFI);
+                    sw.Close();
+                }
 
-                Byte[] info = new UTF8Encoding(true).GetBytes(name+"\r\n"+id+"\r\n"+stringSetting); // Add some information to the file.
-                //sw.Write(info, 0, info.Length);‏
-                sw.Write(info, 0, info.Length);
             }
             */
+
+
+
+            return myFile;
         }
-        public static void GetInstalledApps()
+
+
+        public static bool AllPrograms(string softwareName)
         {
-            // GUID taken from https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid
-            var FOLDERID_AppsFolder = new Guid("{1e87508d-89c2-42f0-8a7e-645a0f50ca58}");
-            ShellObject appsFolder = (ShellObject)KnownFolderHelper.FromKnownFolderId(FOLDERID_AppsFolder);
-            string date = "";
-            foreach (var app in (IKnownFolder)appsFolder)
+            string registry_key = @"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+            string allProgs = "";
+            bool display = false;
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registry_key))
             {
-                // The friendly app name
-                string name = app.Name;
-                //ShowErrorDialog(app.Properties.ToString());
-                // The ParsingName property is the AppUserModelID
-                string appUserModelID = app.ParsingName; // or app.Properties.System.AppUserModel.ID
-                // 
-                date += name+"=="+ appUserModelID +"\n";
-                // You can even get the Jumbo icon in one shot
-                ImageSource icon = app.Thumbnail.ExtraLargeBitmapSource;
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    //ShowErrorDialog("subkey_name: " + subkey_name);
+
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        // check if softwareName display in DisplayName 
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            string DisplayName = subkey.GetValue("DisplayName").ToString().ToLower();
+                            if (string.Equals(DisplayName, softwareName) ||
+                                DisplayName.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayName))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+                        // check if softwareName display in Publisher
+                        else if (subkey.GetValue("Publisher") != null)
+                        {
+                            string Publisher = subkey.GetValue("Publisher").ToString().ToLower();
+                            if (string.Equals(Publisher, softwareName) ||
+                                Publisher.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(Publisher))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+                        else if (subkey != null)
+                        {
+
+                            if (string.Equals(subkey, softwareName) ||
+                                subkey.ToString().Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(subkey.ToString()))
+                            {
+                                ShowErrorDialog("status: INSTALLED");
+                                display = true;
+                            }
+                        }
+
+
+
+
+                    }
+                }
             }
-            //And that's all there is to it. You can also start the apps using
-            createFileStringSetting(date, "66", "61");
-            // System.Diagnostics.Process.Start("explorer.exe", @" shell:appsFolder\" + appModelUserID);
-           ShellObjectWatcher sow = new ShellObjectWatcher(appsFolder, false);
-            sow.AllEvents += (s, e) => DoWhatever(appsFolder);
-            sow.Start();
-        }
+            string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\Allproc.txt";
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine(allProgs);
+                    sw.Close();
+                }
 
-        private static void DoWhatever(ShellObject appsFolder)
-        {
-            ShowErrorDialog(appsFolder.ParsingName);
-        }
+            }
 
+
+            return display;
+        }
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 
+        /// <summary>
+        /// Class containing methods to retrieve specific file system paths.
+        /// </summary>
+
+        private static string[] _knownFolderGuids = new string[]
+        {
+        "{56784854-C6CB-462B-8169-88E350ACB882}", // Contacts
+        "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}", // Desktop
+        "{FDD39AD0-238F-46AF-ADB4-6C85480369C7}", // Documents
+        "{374DE290-123F-4565-9164-39C4925E467B}", // Downloads
+        "{1777F761-68AD-4D8A-87BD-30B759FA33DD}", // Favorites
+        "{BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968}", // Links
+        "{4BD8D571-6D19-48D3-BE97-422220080E43}", // Music
+        "{33E28130-4E1E-4676-835A-98395C3BC3BB}", // Pictures
+        "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}", // SavedGames
+        "{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}", // SavedSearches
+        "{18989B1D-99B5-455B-841C-AB7C74E4DDFC}", // Videos
+        };
+
+        /// <summary>
+        /// Gets the current path to the specified known folder as currently configured. This does
+        /// not require the folder to be existent.
+        /// </summary>
+        /// <param name="knownFolder">The known folder which current path will be returned.</param>
+        /// <returns>The default path of the known folder.</returns>
+        /// <exception cref="System.Runtime.InteropServices.ExternalException">Thrown if the path
+        ///     could not be retrieved.</exception>
+        public static string GetPath(KnownFolder knownFolder)
+        {
+            return GetPath(knownFolder, false);
+        }
+
+        /// <summary>
+        /// Gets the current path to the specified known folder as currently configured. This does
+        /// not require the folder to be existent.
+        /// </summary>
+        /// <param name="knownFolder">The known folder which current path will be returned.</param>
+        /// <param name="defaultUser">Specifies if the paths of the default user (user profile
+        ///     template) will be used. This requires administrative rights.</param>
+        /// <returns>The default path of the known folder.</returns>
+        /// <exception cref="System.Runtime.InteropServices.ExternalException">Thrown if the path
+        ///     could not be retrieved.</exception>
+        public static string GetPath(KnownFolder knownFolder, bool defaultUser)
+        {
+            return GetPath(knownFolder, KnownFolderFlags.DontVerify, defaultUser);
+        }
+
+        private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
+        {
+            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int)knownFolder]),
+                (uint)flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            if (result >= 0)
+            {
+                string path = Marshal.PtrToStringUni(outPath);
+                Marshal.FreeCoTaskMem(outPath);
+                return path;
+            }
+            else
+            {
+                throw new ExternalException("Unable to retrieve the known folder path. It may not "
+                    + "be available on this system.", result);
+            }
+        }
+
+        [DllImport("Shell32.dll")]
+        private static extern int SHGetKnownFolderPath(
+            [MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken,
+            out IntPtr ppszPath);
+
+        [Flags]
+        private enum KnownFolderFlags : uint
+        {
+            SimpleIDList = 0x00000100,
+            NotParentRelative = 0x00000200,
+            DefaultPath = 0x00000400,
+            Init = 0x00000800,
+            NoAlias = 0x00001000,
+            DontUnexpand = 0x00002000,
+            DontVerify = 0x00004000,
+            Create = 0x00008000,
+            NoAppcontainerRedirection = 0x00010000,
+            AliasOnly = 0x80000000
+        }
+
+
+        /// <summary>
+        /// Standard folders registered with the system. These folders are installed with Windows Vista
+        /// and later operating systems, and a computer will have only folders appropriate to it
+        /// installed.
+        /// </summary>
+        public enum KnownFolder
+        {
+            Contacts,
+            Desktop,
+            Documents,
+            Downloads,
+            Favorites,
+            Links,
+            Music,
+            Pictures,
+            SavedGames,
+            SavedSearches,
+            Videos
+        }
 
     }
-
-
 }
+
+

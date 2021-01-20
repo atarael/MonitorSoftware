@@ -6,33 +6,24 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace ServerSide
 {
     public partial class ServerForm : Form
     {
-        private List<Client> Allclients;
-        private Socket serverSocket;
-        private Socket clientSocket; // We will only accept one socket.
-        private byte[] buffer;
+        
+        
         public MonitorSetting monitorSystem;
         public DBserver dbs;
-
-        private int numOfClient;
-        private String name;
-        private bool getNameFromServer;
-
+        
         public ServerForm()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
-        private static void ShowErrorDialog(string message)
-        {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
+      
         /// <summary>
         /// Construct server socket and bind socket to all local network interfaces, then listen for connections
         /// with a backlog of 10. Which means there can only be 10 pending connections lined up in the TCP stack
@@ -40,11 +31,7 @@ namespace ServerSide
         /// Meaning if there are connections queued, then we should process them.
         /// </summary>
      
-        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+        
      /*   private void btnSendMsg_Click(object sender, EventArgs e)
         {
             List<Socket> selectedClient = getCheckedClients();
@@ -78,45 +65,14 @@ namespace ServerSide
             }
         }
         */
-        private List<Socket> getCheckedClients()
-        {
-            List<Socket> selectedClient = new List<Socket>();
-            Invoke((Action)delegate
-            {
-                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    if (checkLstAllClient.GetItemChecked(i))
-                    {
-                        selectedClient.Add(Allclients[i].ClientSocket);
-                    }
-
-            });
-            return selectedClient;
-        }
+       
 
         private void btnSetSystem_Click(object sender, EventArgs e)
         {
 
-            List<Socket> selectedClient = getCheckedClients();
-
             try
             {
-                String Setting = "";
                 
-                
-                foreach (Socket s in selectedClient)
-                {
-                    // set system 
-                    Invoke((Action)delegate
-                    {
-                        monitorSystem = new MonitorSetting(name);
-                        // open GUI to set Setting 
-                        monitorSystem.ShowDialog();
-                      
-                        ShowErrorDialog(Setting);
-                       // sendSettingToClient(s, Setting);
-                    });
-                   
-                }
 
                 
 
@@ -145,43 +101,115 @@ namespace ServerSide
         }
         public void btnGetCurrentState_Click(object sender, EventArgs e)
         {
-                      
-            playCurrentState handler = Program.startCurrentState;
-            handler(0);
-        }
-        public void addClientToCheckBoxLst(String Name, int id , Socket ClientSocket)
-        {
-            if (Name != null && id >=0   )
+            List<int> selectedClient = new List<int>();
+
+            Invoke((Action)delegate
             {
-                 Invoke((Action)delegate
+                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                    if (checkLstAllClient.GetItemChecked(i))
+                    { 
+                      
+                        playCurrentState handler = Program.startCurrentState;
+                        handler(i);
+                    }
+
+            });
+
+        }
+        public void addClientToCheckBoxLst(String Name, int id, Socket ClientSocket)
+        {
+            int exist = 0;
+            if (Name != null && id >= 0)
+            {
+                _ = Invoke((Action)delegate
                 {
                     String line = "";
-                    if( ClientSocket != null)
+                    if (ClientSocket != null)
                         line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
                     else
                         line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
-                    // Check if id exists in checkbox 
-
+                    // Check if id exists in checkbox
                     for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                         if (i == id) {
-                            checkLstAllClient.Items.RemoveAt(id);
+                    {
+
+                        string l = (string)checkLstAllClient.Items[i];
+                        string stringId = l.Split(',')[1].Split(' ')[1];
+                        if (stringId == id.ToString())
+                        {
+                            ShowErrorDialog(stringId);
+                            checkLstAllClient.Items.RemoveAt(i);
+                            checkLstAllClient.Items.Insert(i, line);
+                            exist = 1;
+                            break;
                         }
- 
-                     checkLstAllClient.Items.Insert(id, line);
-                  });
-
+                    }
+                    if (exist == 0)
+                        checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);
+                    /*  for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                           if (i == id) {
+                              checkLstAllClient.Items.RemoveAt(id);
+                          }
+                       checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);*/
+                });
             }
-
         }
 
         internal void enabledbtnGetCurrentState(bool enable)
         {
             Invoke((Action)delegate
             {
-                btnGetCurrentState.Enabled = enable;
+                //btnGetCurrentState.Enabled = enable;
             });
         
         }
+        public void removeClientFromCheckBoxLst(int id)
+        {
+
+            for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+            {
+
+                string l = (string)checkLstAllClient.Items[i];
+                string stringId = l.Split(',')[1].Split(' ')[1];
+                if (stringId == id.ToString())
+                {
+                    ShowErrorDialog("remove" + stringId);
+                    checkLstAllClient.Items.RemoveAt(i);
+                    break;
+                }
+            }
+
+        }
+
+        public static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void btnRemoveClient_Click(object sender, EventArgs e)
+        {
+            List<int> selectedClient = new List<int>();
+
+            Invoke((Action)delegate
+            {
+                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                    if (checkLstAllClient.GetItemChecked(i))
+                    {                     
+                        string l = (string)checkLstAllClient.Items[i];
+                        string stringId = l.Split(',')[1].Split(' ')[1];
+                        RemoveClient handler = Program.removeClient;
+                        handler( Int32.Parse(stringId));
+                    }
+
+            });
+
+
+        }
+        
+
+        
+       
+
+
     }
 
 }

