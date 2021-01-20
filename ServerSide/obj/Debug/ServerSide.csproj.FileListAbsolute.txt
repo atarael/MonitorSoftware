@@ -94,3 +94,7 @@ C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.xml

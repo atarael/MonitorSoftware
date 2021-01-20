@@ -1,10 +1,9 @@
-sara
+atara
 0
-news 110 sport 110 shopping 110 vocation 110 economy 000 social 000 vocation 000 
+news 10 sport 10 shopping 10 vocation 10 economy 00 social 00 vocation 00 
 
 
-000
 00
-0
-NULL NULL NULL 
+00
+
 0

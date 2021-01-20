@@ -18,21 +18,69 @@ namespace ClientSide
         public List<string> triggersForReport = new List<string>();
         public List<string> anotherSitesReport;  //another sites to monitoring -Sites that are not included in the categories
         public List<string> anotherSitesIgnore;//Sites that the server does not want to be reported
-        private string[] wordImmediateReport = { "kill", "ostracism", "stab" };
-        private string timeToReport = "";
-        private double reportFrequency;
+        // private string[] wordImmediateReport = { "kill", "ostracism", "stab" };
+        public string futureDateToReport = ""; //Future date for reporting in string
+        public double reportFrequencyInSecond; //Frequency of reporting in seconds
+        public string reportFrequencyInWord = "";//daily,weekly..
+        private List<string> offensiveWords = new List<string>();
+
+
         public setSetting(string settingString, string name, string id)
         {
-
             createFileStringSetting(settingString, name, id);
-            this.settingString = settingString;
-            this.reportFrequency = buildReportFrequency();
-
-            this.anotherSitesReport = buildAnotherSitesReportList();
-            this.anotherSitesIgnore = buildAnotherSitesIgnoreList();
-
+            this.settingString = settingString;  
+            createOffensiveWordsList();
+            reportFrequencyInSecond = buildReportFrequency();
+            anotherSitesReport = buildAnotherSitesReportList();
+            anotherSitesIgnore = buildAnotherSitesIgnoreList();
             buildCategoryList();// build triggersForAlert list and triggersForRepor list 
         }
+      
+        private void createOffensiveWordsList()
+        {
+            String projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            String[] paths = new string[] { @filepath, "bad-words.txt" };
+            filepath = Path.Combine(paths);
+            string content = System.IO.File.ReadAllText(filepath);
+            string word = "";
+            foreach (char s in content)
+            {
+                if (s != '\n')
+                    word += s;
+                else
+                {
+                    offensiveWords.Add(word.Split('\r')[0]);
+                    word = "";
+                }
+            }
+
+            string[] settingStringSplited = settingString.Split('\n');
+            if (settingStringSplited.Length > 5) {
+                string setBadWord = settingStringSplited[4];
+                if (setBadWord[0].Equals('1')) {
+                    triggersForReport.Add("badWord");
+                }
+                if (setBadWord[1].Equals('1'))
+                {
+                    triggersForAlert.Add("badWord");
+                }
+
+                string[] anotherBadWord = settingStringSplited[5].Split(' ');
+                foreach (string w in anotherBadWord)
+                {
+                    offensiveWords.Add(w);
+                }
+            }
+                
+                
+               
+
+           
+
+            // foreach (string l in offensiveWords) { ShowErrorDialog(l); }
+        }
+
 
         private double buildReportFrequency()
         {
@@ -43,30 +91,41 @@ namespace ClientSide
              {
                  ShowErrorDialog("settttt" + x);
              }*/
-            int frequency = int.Parse(settingString.Split('\n')[7]);
-            if (frequency == 0)//if frequency=each day
+            string[] settingStringSplited = settingString.Split('\n');
+            if (settingStringSplited.Length > 6)
             {
-                second = 60 * 60 * 24;
-                updateDate = updateDate.AddDays(1);
-            }
+                int frequency = int.Parse(settingStringSplited[6]);
+                if (frequency == 0)//if frequency=each day
+                {
+                    reportFrequencyInWord = "daily";
+                    second = 60 * 60 * 24;
+                    updateDate = updateDate.AddDays(1);
+                }
 
-            if (frequency == 1)//if frequency=each week
-            {
-                second = 60 * 60 * 24 * 7;
-                updateDate = updateDate.AddDays(7);
+                if (frequency == 1)//if frequency=each week
+                {
+                    reportFrequencyInWord = "weekly";
+                    second = 60 * 60 * 24 * 7;
+                    updateDate = updateDate.AddDays(7);
+                }
+                if (frequency == 2)//if frequency=once a  two weeks 
+                {
+                    reportFrequencyInWord = "bi-monthly";
+                    second = 60 * 60 * 24 * 14;
+                    updateDate = updateDate.AddDays(14);
+                }
+                if (frequency == 3)
+                {
+                    reportFrequencyInWord = "monthly";
+                    second = 60 * 60 * 24 * 30;//if frequency=once a month
+                    updateDate = updateDate.AddMonths(1);
+                }
+                this.futureDateToReport = updateDate.ToString();
+                //ShowErrorDialog("jjj"+updateDate.ToString());
             }
-            if (frequency == 2)//if frequency=once a  two weeks 
-            {
-                second = 60 * 60 * 24 * 14;
-                updateDate = updateDate.AddDays(14);
+            else {
+                ShowErrorDialog("frequency not exist");
             }
-            if (frequency == 3)
-            {
-                second = 60 * 60 * 24 * 30;//if frequency=once a month
-                updateDate = updateDate.AddMonths(1);
-            }
-            this.timeToReport = updateDate.ToString();
-            //ShowErrorDialog("jjj"+updateDate.ToString());
             return Convert.ToDouble(second);
 
         }
@@ -74,15 +133,18 @@ namespace ClientSide
         private List<string> buildAnotherSitesIgnoreList()
         {
             anotherSitesIgnore = new List<string>();
-            string[] settingStringArray = settingString.Split('\n')[2].Split(' ');
-            foreach (var word in settingStringArray)
-            {
-                if (word != "" && word != "\n")
+            string[] settingStringSplited = settingString.Split('\n');
+            if (settingStringSplited.Length > 2)
+            {                 
+                string[] settingStringArray = settingStringSplited[2].Split(' ');
+                foreach (var word in settingStringArray)
                 {
-                    anotherSitesIgnore.Add(word);
-                    //ShowErrorDialog("ignored Sites: " + word + "|");
+                    if (word != "" && word != "\n")
+                    {
+                        anotherSitesIgnore.Add(word);
+                        //ShowErrorDialog("ignored Sites: " + word + "|");
+                    }
                 }
-
             }
             return anotherSitesIgnore;
         }
@@ -124,12 +186,10 @@ namespace ClientSide
 
         }
 
-
-
-        public string[] getWord()
+        public List<string> getWord()
         {
 
-            return wordImmediateReport;
+            return offensiveWords;
         }
 
         /* private void createSettingFeature(string settingString)

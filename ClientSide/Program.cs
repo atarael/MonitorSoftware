@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IWshRuntimeLibrary;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ClientSide
@@ -17,7 +18,7 @@ namespace ClientSide
 
     public delegate void wordFromKeylogger(string word);
     public delegate void SiteFromMonitorSite(string word);
-    public delegate void updateProccess();
+    public delegate void updateProccess(string proccess);
     class Program
     {
         private String id;
@@ -28,10 +29,14 @@ namespace ClientSide
         private DBclient dbs;
         private setSetting set;
         private ClientForm clientForm;
-        public Boolean sendCurrentData;
-        KeyLogger keyLogger;
+        public Boolean sendCurrentData;      
         string keyDate;
         public static Program program;
+        
+        public MonitorProccess monitorProccess;
+        public MonitorTyping monitorTyping;
+        public MonitorSite monitorSite;
+        public MonitorInstallations monitorInstallations;
 
         /// <summary>
         /// The main entry point for the application.
@@ -41,11 +46,7 @@ namespace ClientSide
         {
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            // if (rkApp.GetValue("ClientSide.exe") == null) { }
-            // Remove the value from the registry so that the application doesn't start
-            //  else 
-            //  rkApp.DeleteValue("ClientSide.exe", false);
-            connectAtReStartComputer();
+             connectAtReStartComputer();
 
             program = new Program();
             //Application.EnableVisualStyles();
@@ -73,6 +74,13 @@ namespace ClientSide
             shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
             shortcut.Save(); // save the shortcut 
             shortcut.Arguments = "/a /c";
+
+
+            // if (rkApp.GetValue("ClientSide.exe") == null) { }
+            // Remove the value from the registry so that the application doesn't start
+            //  else 
+            //  rkApp.DeleteValue("ClientSide.exe", false);
+
         }
 
 
@@ -101,9 +109,9 @@ namespace ClientSide
                 }
                 if (dataFromServer[0] == "setting")
                 {
-                    String setting = dataFromServer[1].Split('\0')[0];
+                    string setting = dataFromServer[1].Split('\0')[0];
                     setting = setting.Substring(setting.IndexOf("\n") + 1);
-                    playMonitor(setting); //This method obtains the settings string from the server
+                    playAllTrigers(setting); //This method obtains the settings string from the server
 
                 }
                 if (dataFromServer[0] == "get current state")
@@ -118,6 +126,11 @@ namespace ClientSide
                    
                     stopSendCurrentState(clientSocket);
                 }
+                if (dataFromServer[0] == "remove client") {
+                    removeClient();
+                }
+
+
                 else
                 {
                     //ShowErrorDialog("Server send:\n" + data);
@@ -139,9 +152,20 @@ namespace ClientSide
             }
         }
 
+        private void removeClient()
+        {
+            // set setting file
+            // db
+            // restart
+            // turn off all theards 
+            ShowErrorDialog("removeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        }
+
+
         private void stopSendCurrentState(Socket clientSocket)
         {
             sendCurrentData = false;
+            monitorProccess.ifLive = false;
             ShowErrorDialog("stop send current state");
         }
 
@@ -150,55 +174,41 @@ namespace ClientSide
             sendCurrentData = true;
             // build string that contain all current process 
             string allProc = ShowAllProcess.ListAllApplications();
-            //string keyDate = keyLogger.input;
+            //string keyDate = monitorTyping.input;
             SendData(socket, "current state\ropen CurrentState form");
             // send all current procces
-            updateCurrentProcess();
-            //updateProccess handler = updateCurrentProcess;
-            //handler();
-
-            //ShowErrorDialog("start get input from keylogger");
-
+            // string processes = ShowAllProcess.ListAllApplications();
+            monitorProccess = new MonitorProccess();
+            
         }
 
         // set setting and here will play all triggers;
-        private void playMonitor(string setting)
+        private void playAllTrigers(string setting)
         {
-
             //set setting 
             set = new setSetting(setting, name, id);
-            ShowErrorDialog("play monitor");
-            // play key logger
+            ShowErrorDialog("play all trigers");
+            
+            // connect to DB
             if (dbs == null)
             {
                 dbs = new DBclient(name);
             }
             dbs.connectToDatabase();
 
+            // play Monitor Site trigger
+            monitorSite = new MonitorSite(dbs, set);
             dbs.removeIgnoredSites(set.anotherSitesIgnore.ToArray());
             dbs.funAddCategorySiteTable(set.anotherSitesReport.ToArray(), "anotherSitesReport");
 
-            // here will play all triggers:
+            // play MonitorTyping trigger
+            monitorTyping = new MonitorTyping(dbs, set);          
 
-            // KeyLogger
-            keyLogger = new KeyLogger(dbs, set);
+            // play Monitor installations trigger
+            monitorInstallations = new MonitorInstallations(dbs, set);
 
-
-            // Site
-            MonitorSite monitorSite = new MonitorSite(dbs, set);
-
-            // files and program
-            string allProc = ShowAllProcess.ListAllProcesses();
-            // installations 
-
-            // Report
-            // Report.sendAlertToMail(set.timeToReport, set.frequncy);
-            // Report.setReportFrequency("09/12/2020 21:32:30", 5.0);
-
-
-
-
-
+            // play Reporting scheduling
+            Report.setReportFrequency(set.futureDateToReport, set.reportFrequencyInSecond, set.reportFrequencyInWord, dbs);
         }
 
         // Defines functions for sending and receiving data through the socket
@@ -331,14 +341,16 @@ namespace ClientSide
                         }
                     }
 
-                    playMonitor(set);
+                    playAllTrigers(set);
                     reConnect();
-                    return true;
+                   
 
                 }
 
             }
 
+            if (Files.Length >= 1)
+                return true;
             return false;
 
         }
@@ -380,7 +392,7 @@ namespace ClientSide
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 buffer = new byte[clientSocket.ReceiveBufferSize];
 
-                ShowErrorDialog("reConnect in socket: " + clientSocket.RemoteEndPoint);
+                //ShowErrorDialog("reConnect in socket: " + clientSocket.RemoteEndPoint);
                 // Connect To Server 
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
@@ -388,12 +400,12 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
+                //ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
 
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+               // ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
         }
 
@@ -416,14 +428,14 @@ namespace ClientSide
             }
 
         }
-        public static void updateCurrentProcess()
+        public static void updateCurrentProcess(string proccess)
         {
             
-            string processes = ShowAllProcess.ListAllApplications();
+            //string processes = ShowAllProcess.ListAllApplications();
             if (program.sendCurrentData)
             {
-                ShowErrorDialog("send proc: \n" + processes);
-                program.SendData(program.clientSocket, "current state\rprocesses\r" + processes);
+                ShowErrorDialog("send proc: \n" + proccess);
+                program.SendData(program.clientSocket, "current state\rprocesses\r" + proccess);
             }
 
         }
