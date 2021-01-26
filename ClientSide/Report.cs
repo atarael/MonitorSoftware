@@ -53,7 +53,19 @@ namespace ClientSide
         private static int count = 1;
         public static double frequencySecond;
         public static string frequencyWord;
+        public static DBclient DbClient;
+        public  static setSetting settingClient;
+        public static string  mailAddress;
+        public   Report(DBclient dbs, setSetting set)
+        {
+            DbClient = dbs;
+            settingClient = set;
+            //mailAddress = set.email;
             
+
+            setReportFrequency(set.futureDateToReport, set.reportFrequencyInSecond, set.reportFrequencyInWord);
+        }
+
         public static void sendAlertToMail(string picName, string TriggerDescription,string triggerDetails , string trigger)
         {
             string[] args = { picName, TriggerDescription, triggerDetails, trigger };
@@ -82,6 +94,7 @@ namespace ClientSide
             // get screenshot picture
             paths = new string[] { @filepath, "files", "snapshot_" + picName};
             screenPic = Path.Combine(paths);
+            
             // send mail only if the files exist
 
             try
@@ -119,6 +132,12 @@ namespace ClientSide
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
+                mail.Attachments.Dispose();
+                Thread.Sleep(120000);
+               if(File.Exists(cameraPic))
+                File.Delete(cameraPic);
+                if (File.Exists(screenPic))
+                    File.Delete(screenPic);
                 Debug.WriteLine("send email seccess");
 
             }
@@ -153,7 +172,7 @@ namespace ClientSide
 
         }
 
-        public static void playSendReportThread()
+        public  static void playSendReportThread()
         {
             Debug.WriteLine("insert to sendAlertToMail");
             // get directory to report
@@ -189,9 +208,11 @@ namespace ClientSide
 
                         SmtpServer.Send(mail);
                         // delete report and DB !!
+                        ShowErrorDialog("jjj");
+                        DbClient.RemoveTriggersTable();
+                        
 
-
-                        if (File.Exists(reportPath))
+                            if (File.Exists(reportPath))
                         {
                             try
                             {
@@ -230,7 +251,7 @@ namespace ClientSide
         
         }
 
-        public static void setReportFrequency(string reportTime, double frequencySecond1, string frequencyWord1, DBclient db)
+        public  void setReportFrequency(string reportTime, double frequencySecond1, string frequencyWord1)
         {
             frequencySecond = frequencySecond1;
             frequencyWord = frequencyWord1; // dayly or weekly..
@@ -242,14 +263,14 @@ namespace ClientSide
 
             // Initialization of _timer  
             //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
-            _timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
+            _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
 
 
 
 
         }
 
-        private static void createReportFile(DBclient db)
+        private  void createReportFile()
         {
             var Report = new Document();
 
@@ -270,11 +291,11 @@ namespace ClientSide
             string userName = Environment.UserName;
             Report.Add(new Paragraph("\n\n\n\n\n" + frequencyWord + " report for user: " + userName));
             Report.Add(new Paragraph("\nOn the dates listed, the following words were typed:"));
-            Report.Add(new Paragraph(db.getTriggerById(1)));
+            Report.Add(new Paragraph(DbClient.getTriggerById(1)));
             Report.Add(new Paragraph("\nOn the dates listed the user browsed the following sites:"));
-            Report.Add(new Paragraph(db.getTriggerById(2)));
+            Report.Add(new Paragraph(DbClient.getTriggerById(2)));
             Report.Add(new Paragraph("\nOn the dates listed The user has downloaded the following software:"));
-            Report.Add(new Paragraph(db.getTriggerById(3)));
+            Report.Add(new Paragraph(DbClient.getTriggerById(3)));
             Report.Close();
 
             ShowErrorDialog("report created, send mail");
