@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ClientSide
 {
-    class MonitorProccess
+    class MonitorProccess : Monitor
     {
         public bool ifLive;
         public static Program program;
@@ -20,6 +20,18 @@ namespace ClientSide
             monitorProccess = new Thread(playmonitorProccess);
             monitorProccess.Start();
                       
+        }
+
+        public override void playThreadMonitor()
+        {
+            base.monitorAlive = true;
+            base.monitorThread = new Thread(playmonitorProccess);
+            base.monitorThread.Start();
+
+        }
+        public override void stopThreadMonitor()
+        {
+            base.monitorAlive = false;
         }
 
         private void playmonitorProccess()

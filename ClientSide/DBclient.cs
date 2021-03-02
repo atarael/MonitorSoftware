@@ -14,8 +14,32 @@ using System.Windows.Forms;
 
 namespace ClientSide
 {
-    public class DBclient
+    public sealed class DBclient
     {
+        private static readonly DBclient instance = new DBclient();
+        static DBclient()
+        {
+        }
+        private DBclient( )
+        {
+            DB =  Environment.UserName+ "_DB.sqlite";
+            createNewDatabase();
+            connectToDatabase();
+            createTable();
+            createSiteLinkTable();
+            fillSiteLinkTable();
+            createWebsiteMonitoringTable();
+        }
+        public static DBclient Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+       
+        
+
         SQLiteConnection m_dbConnection;
         private String DB = "";
         //string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
@@ -31,20 +55,9 @@ namespace ClientSide
             "camoni.co.il","facebook.com/lan2lan.StatusHunter","youtube.com","vimeo.com","flickr.com","flix.tapuz.co.il","skype.com/he","whatsapp.com/?l=he" ,"messenger.com","yahav.org" };
         public string[] VocationSites = { "lametayel.co.il", "masa.co.il", "ynet.co.il/vacation", "megalim.co.il", "travel.walla.co.il", "gotravel.co.il", "gotravel.co.il", "mako.co.il/travel", "mouse.co.il/world", "worldtravelguide.net", "tripadvisor.com", "travel.yahoo.com" };
        
-        public DBclient(string clientName)
+       
 
-        {
-            DB = clientName + "_DB.sqlite";
-            createNewDatabase();
-            connectToDatabase();
-            createTable();
-            createSiteLinkTable();
-            fillSiteLinkTable();
-            createWebsiteMonitoringTable();
-            //fillWebsiteMonitoringTable(d);
-            //getCategorySites(url);
-        }
-
+        
         public string getCategorySites(string url)
         {
            //url = "";
@@ -54,10 +67,10 @@ namespace ClientSide
             var res = command.ExecuteScalar();
             if (res!=null ) {
                 Console.WriteLine(res);
-                m_dbConnection.Close();
+                //m_dbConnection.Close();
                 return res.ToString();
             }
-            m_dbConnection.Close();
+            //m_dbConnection.Close();
             return string.Empty;
                
 
@@ -65,6 +78,7 @@ namespace ClientSide
         }
         public void removeIgnoredSites(string [] IgnoredSites)
         {
+           
             foreach (var url in IgnoredSites)
             {
                 string sql = "DELETE FROM SiteLinkTable  WHERE link='" + url + "'";
@@ -77,6 +91,7 @@ namespace ClientSide
 
         private void createSiteLinkTable()
         {
+            
             string sql = "CREATE TABLE IF NOT EXISTS SiteLinkTable(category TEXT, link TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -96,6 +111,7 @@ namespace ClientSide
 
         public void funAddCategorySiteTable(string[] category, string nameCategory)
         {
+
             for (int i = 0; i < category.Length; i++)
             {
                 string sql = "insert into SiteLinkTable (category,link) values('" + nameCategory + "','" + category[i] + "');";
@@ -125,7 +141,7 @@ namespace ClientSide
         // Creates a table named 'clientData' with two columns: name (a string of max 20 characters) and score (an int)
         public void createTable()
         {
-            //string sql = "create table clientData (name varchar(20), settingString varchar(20))";
+          
             string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTrigger INTEGER ,dateTrigger TEXT, DesTrigger TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -143,7 +159,7 @@ namespace ClientSide
         {
             string[] words = s.Split(' ');
             string MonitorSites;
-            //string MonitorSitesArray;
+          
             for (int i = 0; i < words.Length - 1; i = i + 2)
             {
                 MonitorSites = words[i + 1];
@@ -157,8 +173,19 @@ namespace ClientSide
             string sql = "insert into WebsiteMonitoringTable(category,reportImmediately,updateReport,block) values('" + category + "','" + reportImmediately + "','" + updateReport + "','" + block + "');";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-            //m_dbConnection.Close();
+           
         }
+
+        public void RemoveTriggersTable()
+        {
+           
+            string sql = "DELETE  FROM  TriggersTable";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+
+        }
+
+
         // Inserts some values in the clientData table.
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         public void fillTable(int idTrigger, string dateTrigger, string DesTrigger)
@@ -167,22 +194,13 @@ namespace ClientSide
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-            m_dbConnection.Close();
-            /* string sql = "insert into clientData (name, score) values ('Me', 3000)";
-             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-             command.ExecuteNonQuery();
-             sql = "insert into clientData (name, score) values ('Myself', 6000)";
-             command = new SQLiteCommand(sql, m_dbConnection);
-             command.ExecuteNonQuery();
-             sql = "insert into clientData (name, score) values ('And I', 9001)";
-             command = new SQLiteCommand(sql, m_dbConnection);
-             command.ExecuteNonQuery();*/
+           
         }
        
         // Writes the clientData to the console sorted on score in descending order.
         public string  getTriggerTable()
         {
-            connectToDatabase();
+            //connectToDatabase();
             string Text = "";
             string sql = "select * from  TriggersTable order by idTrigger";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -198,7 +216,6 @@ namespace ClientSide
         }
         public string getTriggerById(int idTrigger)
         {
-            connectToDatabase();
             string Text = "";
             string sql = "SELECT  * FROM TriggersTable WHERE idTrigger='" + idTrigger + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -212,7 +229,7 @@ namespace ClientSide
    
             return Text;
 
-            //m_dbConnection.Close();
+             
         }
         public static void ShowErrorDialog(string message)
         {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,38 +13,33 @@ using System.Windows.Forms;
 namespace ClientSide
 {
 
-    class MonitorInstallations
+    class MonitorInstallations:Monitor
     {
-        public DBclient dbs;
-        public setSetting set;
-        public Thread monitorInstallations;
-        public string input = "";
-        public bool monitorInstallationsAlive;
+        
+      
 
-        public MonitorInstallations(DBclient dbs, setSetting set)
+        public MonitorInstallations()
         {
-            monitorInstallationsAlive = true;
-            this.dbs = dbs;
-            this.set = set;
-            monitorInstallations = new Thread(playMonitorInstallations);
-            monitorInstallations.Start();
+            base.monitorAlive = true;          
+            base.monitorThread = new Thread(playMonitorInstallations);
+            base.monitorThread.Start();
         }
 
 
-        /*
-        Thread(true) { 
-        1. if live - SendKeys cureent procs
-        2. if desktop or file system if download software file 
-                    check if install and insert into trigers table                            
+        public override void playThreadMonitor() {
+            base.monitorAlive = true;
+            base.monitorThread = new Thread(playMonitorInstallations);
+            base.monitorThread.Start();
+
         }
-        */
-
-
+        public override void stopThreadMonitor() {
+            base.monitorAlive = false;
+        }
 
         public void playMonitorInstallations()
         {
             int hour = 60000;
-            while (monitorInstallationsAlive)
+            while (base.monitorAlive)
             {
                 bool install = false;
                 // get list of app install files from recent hour 
@@ -51,27 +47,55 @@ namespace ClientSide
                 // check if have new installation files
                 if (resentAppOrTool != null)
                 {
+                   
                     foreach (FileInfo fi in resentAppOrTool)
                     {
                         string progNmae = orderProgramName(fi.Name);
-                        ShowErrorDialog("progNmae: " + progNmae + "\nfi.Name: " + fi.Name);
+                        // ShowErrorDialog("progNmae: " + progNmae + "\nfi.Name: " + fi.Name);
                         if (IsSoftwareInstalled(progNmae))
                         {
+                            // ShowErrorDialog("progNmae: " + progNmae + "\nINSTALLLL!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                             install = true;
                         }
-                        addInstallationTriger(fi.Name, install);
+                        reportOrSendAlert(fi.Name, install);
 
                     }
                 }
                 Thread.Sleep(hour); // 3,600,000 ms = 1 hr
             }
+             
+        }
+        private void reportOrSendAlert(string programName, bool ifInstall)
+        {
 
+            string statusInstall = "";
+            if (ifInstall)
+            {
+                statusInstall = "and inatall in computer";
+            }
 
+            
+            if (base.SettingInstance.triggersForAlert.Contains("installation") == true)
+            {
+                string FilePic = Picters.ScreenCapture();
+                Picters.CaptureCamera(FilePic);
+                Report.sendAlertToMail(FilePic, "installation trigger occur", programName, "installationTrigger");
+                ShowErrorDialog("send alert to mail\nInstallation trigger occur\nProgramName: " + programName);
 
+           }
+
+           if (base.SettingInstance.triggersForReport.Contains("installation") == true)
+            {
+                base.DBInstance.fillTable(3, DateTime.Now.ToString(), programName + " download " + statusInstall);
+                ShowErrorDialog("update DB\nInstallation trigger occur\nProgramName: " + programName + "\n"+ programName + " download " + statusInstall);
+            }
         }
 
         private string orderProgramName(string programName)
         {
+            var capitalLatterRegex = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z]) | (?<=[^A-Z])(?=[A-Z]) | (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+
+            programName = capitalLatterRegex.Replace(programName, " ");
             string[] progNameSplited = programName.Replace('-', ' ').Replace('_', ' ').Split(' ');
             if (progNameSplited.Length >= 2)
             {
@@ -80,18 +104,44 @@ namespace ClientSide
             return progNameSplited[0];
         }
 
-        private void addInstallationTriger(string programName, bool install)
+        public static List<FileInfo> recentFiles()
         {
-            string statusInstall = "";
-            if (install)
+
+
+            string downloadsPath = GetPath(KnownFolder.Downloads);
+            var directory = new DirectoryInfo(downloadsPath);
+
+
+            //ShowErrorDialog(DateTime.Now.AddHours(-1).ToString());
+
+            List<FileInfo> myFile = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string desktop = GetPath(KnownFolder.Desktop);
+            directory = new DirectoryInfo(desktop);
+
+            List<FileInfo> myFile1 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string docs = GetPath(KnownFolder.Documents);
+            directory = new DirectoryInfo(docs);
+
+            List<FileInfo> myFile2 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
+                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .ToList();
+
+            string allFI = "";
+            foreach (FileInfo fi in myFile)
             {
-                statusInstall = "and inatall in computer";
+                myFile.Append(fi);
+                allFI += fi.Name + "\n";
             }
 
-            dbs.connectToDatabase();
-            dbs.fillTable(4, DateTime.Now.ToString(), programName + " download " + statusInstall);
-
+            return myFile;
         }
+
 
         public static bool IsSoftwareInstalled(string softwareName)
         {
@@ -115,7 +165,7 @@ namespace ClientSide
                             allProgs += "DisplayName: " + DisplayName + "\n";
                             if (string.Equals(DisplayName, softwareName) || DisplayName.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayName))
                             {
-                                ShowErrorDialog("status: INSTALLED");
+                                
                                 display = true;
                             }
                         }
@@ -127,7 +177,7 @@ namespace ClientSide
                             allProgs += "Publisher: " + Publisher + "\n";
                             if (string.Equals(Publisher, softwareName) || Publisher.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(Publisher))
                             {
-                                ShowErrorDialog("status: INSTALLED");
+                                
                                 display = true;
                             }
                         }
@@ -140,7 +190,7 @@ namespace ClientSide
                             allProgs += "DisplayIcon: " + DisplayIcon + "\n";
                             if (string.Equals(DisplayIcon, softwareName) || DisplayIcon.Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(DisplayIcon))
                             {
-                                ShowErrorDialog("status: INSTALLED");
+                                
                                 display = true;
                             }
                         }
@@ -150,7 +200,7 @@ namespace ClientSide
                             allProgs += "subkey: " + subkey + "\n";
                             if (string.Equals(subkey, softwareName) || subkey.ToString().Contains(softwareName.ToLower()) || softwareName.ToLower().Contains(subkey.ToString()))
                             {
-                                ShowErrorDialog("status: INSTALLED");
+                               
                                 display = true;
                             }
                         }
@@ -320,64 +370,7 @@ namespace ClientSide
             return InstalledProgram;
         }
 
-        public static List<FileInfo> recentFiles()
-        {
-
-
-            string downloadsPath = GetPath(KnownFolder.Downloads);
-            var directory = new DirectoryInfo(downloadsPath);
-
-
-            ShowErrorDialog(DateTime.Now.AddHours(-1).ToString());
-
-            List<FileInfo> myFile = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
-                .ToList();
-
-            string desktop = GetPath(KnownFolder.Desktop);
-            directory = new DirectoryInfo(desktop);
-
-            List<FileInfo> myFile1 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
-                .ToList();
-
-            string docs = GetPath(KnownFolder.Documents);
-            directory = new DirectoryInfo(docs);
-
-            List<FileInfo> myFile2 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
-                .ToList();
-
-            string allFI = "";
-            foreach (FileInfo fi in myFile)
-            {
-                myFile.Append(fi);
-                allFI += fi.Name + "\n";
-            }
-
-
-            ShowErrorDialog("app installations:\n" + allFI);
-
-            /*
-            string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\Allproc.txt";
-            if (!File.Exists(path))
-            {
-                // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.WriteLine(allFI);
-                    sw.Close();
-                }
-
-            }
-            */
-
-
-
-            return myFile;
-        }
-
-
+   
         public static bool AllPrograms(string softwareName)
         {
             string registry_key = @"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";

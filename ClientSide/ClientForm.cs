@@ -17,7 +17,7 @@ namespace ClientSide
         
         public String DB = "";
         public string settingString = "";
-        public setSetting set;
+        public Setting set;
         public ClientForm()
         {
             InitializeComponent();

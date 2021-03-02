@@ -19,26 +19,32 @@ using System.Collections.Generic;
 
 namespace ClientSide
 {
-    class MonitorSite
+    class MonitorSite : Monitor
     {
 
-        public DBclient dbs;
-        public setSetting set;
-        public bool monitorSiteAlive;
-
-        public MonitorSite(DBclient dbs, setSetting set)
-        {
-            this.dbs = dbs;
-            this.set = set;
-            monitorSiteAlive = true;           
-            Thread siteMonitor = new Thread(playSiteMonitor);
-            siteMonitor.Start();
+      
+        
+        public MonitorSite()
+        {            
+          
 
         }
-         
+
+        public override void playThreadMonitor()
+        {
+            base.monitorAlive = true;
+            base.monitorThread = new Thread(playSiteMonitor);
+            base.monitorThread.Start();
+
+        }
+        public override void stopThreadMonitor()
+        {
+            base.monitorAlive = false;
+        }
+
         public void playSiteMonitor() {
             string prev = "";
-            while (monitorSiteAlive)
+            while ( base.monitorAlive)
             {
                 Process[] procsChrome = Process.GetProcessesByName("chrome");
                 foreach (Process chrome in procsChrome)
@@ -71,31 +77,21 @@ namespace ClientSide
                             //string sURL = findHostName(fullURL);
                             if (!fullURL.Equals(prev))
                             {
-                                ShowErrorDialog("URL: " + fullURL);
+                                // ShowErrorDialog("URL: " + fullURL);
+                                // send url to send in live state
                                 SiteFromMonitorSite handler = Program.updateCurrentSite;
                                 handler(fullURL);
                                 prev = fullURL;
-                                dbs.connectToDatabase();
-                                string category = dbs.getCategorySites(fullURL);
+
+                                // get category from DB
+                                base.DBInstance.connectToDatabase();
+                                string category = base.DBInstance.getCategorySites(fullURL);
+
                                 //ShowErrorDialog("categ|"+category+"|");
+                                // report if category site in DB 
                                 if (category != string.Empty)
                                 {
-
-                                    ShowErrorDialog(category);
-                                    
-                                    string cat = "";
-                                    foreach (var x in set.triggersForAlert) {
-                                        cat += "|"+x+"| ";
-                                    }
-                                    
-                                    string ignor = "";
-                                    foreach (var x in set.triggersForReport)
-                                    {
-                                        ignor += "|" + x + "| ";
-                                    }
-
-                                    //ShowErrorDialog("triggersForAlert: " + cat);
-                                    //ShowErrorDialog("triggersForReport: " + ignor);
+                                    ShowErrorDialog(category);                                   
                                     reportOrSendAlert(category, fullURL);
                                     
                                 }
@@ -117,21 +113,21 @@ namespace ClientSide
        
         private void reportOrSendAlert(string category, string fullURL)
         {
-            if (set.triggersForAlert.Contains(category) == true)
+            if (base.SettingInstance.triggersForAlert.Contains(category) == true)
             {
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "Site trigger occur");
+                Report.sendAlertToMail(FilePic, "Site trigger occur", fullURL, "siteTrigger");
                 ShowErrorDialog("send alert to mail\nSite trigger occur\ncategory: " + category +", path: "+ fullURL);
             }
 
-            if (set.triggersForReport.Contains(category) == true)
+           if (base.SettingInstance.triggersForReport.Contains(category) == true)
             {
-                dbs.connectToDatabase();
-                dbs.fillTable(2, DateTime.Now.ToString(), fullURL);
+                
+                base.DBInstance.fillTable(2, DateTime.Now.ToString(), fullURL);
                 ShowErrorDialog("update DB \nSite trigger occur\ncategory: " + category + ", path: " + fullURL);
 
-            }
+           }
         }
 
       

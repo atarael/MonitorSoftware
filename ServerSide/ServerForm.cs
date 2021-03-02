@@ -69,35 +69,22 @@ namespace ServerSide
 
         private void btnSetSystem_Click(object sender, EventArgs e)
         {
-
-            try
-            {
-                
-
-                
-
-            }
-            catch (SocketException ex)
-            {
-                ShowErrorDialog(ex.Message);
-
-            }
-            catch (ObjectDisposedException ex)
-            {
-                ShowErrorDialog(ex.Message);
-
-            }
+            List<int> selectedClient = new List<int>();
 
             Invoke((Action)delegate
             {
                 for (int i = 0; i < checkLstAllClient.Items.Count; i++)
                     if (checkLstAllClient.GetItemChecked(i))
                     {
+                        MonitorSetting monitorSystem = new MonitorSetting();
+                        monitorSystem.ShowDialog();
+                        
 
                     }
 
             });
 
+           
         }
         public void btnGetCurrentState_Click(object sender, EventArgs e)
         {

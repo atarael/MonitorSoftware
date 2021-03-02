@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -17,16 +18,15 @@ namespace ServerSide
     {
 
         public String setting = "";
-        private static String clientName = "";
+        
         private List<String> CategorySite;
         private string addSiteToMonitor = "";
         private string addSiteToCancelMonitor = "";
         private string AddBadWords = "";
-        public MonitorSetting(String name)
+        public MonitorSetting()
         {
             InitializeComponent();
-            clientName = name;
-
+            
             // insert category to grid
             CategorySite = new List<String>();
             CategorySite.Add("News");
@@ -61,9 +61,10 @@ namespace ServerSide
                 if (row.Cells["UpdateReport"].Value != null)
                     setting += "1";
                 else setting += "0";
-               
-                
+
+
                 setting += " ";
+
             }
 
             setting += "\r\n";
@@ -81,38 +82,71 @@ namespace ServerSide
             if (chbAppInstallReport.Checked)
                 setting += "1";
             else setting += "0";
-         
+
             setting += "\r\n";
 
             // insert five line - Typing inappropriate words
             if (chbBadWordUpdate.Checked)
                 setting += "1";
             else setting += "0";
-            if (chbBadWordUpdate.Checked)
+            if (chbBadWordReport.Checked)
                 setting += "1";
             else setting += "0";
             setting += "\r\n";
 
             // insert six line -  Typing inappropriate words
             setting += AddBadWords + "\r\n";
-             
 
-            // insert seven line - report time
+            // insert seven line - mail to get report
+            if (IsValidEmail(txbEmail.Text))
+                setting += txbEmail.Text + "\r\n";
+            else {
+                ShowErrorDialog("Must fill Email address report");
+                return;
+            }
+
+            // insert eigth line - report time
             int select = chblFrequency.SelectedIndex;
-            if (select < 0)
-                ShowErrorDialog("Must Select Frequency to get report");
+            if (select < 0) { // if check minute 
+                string minuteStr = nudMinuteReport.Value.ToString();
+                int Minute = Int32.Parse(minuteStr);
+                if (Minute > 0)
+                {
+                    setting += "minute " + minuteStr + "\r\n";
+                    this.Close();
+                }
+                else {
+                    ShowErrorDialog("Must Select Frequency or insert minutes to get report");
+                    return;
+                }
+                    
+            }
+               
             else
             {
                 setting += select + "\r\n";
                 this.Close();
             }
+                   
 
             ShowErrorDialog("setting string file:\n" + setting);
-
+            //setSetting handler = Program.setSettingDeleGate;
+           // handler(0);
         }
 
-         
-        
+        bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private string correctURL(string url)
         {
             
@@ -262,7 +296,7 @@ namespace ServerSide
 
         private void btnAddBadWords_Click(object sender, EventArgs e)
         {
-            AddBadWords += " " + txbAddBadWords.Text;
+            AddBadWords += txbAddBadWords.Text + " ";
             txbAddBadWords.Text = "";
         }
     }

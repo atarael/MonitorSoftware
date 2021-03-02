@@ -1,9 +1,0 @@
-atara
-0
-news 10 sport 10 shopping 10 vocation 10 economy 00 social 00 vocation 00 
-
-
-00
-00
-
-0

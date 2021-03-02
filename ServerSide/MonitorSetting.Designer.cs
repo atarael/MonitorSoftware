@@ -36,6 +36,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.dtgCategorySites = new System.Windows.Forms.DataGridView();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportImmediately = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.UpdateReport = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txbUnblockedSites = new System.Windows.Forms.TextBox();
@@ -48,11 +51,13 @@
             this.btnAddSiteToMonitoring = new System.Windows.Forms.Button();
             this.txbAddBadWords = new System.Windows.Forms.TextBox();
             this.btnAddBadWords = new System.Windows.Forms.Button();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReportImmediately = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.UpdateReport = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
+            this.txbEmail = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.nudMinuteReport = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMinuteReport)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -101,7 +106,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(87, 834);
+            this.label10.Location = new System.Drawing.Point(87, 829);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(210, 20);
             this.label10.TabIndex = 1;
@@ -112,7 +117,7 @@
             this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnOK.ForeColor = System.Drawing.Color.Lime;
-            this.btnOK.Location = new System.Drawing.Point(99, 990);
+            this.btnOK.Location = new System.Drawing.Point(95, 1054);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
@@ -129,13 +134,32 @@
             this.Category,
             this.ReportImmediately,
             this.UpdateReport});
-            this.dtgCategorySites.Location = new System.Drawing.Point(92, 233);
+            this.dtgCategorySites.Location = new System.Drawing.Point(85, 265);
             this.dtgCategorySites.Name = "dtgCategorySites";
             this.dtgCategorySites.RowHeadersVisible = false;
             this.dtgCategorySites.RowHeadersWidth = 200;
             this.dtgCategorySites.RowTemplate.Height = 28;
             this.dtgCategorySites.Size = new System.Drawing.Size(1049, 168);
             this.dtgCategorySites.TabIndex = 8;
+            // 
+            // Category
+            // 
+            this.Category.DataPropertyName = "News";
+            this.Category.HeaderText = "Category";
+            this.Category.MinimumWidth = 8;
+            this.Category.Name = "Category";
+            // 
+            // ReportImmediately
+            // 
+            this.ReportImmediately.HeaderText = "Report immediately";
+            this.ReportImmediately.MinimumWidth = 8;
+            this.ReportImmediately.Name = "ReportImmediately";
+            // 
+            // UpdateReport
+            // 
+            this.UpdateReport.HeaderText = "Update report";
+            this.UpdateReport.MinimumWidth = 8;
+            this.UpdateReport.Name = "UpdateReport";
             // 
             // label4
             // 
@@ -153,7 +177,7 @@
             this.label3.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label3.Location = new System.Drawing.Point(88, 753);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(401, 30);
+            this.label3.Size = new System.Drawing.Size(267, 20);
             this.label3.TabIndex = 10;
             this.label3.Text = "Please Add bad words To Monitoring";
             // 
@@ -206,7 +230,7 @@
             "Each Week",
             "Two once each week",
             "Each Month"});
-            this.chblFrequency.Location = new System.Drawing.Point(127, 865);
+            this.chblFrequency.Location = new System.Drawing.Point(127, 859);
             this.chblFrequency.Name = "chblFrequency";
             this.chblFrequency.Size = new System.Drawing.Size(200, 96);
             this.chblFrequency.TabIndex = 14;
@@ -256,25 +280,6 @@
             this.btnAddBadWords.UseVisualStyleBackColor = true;
             this.btnAddBadWords.Click += new System.EventHandler(this.btnAddBadWords_Click);
             // 
-            // Category
-            // 
-            this.Category.DataPropertyName = "News";
-            this.Category.HeaderText = "Category";
-            this.Category.MinimumWidth = 8;
-            this.Category.Name = "Category";
-            // 
-            // ReportImmediately
-            // 
-            this.ReportImmediately.HeaderText = "Report immediately";
-            this.ReportImmediately.MinimumWidth = 8;
-            this.ReportImmediately.Name = "ReportImmediately";
-            // 
-            // UpdateReport
-            // 
-            this.UpdateReport.HeaderText = "Update report";
-            this.UpdateReport.MinimumWidth = 8;
-            this.UpdateReport.Name = "UpdateReport";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -285,18 +290,54 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Please Add Sites To Monitoring";
             // 
+            // txbEmail
+            // 
+            this.txbEmail.Location = new System.Drawing.Point(370, 1009);
+            this.txbEmail.Name = "txbEmail";
+            this.txbEmail.Size = new System.Drawing.Size(452, 26);
+            this.txbEmail.TabIndex = 13;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(89, 1012);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(277, 20);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Address Mail to get Reorts and Alerts:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(123, 966);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(261, 20);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "send report each                   Minutes";
+            // 
+            // nudMinuteReport
+            // 
+            this.nudMinuteReport.Location = new System.Drawing.Point(263, 965);
+            this.nudMinuteReport.Name = "nudMinuteReport";
+            this.nudMinuteReport.Size = new System.Drawing.Size(1, 26);
+            this.nudMinuteReport.TabIndex = 31;
+            // 
             // MonitorSetting
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new System.Drawing.Size(0, 1000);
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1332, 1195);
+            this.ClientSize = new System.Drawing.Size(1269, 1152);
+            this.Controls.Add(this.nudMinuteReport);
             this.Controls.Add(this.btnAddBadWords);
             this.Controls.Add(this.btnAddSiteToMonitoring);
             this.Controls.Add(this.btnAddSiteToCancelMonitoring);
+            this.Controls.Add(this.txbEmail);
             this.Controls.Add(this.txbAddBadWords);
             this.Controls.Add(this.chblFrequency);
             this.Controls.Add(this.txbBlockedSites);
@@ -309,6 +350,8 @@
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.chbBadWordReport);
             this.Controls.Add(this.chbAppInstallReport);
@@ -319,6 +362,7 @@
             this.Text = "MonitorSystem";
             this.Load += new System.EventHandler(this.MonitorSystem_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMinuteReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,5 +392,9 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ReportImmediately;
         private System.Windows.Forms.DataGridViewCheckBoxColumn UpdateReport;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txbEmail;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown nudMinuteReport;
     }
 }

