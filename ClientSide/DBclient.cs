@@ -209,6 +209,8 @@ namespace ClientSide
             {
                 Text += "id: " + reader["idTrigger"] + "date: " + reader["dateTrigger"] + "\tdescription: " + reader["DesTrigger"] + "\n";
             }
+   
+            return Text;
 
             return Text;
 
@@ -235,9 +237,7 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-
-
+       
 
     }
 }

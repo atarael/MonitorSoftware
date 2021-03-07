@@ -11,9 +11,7 @@ using VisioForge.Tools.TagLib.Riff;
 
 namespace ClientSide
 {
-
-
-    public sealed class Setting
+    public class setSetting
     {
         private string settingString = "";
         public List<string> triggersForAlert = new List<string>();  //Triggers for immediate reporting
@@ -25,72 +23,19 @@ namespace ClientSide
         public double reportFrequencyInSecond; //Frequency of reporting in seconds
         public string reportFrequencyInWord = "";//daily,weekly..
         private List<string> offensiveWords = new List<string>();
-        string email;
 
 
-        private static readonly Setting instance = new Setting();
-        static Setting()
+        public setSetting(string settingString, string name, string id)
         {
-        }
-        private Setting()
-        {
-
-            readSettingFromFile(); 
+            createFileStringSetting(settingString, name, id);
+            this.settingString = settingString;  
             createOffensiveWordsList();
-            installationSetting();
             reportFrequencyInSecond = buildReportFrequency();
             anotherSitesReport = buildAnotherSitesReportList();
             anotherSitesIgnore = buildAnotherSitesIgnoreList();
             buildCategoryList();// build triggersForAlert list and triggersForRepor list 
-            getEmail(settingString);
-           
-            // connect to DB
-            DBclient DBInstance = DBclient.Instance;
-            DBInstance.removeIgnoredSites(anotherSitesIgnore.ToArray());
-            DBInstance.funAddCategorySiteTable(anotherSitesReport.ToArray(), "anotherSitesReport");
-
-
         }
-        public static Setting Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
-
-
-            
-        private void getEmail(string settingString)
-        {
-            string[] settingStringSplited = settingString.Split('\n');
-            if (settingStringSplited.Length > 6)
-            {
-                email = settingStringSplited[6].Split('\r')[0];
-                ShowErrorDialog("email is: |"+email+"|");
-                
-            }
-        }
-
-        private void installationSetting()
-        {
-            string[] settingStringSplited = settingString.Split('\n');
-            if (settingStringSplited.Length > 3)
-            {
-                string setInstallation = settingStringSplited[3];
-                if (setInstallation[0].Equals('1'))
-                {
-                    triggersForReport.Add("installation");
-                }
-                if (setInstallation[1].Equals('1'))
-                {
-                    triggersForAlert.Add("installation");
-                }
-
-            }
-        }
-
+      
         private void createOffensiveWordsList()
         {
             String projectDirectory = Environment.CurrentDirectory;
@@ -124,7 +69,7 @@ namespace ClientSide
                 string[] anotherBadWord = settingStringSplited[5].Split(' ');
                 foreach (string w in anotherBadWord)
                 {
-                    offensiveWords.Add(w.Split('\r')[0]);
+                    offensiveWords.Add(w);
                 }
             }
                 
@@ -147,53 +92,34 @@ namespace ClientSide
                  ShowErrorDialog("settttt" + x);
              }*/
             string[] settingStringSplited = settingString.Split('\n');
-            
-             
-            if (settingStringSplited.Length > 7)
+            if (settingStringSplited.Length > 6)
             {
-                // frequency by minutes
-                string frequencyStr = settingStringSplited[7];
-                if (frequencyStr.Split(' ')[0] == "minute")
+                int frequency = int.Parse(settingStringSplited[6]);
+                if (frequency == 0)//if frequency=each day
                 {
-
-                    second = int.Parse(frequencyStr.Split(' ')[1]) * 60;
-                    updateDate = updateDate.AddDays(0);
-
-
-                }
-                // frequency by days
-                else
-                {
-                    int frequency = int.Parse(settingStringSplited[7]);
-                    if (frequency == 0)//if frequency=each day
-                    {
-                        reportFrequencyInWord = "daily";
-                        second = 60 * 60 * 24;
-                        updateDate = updateDate.AddDays(1);
-                    }
-
-                    if (frequency == 1)//if frequency=each week
-                    {
-                        reportFrequencyInWord = "weekly";
-                        second = 60 * 60 * 24 * 7;
-                        updateDate = updateDate.AddDays(7);
-                    }
-                    if (frequency == 2)//if frequency=once a  two weeks 
-                    {
-                        reportFrequencyInWord = "bi-monthly";
-                        second = 60 * 60 * 24 * 14;
-                        updateDate = updateDate.AddDays(14);
-                    }
-                    if (frequency == 3)
-                    {
-                        reportFrequencyInWord = "monthly";
-                        second = 60 * 60 * 24 * 30;//if frequency=once a month
-                        updateDate = updateDate.AddMonths(1);
-                    }
+                    reportFrequencyInWord = "daily";
+                    second = 60 * 60 * 24;
+                    updateDate = updateDate.AddDays(1);
                 }
 
-
-                
+                if (frequency == 1)//if frequency=each week
+                {
+                    reportFrequencyInWord = "weekly";
+                    second = 60 * 60 * 24 * 7;
+                    updateDate = updateDate.AddDays(7);
+                }
+                if (frequency == 2)//if frequency=once a  two weeks 
+                {
+                    reportFrequencyInWord = "bi-monthly";
+                    second = 60 * 60 * 24 * 14;
+                    updateDate = updateDate.AddDays(14);
+                }
+                if (frequency == 3)
+                {
+                    reportFrequencyInWord = "monthly";
+                    second = 60 * 60 * 24 * 30;//if frequency=once a month
+                    updateDate = updateDate.AddMonths(1);
+                }
                 this.futureDateToReport = updateDate.ToString();
                 //ShowErrorDialog("jjj"+updateDate.ToString());
             }
@@ -266,40 +192,56 @@ namespace ClientSide
             return offensiveWords;
         }
 
-        public void readSettingFromFile()
+        /* private void createSettingFeature(string settingString)
+         //The method will be updated with the settings features
+         //The data obtained from the settings string from the server
+         {
+
+         }*/
+
+        public void createFileStringSetting(string stringSetting, string name, string id)
         {
-            string userName = Environment.UserName;
 
             String projectDirectory = Environment.CurrentDirectory;
             string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+
+
             String[] paths = new string[] { @filepath, "files" };
             filepath = Path.Combine(paths);
-            settingString = "";
-            DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            //ShowErrorDialog("filepath is: \n" + filepath);
+            // ShowErrorDialog("filepath in createFileStringSetting: " + filepath);
+            // ShowErrorDialog("stringSetting createFileStringSetting: "+stringSetting);
+
+
             if (!Directory.Exists(filepath))
             {
-                return ;
+                Directory.CreateDirectory(filepath);
             }
-            
-            using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, "setting_"+ userName +".txt")))
+
+            String settingFile = Path.Combine(filepath, "setting_" + id + ".txt");
+            if (!System.IO.File.Exists(settingFile))
             {
-                sr.ReadLine();
-                sr.ReadLine();
+                using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
 
-                //ShowErrorDialog("id\n" + id);
-                string line = "";
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //ShowErrorDialog("line\n" + line);
-                    settingString += line + "\r\n";
-                }
+                System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + stringSetting);
+
             }
 
 
+            /*
+            if (!File.Exists(filepath))
+            {
+                using (StreamWriter sw = File.CreateText(filepath)) ;
+            }
+            using (FileStream sw = File.OpenWrite(filepath))
+            {
+                //  sw.Write(stringSetting,0,stringSetting.Length);
 
+                Byte[] info = new UTF8Encoding(true).GetBytes(name+"\r\n"+id+"\r\n"+stringSetting); // Add some information to the file.
+                //sw.Write(info, 0, info.Length);‏
+                sw.Write(info, 0, info.Length);
+            }
+            */
         }
-    
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);

