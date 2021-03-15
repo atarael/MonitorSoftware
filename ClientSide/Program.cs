@@ -116,8 +116,9 @@ namespace ClientSide
                 switch (dataFromServer[0])
                 {
                     // Get uniqe id 
-                    case ID:
+                    case ID:                    
                         id = dataFromServer[1].Split('\r', '\n', '\0')[0];
+                        ShowErrorDialog("get id"); 
                         break;
 
                     // Get Setting to implement monitoring
@@ -304,8 +305,8 @@ namespace ClientSide
                 while (openClientForm.IsAlive) ;
 
                 name = clientForm.clientName;
-                ip = clientForm.ip;
-
+                ip = clientForm.ip; 
+               
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -315,6 +316,7 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
+                ShowErrorDialog("connect to ip: " + ip);
             }
             catch (SocketException ex)
             {
@@ -434,7 +436,7 @@ namespace ClientSide
         public static void updateCurrentSite(string site)
         {
             // ShowErrorDialog("send site: \n"+site);
-            Console.WriteLine(site); 
+            //Console.WriteLine(site); 
             program.SendData(program.clientSocket, "current state\rsite\r" + site);
           
            

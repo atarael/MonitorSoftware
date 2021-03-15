@@ -34,6 +34,7 @@ namespace ClientSide
 
             // play Monitor installations trigger
             monitorInstallations.playThreadMonitor();
+            
         }
         public void stopAllTriggers()
         {
