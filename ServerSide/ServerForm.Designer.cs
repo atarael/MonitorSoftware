@@ -37,7 +37,17 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btnGetCurrentState = new System.Windows.Forms.Button();
             this.btnRemoveClient = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvConnectedClients = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).BeginInit();
             this.SuspendLayout();
             // 
             // checkLstAllClient
@@ -47,10 +57,11 @@
             this.checkLstAllClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.checkLstAllClient.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.checkLstAllClient.FormattingEnabled = true;
-            this.checkLstAllClient.Location = new System.Drawing.Point(33, 82);
+            this.checkLstAllClient.Location = new System.Drawing.Point(22, 61);
             this.checkLstAllClient.Name = "checkLstAllClient";
-            this.checkLstAllClient.Size = new System.Drawing.Size(655, 315);
+            this.checkLstAllClient.Size = new System.Drawing.Size(655, 35);
             this.checkLstAllClient.TabIndex = 4;
+            this.checkLstAllClient.SelectedIndexChanged += new System.EventHandler(this.checkLstAllClient_SelectedIndexChanged);
             // 
             // btnSetSystem
             // 
@@ -60,7 +71,7 @@
             this.btnSetSystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSetSystem.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnSetSystem.ForeColor = System.Drawing.Color.Lime;
-            this.btnSetSystem.Location = new System.Drawing.Point(902, 502);
+            this.btnSetSystem.Location = new System.Drawing.Point(849, 280);
             this.btnSetSystem.Name = "btnSetSystem";
             this.btnSetSystem.Size = new System.Drawing.Size(274, 72);
             this.btnSetSystem.TabIndex = 5;
@@ -71,11 +82,12 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.groupBox1.Controls.Add(this.dgvConnectedClients);
             this.groupBox1.Controls.Add(this.checkLstAllClient);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.groupBox1.Location = new System.Drawing.Point(146, 318);
+            this.groupBox1.Location = new System.Drawing.Point(91, 96);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(694, 440);
+            this.groupBox1.Size = new System.Drawing.Size(694, 256);
             this.groupBox1.TabIndex = 70;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connected Clients List:";
@@ -88,7 +100,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.button1.ForeColor = System.Drawing.Color.Lime;
-            this.button1.Location = new System.Drawing.Point(902, 318);
+            this.button1.Location = new System.Drawing.Point(849, 96);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(274, 72);
             this.button1.TabIndex = 5;
@@ -104,7 +116,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.button2.ForeColor = System.Drawing.Color.Lime;
-            this.button2.Location = new System.Drawing.Point(902, 592);
+            this.button2.Location = new System.Drawing.Point(849, 370);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(274, 72);
             this.button2.TabIndex = 5;
@@ -120,7 +132,7 @@
             this.btnGetCurrentState.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGetCurrentState.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnGetCurrentState.ForeColor = System.Drawing.Color.Lime;
-            this.btnGetCurrentState.Location = new System.Drawing.Point(902, 412);
+            this.btnGetCurrentState.Location = new System.Drawing.Point(849, 190);
             this.btnGetCurrentState.Name = "btnGetCurrentState";
             this.btnGetCurrentState.Size = new System.Drawing.Size(274, 72);
             this.btnGetCurrentState.TabIndex = 5;
@@ -136,13 +148,99 @@
             this.btnRemoveClient.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRemoveClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnRemoveClient.ForeColor = System.Drawing.Color.Lime;
-            this.btnRemoveClient.Location = new System.Drawing.Point(902, 686);
+            this.btnRemoveClient.Location = new System.Drawing.Point(849, 464);
             this.btnRemoveClient.Name = "btnRemoveClient";
             this.btnRemoveClient.Size = new System.Drawing.Size(274, 72);
             this.btnRemoveClient.TabIndex = 5;
             this.btnRemoveClient.Text = "Remove Client";
             this.btnRemoveClient.UseVisualStyleBackColor = false;
             this.btnRemoveClient.Click += new System.EventHandler(this.btnRemoveClient_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.dataGridView1);
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.btnGetCurrentState);
+            this.panel1.Controls.Add(this.btnSetSystem);
+            this.panel1.Controls.Add(this.btnRemoveClient);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Location = new System.Drawing.Point(30, 241);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1300, 631);
+            this.panel1.TabIndex = 72;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersVisible = false;
+            this.dataGridView1.Location = new System.Drawing.Point(91, 385);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowHeadersWidth = 62;
+            this.dataGridView1.RowTemplate.Height = 28;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(694, 151);
+            this.dataGridView1.TabIndex = 72;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.setSttingToNewClient);
+            // 
+            // dgvConnectedClients
+            // 
+            this.dgvConnectedClients.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvConnectedClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvConnectedClients.ColumnHeadersVisible = false;
+            this.dgvConnectedClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column3,
+            this.Column4,
+            this.Column2});
+            this.dgvConnectedClients.GridColor = System.Drawing.Color.FloralWhite;
+            this.dgvConnectedClients.Location = new System.Drawing.Point(22, 102);
+            this.dgvConnectedClients.MaximumSize = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.MinimumSize = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.Name = "dgvConnectedClients";
+            this.dgvConnectedClients.RowHeadersVisible = false;
+            this.dgvConnectedClients.RowHeadersWidth = 62;
+            this.dgvConnectedClients.RowTemplate.Height = 28;
+            this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvConnectedClients.Size = new System.Drawing.Size(900, 600);
+            this.dgvConnectedClients.TabIndex = 72;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MinimumWidth = 8;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 20;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "socket";
+            this.Column3.MinimumWidth = 70;
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 70;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "name";
+            this.Column4.MinimumWidth = 70;
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 70;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "id";
+            this.Column2.MinimumWidth = 8;
+            this.Column2.Name = "Column2";
+            this.Column2.Visible = false;
+            this.Column2.Width = 8;
             // 
             // ServerForm
             // 
@@ -151,16 +249,14 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1357, 914);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnGetCurrentState);
-            this.Controls.Add(this.btnSetSystem);
-            this.Controls.Add(this.btnRemoveClient);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ServerForm";
             this.Text = "Basic Async Server";
             this.groupBox1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -174,6 +270,13 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnGetCurrentState;
         private System.Windows.Forms.Button btnRemoveClient;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvConnectedClients;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 

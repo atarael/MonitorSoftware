@@ -38,8 +38,9 @@ namespace ClientSide
         public Boolean sendCurrentData;      
         string keyDate;
         public static Program program;
-        
-      
+        ManageMonitor manageMonitor;
+
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -108,7 +109,7 @@ namespace ClientSide
                 string data = Encoding.ASCII.GetString(buffer);            
 
                 var dataFromServer = data.Split(new[] { '\r', '\n', '\0' }, 2);
-                ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+              //  ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                 
                 // dataFromServer[0] contain request subject from server side
                 // in switch the request sent to handler function
@@ -123,17 +124,19 @@ namespace ClientSide
                     case SETTING: 
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
-                        playAllTrigers(setting); //This method obtains the settings string from the server
+                        // save setting 
+                        saveSettingFile(setting);
+                        playAllTrigers(); //This method obtains the settings string from the server
                         break;
 
                     // Launch the software in live reporting mode
                     case LIVE:
-                        liveMode(clientSocket);
+                        liveMode(clientSocket);// sara 
                         break;
 
                     // Stop live reporting mode
                     case STOP_LIVE:
-                        ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                       // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                         stopLiveMode(clientSocket);
                         break;
 
@@ -143,7 +146,7 @@ namespace ClientSide
                         break;
 
                     default:
-                        ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        //ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                         break;
                 }
                                       
@@ -176,28 +179,31 @@ namespace ClientSide
         {
 
             sendCurrentData = false;
-          //  monitorProccess.ifLive = false;
-            ShowErrorDialog("stop send current state");
+            //  monitorProccess.ifLive = false;
+            //ShowErrorDialog("stop send current state");
+            manageMonitor.stopLiveMode();
         }
 
         private void liveMode(Socket socket)
         {
             sendCurrentData = true;
             SendData(socket, "current state\ropen CurrentState form");
-           
-            
+            manageMonitor.playLiveMode();
+
+
         }
 
         // set setting and here will play all triggers;
-        private void playAllTrigers(string setting)
-        {
-            // save setting 
-            saveSettingFile(setting);
+        private void playAllTrigers()
+        {          
            
-            ShowErrorDialog("play all trigers");
-            
-            // play all monitors
-            ManageMonitor manageMonitor = new ManageMonitor();
+            //ShowErrorDialog("play all trigers");
+
+            // Play all monitors
+            manageMonitor = new ManageMonitor();
+            manageMonitor.playAllTriggers();
+
+            // Set Report
             Report.setReportFrequency();
         }
 
@@ -219,13 +225,14 @@ namespace ClientSide
             }
 
             String settingFile = Path.Combine(filepath, "setting_" + userName + ".txt");
-            if (!System.IO.File.Exists(settingFile))
+            if (System.IO.File.Exists(settingFile))
             {
-                using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
-
-                System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + setting);
-
+                System.IO.File.Delete(settingFile);
+               
             }
+            using (StreamWriter sw = System.IO.File.CreateText(settingFile));
+            System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + setting);
+
 
             // play Reporting scheduling
             Report.setReportFrequency();
@@ -241,7 +248,7 @@ namespace ClientSide
                 clientSocket.EndConnect(AR);
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
 
-                ShowErrorDialog("in ConnectCallback in socket: " + clientSocket.RemoteEndPoint);
+               // ShowErrorDialog("in ConnectCallback in socket: " + clientSocket.RemoteEndPoint);
                 if (id != null)
                     SendData(clientSocket, "id\r" + id);
                 else SendData(clientSocket, "name\r" + name);
@@ -350,9 +357,9 @@ namespace ClientSide
                         set += line + "\r\n";
                     }
                 }
-
-                playAllTrigers(set);
                 reConnect();
+                playAllTrigers();
+                
                 return true;
             }
 
@@ -417,33 +424,29 @@ namespace ClientSide
 
         public static void updateCurrentKeylogger(string word)
         {           
-            if (program.sendCurrentData) {
-                Console.WriteLine(word);
+             
+                //ShowErrorDialog(word);
                 program.SendData(program.clientSocket, "current state\rkeyBoard\r"+ word);
-            }
+             
            
         }
 
         public static void updateCurrentSite(string site)
         {
-            if (program.sendCurrentData)
-            {
-                // ShowErrorDialog("send site: \n"+site);
-                Console.WriteLine(site); 
-                program.SendData(program.clientSocket, "current state\rsite\r" + site);
-            }
+            // ShowErrorDialog("send site: \n"+site);
+            Console.WriteLine(site); 
+            program.SendData(program.clientSocket, "current state\rsite\r" + site);
+          
+           
 
         }
        
         public static void updateCurrentProcess(string proccess)
         {
-            
-            //string processes = ShowAllProcess.ListAllApplications();
-            if (program.sendCurrentData)
-            {
-                ShowErrorDialog("send proc: \n" + proccess);
+               // ShowErrorDialog("send proc: \n" + proccess);
                 program.SendData(program.clientSocket, "current state\rprocesses\r" + proccess);
-            }
+          
+            
 
         }
 

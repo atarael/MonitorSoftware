@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -69,16 +70,26 @@ namespace ServerSide
 
         private void btnSetSystem_Click(object sender, EventArgs e)
         {
-            List<int> selectedClient = new List<int>();
+
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+            {
+
+                if (row.Cells[0].Value.ToString() == "True")
+                {
+                    int id = int.Parse(row.Cells[3].Value.ToString());
+                    MonitorSetting monitorSystem = new MonitorSetting(id);
+                    monitorSystem.ShowDialog();
+                }
+            }
 
             Invoke((Action)delegate
             {
                 for (int i = 0; i < checkLstAllClient.Items.Count; i++)
                     if (checkLstAllClient.GetItemChecked(i))
                     {
-                        MonitorSetting monitorSystem = new MonitorSetting();
-                        monitorSystem.ShowDialog();
-                        
+                       // MonitorSetting monitorSystem = new MonitorSetting(i);
+                       // monitorSystem.ShowDialog();
+                         
 
                     }
 
@@ -88,34 +99,67 @@ namespace ServerSide
         }
         public void btnGetCurrentState_Click(object sender, EventArgs e)
         {
-            List<int> selectedClient = new List<int>();
-
-            Invoke((Action)delegate
-            {
-                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    if (checkLstAllClient.GetItemChecked(i))
-                    { 
-                      
+             
+                foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+                {
+                    
+                    if (row.Cells[0].Value.ToString() == "True" )
+                    {
+                        int id = int.Parse(row.Cells[3].Value.ToString());
                         playCurrentState handler = Program.startCurrentState;
-                        handler(i);
+                        handler(id);
                     }
+                }
 
-            });
+
+                //for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                  //  if (checkLstAllClient.GetItemChecked(i))
+                  //  { 
+                      
+                        //playCurrentState handler = Program.startCurrentState;
+                        // handler(i);
+                    //}
+
+            
 
         }
-        public void addClientToCheckBoxLst(String Name, int id, Socket ClientSocket)
+        public void addClientToCheckBoxLst(string Name, int id, Socket ClientSocket)
         {
+
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+            {
+                if(row.Cells[3].Value != null)
+                {
+                    if (int.Parse(row.Cells[3].Value.ToString()) == id)
+                    {
+                        row.Cells[2].Value = ClientSocket.RemoteEndPoint;
+                       // ShowErrorDialog("id exist in datagrid");
+                        return;
+                    }
+                }
+                
+                
+            }
+
             int exist = 0;
             if (Name != null && id >= 0)
             {
                 _ = Invoke((Action)delegate
                 {
+                     
                     String line = "";
                     if (ClientSocket != null)
+                    {
                         line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
+                        dgvConnectedClients.Rows.Add(false, Name, ClientSocket.RemoteEndPoint, id);
+                    }
+                    //line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
                     else
+                    { 
                         line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
-                    // Check if id exists in checkbox
+                        dgvConnectedClients.Rows.Add(false, Name, "not connect", id);
+                    }
+                         // Check if id exists in checkbox
                     for (int i = 0; i < checkLstAllClient.Items.Count; i++)
                     {
 
@@ -123,20 +167,17 @@ namespace ServerSide
                         string stringId = l.Split(',')[1].Split(' ')[1];
                         if (stringId == id.ToString())
                         {
-                            ShowErrorDialog(stringId);
+                            //ShowErrorDialog(stringId);
+                            Button b = new Button( );
                             checkLstAllClient.Items.RemoveAt(i);
-                            checkLstAllClient.Items.Insert(i, line);
+                            checkLstAllClient.Items.Insert(i,  b);
                             exist = 1;
                             break;
                         }
                     }
                     if (exist == 0)
                         checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);
-                    /*  for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                           if (i == id) {
-                              checkLstAllClient.Items.RemoveAt(id);
-                          }
-                       checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);*/
+                   
                 });
             }
         }
@@ -149,6 +190,7 @@ namespace ServerSide
             });
         
         }
+       
         public void removeClientFromCheckBoxLst(int id)
         {
 
@@ -159,7 +201,7 @@ namespace ServerSide
                 string stringId = l.Split(',')[1].Split(' ')[1];
                 if (stringId == id.ToString())
                 {
-                    ShowErrorDialog("remove" + stringId);
+                   // ShowErrorDialog("remove" + stringId);
                     checkLstAllClient.Items.RemoveAt(i);
                     break;
                 }
@@ -191,12 +233,87 @@ namespace ServerSide
 
 
         }
-        
 
-        
-       
+        private void checkLstAllClient_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
 
 
+            dataGridView1.ColumnCount = 1;             
+            dataGridView1.Columns[0].Width = 300;
+            dataGridView1.Columns.Add("Column", "id");
+            dataGridView1.Columns[1].Visible = false;       
+            dataGridView1.AllowUserToAddRows = false;
+
+          
+            dgvConnectedClients.Columns[0].Width = 20; // checkbox
+            dgvConnectedClients.Columns[1].Width = 150; // socket number
+            dgvConnectedClients.Columns[2].Width = 250; // client name
+            dgvConnectedClients.AllowUserToAddRows = false;
+
+
+        }
+
+        public void addClientToWaitingList(string value, int id) {
+
+            Invoke((Action)delegate
+              {
+                  dataGridView1.Rows.Add(value, id);                   
+                  DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+                  btn.Text = "Set setting";
+                  btn.FillWeight = 200;
+                  btn.UseColumnTextForButtonValue = true;
+                  btn.Width = 150;                 
+                  dataGridView1.Columns.Add(btn);
+                 
+              });
+ 
+
+           
+
+           
+        }
+      
+        public void removeClientToWaitingList(int id)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[1].Value.Equals(id))
+                {  
+                    Invoke((Action)delegate
+                {
+                    dataGridView1.Rows.Remove(row);
+                });
+                    break;
+                }
+            }
+
+            
+
+
+
+
+        }
+      
+        private void setSttingToNewClient(object sender, DataGridViewCellEventArgs e)
+        {
+            //ShowErrorDialog("set setting");
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
+                string s = row.Cells[0].Value.ToString();
+                int id = int.Parse(row.Cells[1].Value.ToString());
+                
+                MonitorSetting monitorSystem = new MonitorSetting(id);
+                monitorSystem.ShowDialog();
+                 
+
+            }
+        }
     }
 
-}
+} 

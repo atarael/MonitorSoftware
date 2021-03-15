@@ -68,7 +68,7 @@ namespace ClientSide
             if (settingStringSplited.Length > 6)
             {
                 email = settingStringSplited[6].Split('\r')[0];
-                ShowErrorDialog("email is: |"+email+"|");
+                //ShowErrorDialog("email is: |"+email+"|");
                 
             }
         }

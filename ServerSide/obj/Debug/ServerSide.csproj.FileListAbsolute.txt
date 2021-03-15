@@ -1,176 +1,53 @@
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
-C:\Users\sara\Desktop\SaraAyash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
-C:\Users\עטרה אלמליח\Desktop\atarasara\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\BouncyCastle.Crypto.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.dll
-C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.xml
-<<<<<<< HEAD
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.Streams.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Hash.xxHash.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\MySql.Data.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\MySqlConnector.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Renci.SshNet.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Threading.Tasks.Extensions.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Ubiety.Dns.Core.dll
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Zstandard.Net.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.pdb
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\itextsharp.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.Streams.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\MySql.Data.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\MySqlConnector.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\Renci.SshNet.xml
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\bin\Debug\System.Threading.Tasks.Extensions.xml
-=======
->>>>>>> fadb31704bb33499f46834d5669882c797929c8f
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe.config
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\ServerSide.exe
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\ServerSide.pdb
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\BouncyCastle.Crypto.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\itextsharp.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.Streams.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Hash.xxHash.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\MySql.Data.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\MySqlConnector.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Renci.SshNet.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Memory.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Threading.Tasks.Extensions.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Ubiety.Dns.Core.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Zstandard.Net.dll
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\AForge.Video.DirectShow.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.pdb
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Google.Protobuf.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\itextsharp.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Compression.LZ4.Streams.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\K4os.Hash.xxHash.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\MySql.Data.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\MySqlConnector.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\Renci.SshNet.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Buffers.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\bin\Debug\System.Threading.Tasks.Extensions.xml
-C:\Users\sara\Desktop\Sara Ayash copy\‏‏תיקיה חדשה\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.ResolveComReference.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.CurrentState.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache

@@ -18,13 +18,14 @@ namespace ServerSide
     {
 
         public String setting = "";
-        
+        public int id;
         private List<String> CategorySite;
         private string addSiteToMonitor = "";
         private string addSiteToCancelMonitor = "";
         private string AddBadWords = "";
-        public MonitorSetting()
+        public MonitorSetting(int id)
         {
+            this.id = id;
             InitializeComponent();
             
             // insert category to grid
@@ -127,11 +128,11 @@ namespace ServerSide
                 setting += select + "\r\n";
                 this.Close();
             }
-                   
+            setSetting handler = Program.setSettingDeleGate;
+            handler(id, setting);
 
-            ShowErrorDialog("setting string file:\n" + setting);
-            //setSetting handler = Program.setSettingDeleGate;
-           // handler(0);
+           
+           
         }
 
         bool IsValidEmail(string email)
@@ -171,24 +172,7 @@ namespace ServerSide
             }
 
         }
-        private static bool IsValidDomainName(string name)
-        {
-            return Uri.CheckHostName(name) != UriHostNameType.Unknown;
-        }
-
-        private string rangeOfTime(DateTimePicker dtpFrom, DateTimePicker dtpTo)
-        {
-            if (dtpFrom.Value.TimeOfDay < dtpTo.Value.TimeOfDay)
-            {
-                String from = dtpFrom.Value.ToLongTimeString();
-                String to = dtpTo.Value.ToLongTimeString();
-                if (from != to)
-                    return from + "-" + to;
-            }
-            return "NULL";
-        }
-
-
+         
         private void label5_Click(object sender, EventArgs e)
         {
 

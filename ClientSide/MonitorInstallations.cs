@@ -15,18 +15,16 @@ namespace ClientSide
 
     class MonitorInstallations:Monitor
     {
-        
-      
 
-        public MonitorInstallations()
-        {
-            base.monitorAlive = true;          
-            base.monitorThread = new Thread(playMonitorInstallations);
-            base.monitorThread.Start();
-        }
+        public MonitorInstallations() { }
+
 
 
         public override void playThreadMonitor() {
+            if (base.monitorAlive)
+            {
+                stopThreadMonitor();
+            }
             base.monitorAlive = true;
             base.monitorThread = new Thread(playMonitorInstallations);
             base.monitorThread.Start();

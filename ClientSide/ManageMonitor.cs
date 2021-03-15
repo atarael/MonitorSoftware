@@ -13,26 +13,56 @@ namespace ClientSide
         public MonitorSite monitorSite;
         public MonitorInstallations monitorInstallations;
 
-        public ManageMonitor()
-        {
-            // play Monitor proccess
-            monitorProccess = new MonitorProccess();
-            monitorProccess.playThreadMonitor();
+        public ManageMonitor() {
+             monitorProccess = new MonitorProccess();
+             monitorTyping = new MonitorTyping();
+             monitorSite = new MonitorSite();
+             monitorInstallations = new MonitorInstallations();
+        }
+       
 
-            // play Monitor Site trigger
-            monitorSite = new MonitorSite();
-            monitorSite.playThreadMonitor();
+        public void playAllTriggers(){
+            // play Monitor proccess
+            // monitorProccess.playThreadMonitor();
+
+            // play Monitor Site trigger   
+             monitorSite.playThreadMonitor();
 
             // play MonitorTyping trigger
-            monitorTyping = new MonitorTyping();
+            
             monitorTyping.playThreadMonitor();
 
             // play Monitor installations trigger
-            monitorInstallations = new MonitorInstallations();
             monitorInstallations.playThreadMonitor();
         }
+        public void stopAllTriggers()
+        {
+            // stop Monitor proccess
+            monitorProccess.stopThreadMonitor();
 
+            // stop Monitor Site trigger
+            monitorSite.stopThreadMonitor();
 
+            // stop MonitorTyping trigger
+            monitorTyping.stopThreadMonitor();
+
+            // stop Monitor installations trigger
+            monitorInstallations.stopThreadMonitor();
+        }
+
+        public void playLiveMode() {
+
+            monitorProccess.ifLive = true;
+            monitorProccess.playThreadMonitor();
+            monitorTyping.ifLive = true;
+            monitorSite.ifLive = true;
+        }
+        public void stopLiveMode()
+        {
+            monitorProccess.ifLive = false;
+            monitorSite.ifLive = false;
+            monitorSite.ifLive = false;
+        }
 
     }
 }

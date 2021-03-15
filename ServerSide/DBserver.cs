@@ -53,7 +53,8 @@ namespace ServerSide
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         public void fillClientsTable(int id1, string name1, string settingString1)
         {
-            string sql = "insert into clientData (id,name,settingString) values('" + id1 + "','" + name1 + "','" + settingString1 + "');";
+            
+            string sql = "insert or replace into clientData (id,name,settingString) values('" + id1 + "','" + name1 + "','" + settingString1 + "');";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();

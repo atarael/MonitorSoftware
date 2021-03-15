@@ -22,16 +22,22 @@ namespace ClientSide
     class MonitorSite : Monitor
     {
 
-      
+        public bool ifLive;
         
-        public MonitorSite()
-        {            
-          
+        public static Program program;
+        public Thread monitorSite;
 
+        public MonitorSite()
+        {
+             
         }
 
         public override void playThreadMonitor()
         {
+            if (base.monitorAlive)
+            {
+                stopThreadMonitor();
+            }
             base.monitorAlive = true;
             base.monitorThread = new Thread(playSiteMonitor);
             base.monitorThread.Start();
@@ -44,7 +50,7 @@ namespace ClientSide
 
         public void playSiteMonitor() {
             string prev = "";
-            while ( base.monitorAlive)
+            while (base.monitorAlive)
             {
                 Process[] procsChrome = Process.GetProcessesByName("chrome");
                 foreach (Process chrome in procsChrome)
@@ -79,9 +85,14 @@ namespace ClientSide
                             {
                                 // ShowErrorDialog("URL: " + fullURL);
                                 // send url to send in live state
-                                SiteFromMonitorSite handler = Program.updateCurrentSite;
-                                handler(fullURL);
+                                if (ifLive)
+                                { 
+                                    SiteFromMonitorSite handler = Program.updateCurrentSite;
+                                    handler(fullURL);
+                                }
+                               
                                 prev = fullURL;
+                               
 
                                 // get category from DB
                                 base.DBInstance.connectToDatabase();

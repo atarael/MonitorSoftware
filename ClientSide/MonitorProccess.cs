@@ -8,22 +8,23 @@ using System.Windows.Forms;
 
 namespace ClientSide
 {
+    // This monitor work only in Live mode
     class MonitorProccess : Monitor
     {
+        
         public bool ifLive;
         public static Program program;
         public Thread monitorProccess;
 
-        public MonitorProccess()
-        {
-            ifLive = true;
-            monitorProccess = new Thread(playmonitorProccess);
-            monitorProccess.Start();
-                      
-        }
-
+        public MonitorProccess() { }
         public override void playThreadMonitor()
         {
+           
+            if (base.monitorAlive)
+            {
+                stopThreadMonitor();
+            } 
+            ifLive = true;
             base.monitorAlive = true;
             base.monitorThread = new Thread(playmonitorProccess);
             base.monitorThread.Start();
@@ -31,7 +32,7 @@ namespace ClientSide
         }
         public override void stopThreadMonitor()
         {
-            base.monitorAlive = false;
+            ifLive = false;
         }
 
         private void playmonitorProccess()
