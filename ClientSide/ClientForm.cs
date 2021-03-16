@@ -84,6 +84,8 @@ namespace ClientSide
                 ShowErrorDialog("buttonConnect_Click: " + ex.Message);
             }
         }
+
+        
     }  
 }
 

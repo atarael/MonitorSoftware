@@ -43,12 +43,12 @@
             this.txbProcesses.Multiline = true;
             this.txbProcesses.Name = "txbProcesses";
             this.txbProcesses.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbProcesses.Size = new System.Drawing.Size(431, 789);
+            this.txbProcesses.Size = new System.Drawing.Size(431, 597);
             this.txbProcesses.TabIndex = 0;
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(320, 911);
+            this.btnStop.Location = new System.Drawing.Point(305, 704);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(466, 66);
             this.btnStop.TabIndex = 2;
@@ -58,11 +58,11 @@
             // 
             // txbTyped
             // 
-            this.txbTyped.Location = new System.Drawing.Point(512, 551);
+            this.txbTyped.Location = new System.Drawing.Point(512, 451);
             this.txbTyped.Multiline = true;
             this.txbTyped.Name = "txbTyped";
             this.txbTyped.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbTyped.Size = new System.Drawing.Size(582, 322);
+            this.txbTyped.Size = new System.Drawing.Size(582, 230);
             this.txbTyped.TabIndex = 0;
             // 
             // txbSites
@@ -71,14 +71,14 @@
             this.txbSites.Multiline = true;
             this.txbSites.Name = "txbSites";
             this.txbSites.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbSites.Size = new System.Drawing.Size(582, 429);
+            this.txbSites.Size = new System.Drawing.Size(582, 318);
             this.txbSites.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(508, 528);
+            this.label1.Location = new System.Drawing.Point(508, 428);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(141, 20);
@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1348, 1006);
+            this.ClientSize = new System.Drawing.Size(1178, 962);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -119,7 +119,8 @@
             this.Controls.Add(this.txbSites);
             this.Controls.Add(this.txbTyped);
             this.Controls.Add(this.txbProcesses);
-            this.MinimumSize = new System.Drawing.Size(1370, 1018);
+            this.MaximumSize = new System.Drawing.Size(1200, 1218);
+            this.MinimumSize = new System.Drawing.Size(1200, 1018);
             this.Name = "CurrentState";
             this.Text = "CurrentState";
             this.Load += new System.EventHandler(this.CurrentState_Load);

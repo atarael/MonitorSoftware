@@ -259,12 +259,28 @@ namespace ServerSide
                 // client send data in live
                 if (dataFromClient[0] == "current state")
                 {
+                    
                     foreach (Client client in Allclients)
                     {
                         if (client.ClientSocket == CurrentClientSocket)
                         {
                             // the function open form to disply data from client
                             client.openCurrentStateForm(dataFromClient[1].Split('\0')[0]);
+
+                        }
+                    }
+
+
+                }
+                if (dataFromClient[0] == "open live form")
+                {
+
+                    foreach (Client client in Allclients)
+                    {
+                        if (client.ClientSocket == CurrentClientSocket)
+                        {
+                            // the function open form to disply data from client
+                            client.openCurrentStateForm("open CurrentState form");
 
                         }
                     }
@@ -301,7 +317,7 @@ namespace ServerSide
         {
 
             int CID = Int32.Parse(id.Split('\0')[0]);
-            ShowErrorDialog(CID + "try reconnect");
+            ShowErrorDialog(CID + " try reconnect");
             if (CID < Allclients.Count)
             {
                 Allclients[CID].ClientSocket = current;
@@ -309,6 +325,9 @@ namespace ServerSide
                 Allclients[CID].ClientSocket.BeginReceive(Allclients[CID].buffer, 0, Allclients[CID].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[CID].ClientSocket);
                 s.addClientToCheckBoxLst(Allclients[CID].Name, CID, Allclients[CID].ClientSocket);
                 sendDataToClient(Allclients[CID].ClientSocket, Allclients[CID].Name + " reconnected in Socket: " + Allclients[CID].ClientSocket.RemoteEndPoint);
+            }
+            else {
+                ShowErrorDialog(CID + " fail reconnect " + Allclients.Count);
             }
 
         }
@@ -360,14 +379,16 @@ namespace ServerSide
 
                 try
                 {
-                    program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state");
+         
                     //ShowErrorDialog("DelegateMethod play, id is: " + id + ", in Socket: " + clientSocket.RemoteEndPoint);
                     if (!CheckConnection(clientSocket))
                     {
                         ShowErrorDialog("The monitored computer has not yet connected");
                         s.addClientToCheckBoxLst(program.Allclients[id].Name, id, null);
                     }
-                    else { program.Allclients[id].openCurrentStateForm("open CurrentState form"); }
+                    else { 
+                        program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state"); 
+                    }
 
                 }
                 catch (Exception ex)

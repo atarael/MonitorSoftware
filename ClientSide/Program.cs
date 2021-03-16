@@ -118,7 +118,7 @@ namespace ClientSide
                     // Get uniqe id 
                     case ID:                    
                         id = dataFromServer[1].Split('\r', '\n', '\0')[0];
-                        ShowErrorDialog("get id"); 
+                        //ShowErrorDialog("get id"); 
                         break;
 
                     // Get Setting to implement monitoring
@@ -174,7 +174,7 @@ namespace ClientSide
             ShowErrorDialog("removeeeeeeeeeeee");
 
         }
-
+        
 
         private void stopLiveMode(Socket clientSocket)
         {
@@ -188,6 +188,7 @@ namespace ClientSide
         private void liveMode(Socket socket)
         {
             sendCurrentData = true;
+            SendData(socket, "open live form\r");
             SendData(socket, "current state\ropen CurrentState form");
             manageMonitor.playLiveMode();
 
@@ -330,6 +331,36 @@ namespace ClientSide
 
         }
 
+        public static bool CheckConnection(Socket clientSocket)
+        {
+
+            if (internetConnection() && SocketConnected(clientSocket))
+                return true;
+            else
+                return false;
+        }
+        public static bool SocketConnected(Socket s)
+        {
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+
+            if (part1)
+                return false;
+            else
+                return true;
+        }
+        public static bool internetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204"))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private bool initialClient()
         {
@@ -350,7 +381,8 @@ namespace ClientSide
                 {
                     name = sr.ReadLine();
                     id = sr.ReadLine();
-                    ip = "192.168.43.26";
+                    //ip = "10.0.0.4";
+                    ip = "127.0.0.1";
                     
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
@@ -381,15 +413,29 @@ namespace ClientSide
         {
             try
             {
-                //ShowErrorDialog("send: \r\n" + data);
-                var sendData = Encoding.UTF8.GetBytes(data);
-                clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
+                if (CheckConnection(clientSocket))
+                {
+                    //ShowErrorDialog("send: \r\n" + data);
+                    var sendData = Encoding.UTF8.GetBytes(data);
+                    clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
 
+                }
+                else {
+                    reConnect();
+                }
+               
             }
             catch (SocketException ex)
             {
-                //ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
-                reConnect();
+                if (!CheckConnection(clientSocket))
+                {      
+                    ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);                 
+                    reConnect();
+                    SendData(clientSocket, data);
+
+                }
+           
+
                 //SendData(clientSocket, data);
             }
             catch (ObjectDisposedException ex)
