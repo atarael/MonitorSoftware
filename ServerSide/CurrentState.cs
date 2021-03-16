@@ -43,7 +43,7 @@ namespace ServerSide
                     if (add[0] == "processes")
                         txbProcesses.Text = data;                      
                     if (add[0] == "site")
-                        txbSites.AppendText(data + "\r");
+                        txbSites.AppendText(data + "\r\n");
                 });
             }
            

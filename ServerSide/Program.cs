@@ -54,8 +54,7 @@ namespace ServerSide
             {
                 // send our Win32 message to make the currently running instance
                 // jump on top of all the other windows
-                NativeMethods.PostMessage(
-  (IntPtr)NativeMethods.HWND_BROADCAST,
+                NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
                     NativeMethods.WM_SHOWME,
                     IntPtr.Zero,
                     IntPtr.Zero);
@@ -231,7 +230,7 @@ namespace ServerSide
                     }
                 }
                 string data = Encoding.UTF8.GetString(buffer);
-                ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
+               // ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
                 var dataFromClient = data.Split(new[] { '\r', '\0', '\n' }, 2);
 
                 // client send name at first time
@@ -347,17 +346,7 @@ namespace ServerSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-        public bool SocketConnected(Socket s)
-        {
-            bool part1 = s.Poll(1000, SelectMode.SelectRead);
-            bool part2 = (s.Available == 0);
-            if (part1 && part2)
-                return false;
-            else
-                return true;
-        }
-
+            
 
         // Create a method for a delegate.
         public static void startCurrentState(int id)
@@ -373,7 +362,7 @@ namespace ServerSide
                 {
                     program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state");
                     //ShowErrorDialog("DelegateMethod play, id is: " + id + ", in Socket: " + clientSocket.RemoteEndPoint);
-                    if (!program.SocketConnected(clientSocket))
+                    if (!CheckConnection(clientSocket))
                     {
                         ShowErrorDialog("The monitored computer has not yet connected");
                         s.addClientToCheckBoxLst(program.Allclients[id].Name, id, null);
@@ -424,7 +413,39 @@ namespace ServerSide
 
 
         }
+        public static bool CheckConnection(Socket clientSocket) {
 
+            if (internetConnection() && socketConnected(clientSocket))
+                return true;
+            else
+                return false;
+        }
+        public static bool socketConnected(Socket s)
+        {
+            if (s == null)
+            {
+                return false;
+            }
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+           
+            if (part1) 
+                return false;
+            else
+                return true;
+        }
+        public static bool internetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204"))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public static void setSettingDeleGate(int id, string setting)
         {
 
@@ -435,9 +456,13 @@ namespace ServerSide
             {
                 if (program.Allclients[i].id == id)
                 {
-
-                    program.sendDataToClient(program.Allclients[i].ClientSocket, "setting\r\n" + setting);
-                    index = i;
+                    if(CheckConnection(program.Allclients[i].ClientSocket))
+                    {
+                        program.sendDataToClient(program.Allclients[i].ClientSocket, "setting\r\n" + setting);
+                        index = i;
+                    }
+                         
+                  
 
                 }
 

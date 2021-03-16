@@ -46,48 +46,7 @@ namespace ServerSide
             TopMost = top;
         }
 
-
-        /// <summary>
-        /// Construct server socket and bind socket to all local network interfaces, then listen for connections
-        /// with a backlog of 10. Which means there can only be 10 pending connections lined up in the TCP stack
-        /// at a time. This does not mean the server can handle only 10 connections. The we begin accepting connections.
-        /// Meaning if there are connections queued, then we should process them.
-        /// </summary>
-
-
-        /*   private void btnSendMsg_Click(object sender, EventArgs e)
-           {
-               List<Socket> selectedClient = getCheckedClients();
-
-               try
-               {
-                   String msg = txbMsg.Text;
-                   txbMsg.Text = "";
-                   var sendData = Encoding.ASCII.GetBytes(msg);
-                   foreach (Socket s in selectedClient)
-                   {
-                       clientSocket = s;
-                       clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
-
-                   }
-
-                   // write on txtBox
-                   txbChat.AppendText("ME: " + msg);
-                   txbChat.AppendText(Environment.NewLine);
-
-               }
-               catch (SocketException ex)
-               {
-                   ShowErrorDialog(ex.Message);
-
-               }
-               catch (ObjectDisposedException ex)
-               {
-                   ShowErrorDialog(ex.Message);
-
-               }
-           }
-           */
+ 
 
 
         private void btnSetSystem_Click(object sender, EventArgs e)
@@ -104,19 +63,7 @@ namespace ServerSide
                 }
             }
 
-            Invoke((Action)delegate
-            {
-                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    if (checkLstAllClient.GetItemChecked(i))
-                    {
-                        // MonitorSetting monitorSystem = new MonitorSetting(i);
-                        // monitorSystem.ShowDialog();
-
-
-                    }
-
-            });
-
+            
 
         }
         public void btnGetCurrentState_Click(object sender, EventArgs e)
@@ -133,14 +80,7 @@ namespace ServerSide
                 }
             }
 
-
-            //for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-            //  if (checkLstAllClient.GetItemChecked(i))
-            //  {
-
-            //playCurrentState handler = Program.startCurrentState;
-            // handler(i);
-            //}
+ 
 
 
 

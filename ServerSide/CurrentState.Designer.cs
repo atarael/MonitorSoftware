@@ -48,7 +48,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(439, 911);
+            this.btnStop.Location = new System.Drawing.Point(320, 911);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(466, 66);
             this.btnStop.TabIndex = 2;
@@ -62,7 +62,7 @@
             this.txbTyped.Multiline = true;
             this.txbTyped.Name = "txbTyped";
             this.txbTyped.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbTyped.Size = new System.Drawing.Size(791, 322);
+            this.txbTyped.Size = new System.Drawing.Size(582, 322);
             this.txbTyped.TabIndex = 0;
             // 
             // txbSites
@@ -71,7 +71,7 @@
             this.txbSites.Multiline = true;
             this.txbSites.Name = "txbSites";
             this.txbSites.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbSites.Size = new System.Drawing.Size(791, 429);
+            this.txbSites.Size = new System.Drawing.Size(582, 429);
             this.txbSites.TabIndex = 0;
             // 
             // label1
@@ -119,6 +119,7 @@
             this.Controls.Add(this.txbSites);
             this.Controls.Add(this.txbTyped);
             this.Controls.Add(this.txbProcesses);
+            this.MinimumSize = new System.Drawing.Size(1370, 1018);
             this.Name = "CurrentState";
             this.Text = "CurrentState";
             this.Load += new System.EventHandler(this.CurrentState_Load);
