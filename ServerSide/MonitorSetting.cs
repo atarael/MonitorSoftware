@@ -212,7 +212,7 @@ namespace ServerSide
 
         private void btnAddSiteToMonitoring_Click(object sender, EventArgs e)
         {
-
+            
             string url = correctURL(txbBlockedSites.Text);
             if (url == string.Empty)
             {

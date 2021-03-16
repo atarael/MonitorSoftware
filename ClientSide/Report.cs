@@ -264,7 +264,7 @@ namespace ClientSide
         }
         public static void setReportFrequency()
         {
-            /*Setting SettingInstance = Setting.Instance;
+            Setting SettingInstance = Setting.Instance;
             frequencySecond = SettingInstance.reportFrequencyInSecond;
             frequencyWord = SettingInstance.reportFrequencyInWord; // dayly or weekly..
             //createReportFile(db);
@@ -277,7 +277,7 @@ namespace ClientSide
             //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
             _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
 
-    */
+    //sara atara 
 
 
         }

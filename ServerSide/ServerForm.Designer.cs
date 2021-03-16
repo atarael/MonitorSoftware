@@ -33,21 +33,24 @@
             this.btnSetSystem = new System.Windows.Forms.Button();
             this.pageSetupDialog1 = new System.Windows.Forms.PageSetupDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvConnectedClients = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnGetCurrentState = new System.Windows.Forms.Button();
             this.btnRemoveClient = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dgvConnectedClients = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.setting = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).BeginInit();
             this.SuspendLayout();
             // 
             // checkLstAllClient
@@ -91,6 +94,58 @@
             this.groupBox1.TabIndex = 70;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connected Clients List:";
+            // 
+            // dgvConnectedClients
+            // 
+            this.dgvConnectedClients.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvConnectedClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvConnectedClients.ColumnHeadersVisible = false;
+            this.dgvConnectedClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column3,
+            this.Column4,
+            this.Column2});
+            this.dgvConnectedClients.GridColor = System.Drawing.Color.FloralWhite;
+            this.dgvConnectedClients.Location = new System.Drawing.Point(22, 102);
+            this.dgvConnectedClients.MaximumSize = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.MinimumSize = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.Name = "dgvConnectedClients";
+            this.dgvConnectedClients.RowHeadersVisible = false;
+            this.dgvConnectedClients.RowHeadersWidth = 62;
+            this.dgvConnectedClients.RowTemplate.Height = 28;
+            this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvConnectedClients.Size = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.TabIndex = 72;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MinimumWidth = 8;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 20;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "socket";
+            this.Column3.MinimumWidth = 70;
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 70;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "name";
+            this.Column4.MinimumWidth = 70;
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 70;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "id";
+            this.Column2.MinimumWidth = 8;
+            this.Column2.Name = "Column2";
+            this.Column2.Visible = false;
+            this.Column2.Width = 8;
             // 
             // button1
             // 
@@ -179,6 +234,10 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.ColumnHeadersVisible = false;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.name,
+            this.id,
+            this.setting});
             this.dataGridView1.Location = new System.Drawing.Point(91, 385);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -190,57 +249,30 @@
             this.dataGridView1.TabIndex = 72;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.setSttingToNewClient);
             // 
-            // dgvConnectedClients
+            // name
             // 
-            this.dgvConnectedClients.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.dgvConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvConnectedClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvConnectedClients.ColumnHeadersVisible = false;
-            this.dgvConnectedClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column3,
-            this.Column4,
-            this.Column2});
-            this.dgvConnectedClients.GridColor = System.Drawing.Color.FloralWhite;
-            this.dgvConnectedClients.Location = new System.Drawing.Point(22, 102);
-            this.dgvConnectedClients.MaximumSize = new System.Drawing.Size(600, 200);
-            this.dgvConnectedClients.MinimumSize = new System.Drawing.Size(600, 200);
-            this.dgvConnectedClients.Name = "dgvConnectedClients";
-            this.dgvConnectedClients.RowHeadersVisible = false;
-            this.dgvConnectedClients.RowHeadersWidth = 62;
-            this.dgvConnectedClients.RowTemplate.Height = 28;
-            this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvConnectedClients.Size = new System.Drawing.Size(900, 600);
-            this.dgvConnectedClients.TabIndex = 72;
+            this.name.HeaderText = "Column5";
+            this.name.MinimumWidth = 150;
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 150;
             // 
-            // Column1
+            // id
             // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.MinimumWidth = 8;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 20;
+            this.id.HeaderText = "Column5";
+            this.id.MinimumWidth = 8;
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            this.id.Width = 150;
             // 
-            // Column3
+            // setting
             // 
-            this.Column3.HeaderText = "socket";
-            this.Column3.MinimumWidth = 70;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 70;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "name";
-            this.Column4.MinimumWidth = 70;
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 70;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "id";
-            this.Column2.MinimumWidth = 8;
-            this.Column2.Name = "Column2";
-            this.Column2.Visible = false;
-            this.Column2.Width = 8;
+            this.setting.HeaderText = "Column5";
+            this.setting.MinimumWidth = 100;
+            this.setting.Name = "setting";
+            this.setting.ReadOnly = true;
+            this.setting.Width = 150;
             // 
             // ServerForm
             // 
@@ -253,10 +285,11 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ServerForm";
             this.Text = "Basic Async Server";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -277,6 +310,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewButtonColumn setting;
     }
 }
 

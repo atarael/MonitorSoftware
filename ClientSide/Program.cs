@@ -257,7 +257,7 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                // ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
+                 ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
 
                 reConnect();
 
@@ -350,7 +350,7 @@ namespace ClientSide
                 {
                     name = sr.ReadLine();
                     id = sr.ReadLine();
-                    ip = "127.1.0.0";
+                    ip = "192.168.43.26";
                     
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
@@ -415,12 +415,12 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                //ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
+                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
 
             }
             catch (ObjectDisposedException ex)
             {
-               // ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+               ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
         }
 

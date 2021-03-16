@@ -34,6 +34,7 @@ namespace ClientSide
 
         public override void playThreadMonitor()
         {
+            
             if (base.monitorAlive)
             {
                 stopThreadMonitor();
@@ -113,7 +114,7 @@ namespace ClientSide
                     }
                     catch (Exception ex)
                     {
-                        ShowErrorDialog("fail: \n" + ex);
+                        //ShowErrorDialog("fail: \n" + ex);
                         continue;
 
                     }

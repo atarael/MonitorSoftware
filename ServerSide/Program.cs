@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using IWshRuntimeLibrary;
+using System.Runtime.InteropServices;
 
 namespace ServerSide
 {
@@ -30,21 +32,35 @@ namespace ServerSide
         private String name;
         private static ServerForm s;
         public static Program program;
+        static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
 
         [STAThread]
         static void Main(string[] args)
         {
-            connectAtReStartComputer();
-            program = new Program();
-            List<Client> Allclients;
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            s = new ServerForm();
-            s.Text = "Server";
-            s.Show();
-            program.StartServer();
-            Application.Run();
-            //System.Threading.Thread.CurrentThread.ApartmentState = System.Threading.ApartmentState.STA;
+            if (mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                connectAtReStartComputer();
+                program = new Program();
+                List<Client> Allclients;
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                s = new ServerForm();
+                s.Text = "Server";
+                program.StartServer();
+                Application.Run(s);
+                mutex.ReleaseMutex();
+            }
+            else
+            {
+                // send our Win32 message to make the currently running instance
+                // jump on top of all the other windows
+                NativeMethods.PostMessage(
+  (IntPtr)NativeMethods.HWND_BROADCAST,
+                    NativeMethods.WM_SHOWME,
+                    IntPtr.Zero,
+                    IntPtr.Zero);
+            }
+
 
         }
         private static void connectAtReStartComputer()
@@ -56,9 +72,10 @@ namespace ServerSide
             shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
             shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
             shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
-            shortcut.Save(); // save the shortcut 
+            shortcut.Save(); // save the shortcut
             shortcut.Arguments = "/a /c";
         }
+
 
         public void StartServer()
         {
@@ -123,7 +140,8 @@ namespace ServerSide
                 clientSocket = AR.AsyncState as Socket;
                 foreach (Client client in program.Allclients)
                 {
-                    if (clientSocket == client.ClientSocket) {
+                    if (clientSocket == client.ClientSocket)
+                    {
                         client.ClientSocket.EndSend(AR);
                     }
                 }
@@ -144,7 +162,6 @@ namespace ServerSide
         /*
         public void ReceiveCallback(IAsyncResult AR)
         {
-
             try
             {
                 if (AR.AsyncState as Socket != null)
@@ -160,37 +177,23 @@ namespace ServerSide
                             break;
                         }
                     }
-
                     if (id != -1)
                     {
                         int received = Allclients[id].ClientSocket.EndReceive(AR);
-
                         if (received == 0)
                         {
                             return;
                         }
-
                         string message = Encoding.ASCII.GetString(Allclients[id].buffer);
-
                         String[] SplitedMessage = message.Split('\0');
                         message = SplitedMessage[0];
                         ShowErrorDialog(message);
                        
-
-
                         Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
                         Allclients[id].ClientSocket.BeginReceive(Allclients[id].buffer, 0, Allclients[id].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
-
-
                     }
-
-
                 }
-
-
             }
-
-
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
             {
@@ -228,7 +231,7 @@ namespace ServerSide
                     }
                 }
                 string data = Encoding.UTF8.GetString(buffer);
-                //ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
+                ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
                 var dataFromClient = data.Split(new[] { '\r', '\0', '\n' }, 2);
 
                 // client send name at first time
@@ -242,7 +245,7 @@ namespace ServerSide
                     Allclients.Add(newClient);
                     clientIds.Add(newId);
                     numOfClient++;
-                    
+
                     sendDataToClient(CurrentClientSocket, "id\r" + newId);
                     s.addClientToWaitingList(name, newId);
                 }
@@ -255,7 +258,8 @@ namespace ServerSide
                 }
 
                 // client send data in live
-                if (dataFromClient[0] == "current state") {
+                if (dataFromClient[0] == "current state")
+                {
                     foreach (Client client in Allclients)
                     {
                         if (client.ClientSocket == CurrentClientSocket)
@@ -273,14 +277,15 @@ namespace ServerSide
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("ReceiveCallback " + ex.Message);
+                //s.();
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("ReceiveCallback " + ex.Message);
             }
         }
-  
+
         private int createNewId()
         {
             int newId = 0;
@@ -292,10 +297,12 @@ namespace ServerSide
                     return newId;
             }
         }
-   
+
         private void reConnectSocket(Socket current, string id)
         {
+
             int CID = Int32.Parse(id.Split('\0')[0]);
+            ShowErrorDialog(CID + "try reconnect");
             if (CID < Allclients.Count)
             {
                 Allclients[CID].ClientSocket = current;
@@ -334,33 +341,55 @@ namespace ServerSide
         }
 
 
-    
+
 
         public static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-      
+        public bool SocketConnected(Socket s)
+        {
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (s.Available == 0);
+            if (part1 && part2)
+                return false;
+            else
+                return true;
+        }
+
+
         // Create a method for a delegate.
         public static void startCurrentState(int id)
         {
 
-            if (id < program.Allclients.Count) { 
-                
+            if (id < program.Allclients.Count)
+            {
+
                 Socket clientSocket = program.Allclients[id].ClientSocket;
-                try {
+
+
+                try
+                {
                     program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state");
                     //ShowErrorDialog("DelegateMethod play, id is: " + id + ", in Socket: " + clientSocket.RemoteEndPoint);
-                    program.Allclients[id].openCurrentStateForm("open CurrentState form");
+                    if (!program.SocketConnected(clientSocket))
+                    {
+                        ShowErrorDialog("The monitored computer has not yet connected");
+                        s.addClientToCheckBoxLst(program.Allclients[id].Name, id, null);
+                    }
+                    else { program.Allclients[id].openCurrentStateForm("open CurrentState form"); }
+
                 }
-                catch(Exception ex) {
+                catch (Exception ex)
+                {
                     ShowErrorDialog("The monitored computer has not yet connected");
                 }
-                
+
+
                 //s.enabledbtnGetCurrentState(false);
             }
-         
+
         }
         public static void stopCurrentState(int id)
         {
@@ -368,10 +397,10 @@ namespace ServerSide
             {
                 Socket clientSocket = program.Allclients[id].ClientSocket;
                 program.sendDataToClient(program.Allclients[id].ClientSocket, "stop current state");
-              //  ShowErrorDialog("in stopCurrentState: " + id); 
+                //  ShowErrorDialog("in stopCurrentState: " + id);
                 //s.enabledbtnGetCurrentState(true);
             }
-           
+
 
         }
         public static void removeClient(int id)
@@ -382,29 +411,31 @@ namespace ServerSide
                 {
                     Socket clientSocket = program.Allclients[i].ClientSocket;
                     program.sendDataToClient(program.Allclients[i].ClientSocket, "remove client");
-                    
+
                 }
             }
-            
+
             program.clientIds.Remove(id);
             s.removeClientFromCheckBoxLst(id);
 
             program.dbs.removeClient(id.ToString());
             program.removeClientfromMemory(id.ToString());
 
-            
-             
+
+
         }
-     
-        public static void setSettingDeleGate(int id, string setting) {
-                  
+
+        public static void setSettingDeleGate(int id, string setting)
+        {
+
             program.dbs.fillClientsTable(id, program.name, setting);
             int index = 0;
             // Start receiving data from this client Socket.
             for (int i = 0; i < program.Allclients.Count; i++)
             {
-                if (program.Allclients[i].id == id) {
-               
+                if (program.Allclients[i].id == id)
+                {
+
                     program.sendDataToClient(program.Allclients[i].ClientSocket, "setting\r\n" + setting);
                     index = i;
 
@@ -412,7 +443,7 @@ namespace ServerSide
 
             }
             program.Allclients[index].ClientSocket.BeginReceive(program.Allclients[index].buffer, 0, program.Allclients[index].buffer.Length, SocketFlags.None, program.ReceiveCallback, program.Allclients[index].ClientSocket);
-            
+
             s.addClientToCheckBoxLst(program.Allclients[index].Name, program.Allclients[index].id, program.Allclients[index].ClientSocket);
             s.removeClientToWaitingList(id);
         }
@@ -428,8 +459,8 @@ namespace ServerSide
                 }
             }
         }
-    
-    
-    
+
+
+
     }
 }
