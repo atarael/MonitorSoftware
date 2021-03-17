@@ -19,6 +19,7 @@ namespace ServerSide
     public delegate void stopCurrentState(int id);
     public delegate void RemoveClient(int id);
     public delegate void showLastReport(int id);
+    public delegate void checkClientSocket(int id);
 
     public delegate void setSetting(int id, string setting);
     class Program
@@ -39,6 +40,7 @@ namespace ServerSide
         [STAThread]
         static void Main(string[] args)
         {
+            
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 connectAtReStartComputer();
@@ -49,6 +51,8 @@ namespace ServerSide
                 s = new ServerForm();
                 s.Text = "Server";
                 program.StartServer();
+                Thread interntAvilable = new Thread(checkInterntConnection);
+                interntAvilable.Start();
                 Application.Run(s);
                 mutex.ReleaseMutex();
             }
@@ -62,8 +66,42 @@ namespace ServerSide
                     IntPtr.Zero);
             }
 
+           
 
         }
+
+        private static void checkInterntConnection()
+        {
+            bool connection = true;
+
+            while (true)
+            {
+                try
+                {
+                    using (var client = new WebClient())
+                    using (var stream = client.OpenRead("http://www.google.com"))
+                    {
+                        //if (!connection)
+                        //{
+                            connection = true;
+                            s.serverConnect();
+                        //}
+                    }
+                }
+                catch
+                {
+                    //if (connection)
+                    //{
+                        connection = false;
+                        s.serverNotConnect();
+                    //}
+                }
+                
+
+            }
+
+        }
+
         private static void connectAtReStartComputer()
         {
             string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
@@ -206,6 +244,7 @@ namespace ServerSide
             }
         }
         */
+      
         public void ReceiveCallback(IAsyncResult AR)
         {
             try
@@ -303,15 +342,13 @@ namespace ServerSide
             catch (SocketException ex)
             {
                 ShowErrorDialog("ReceiveCallback " + ex.Message);
-                //s.();
+                s.setClientNotConnect(clientSocket.RemoteEndPoint);
             }
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("ReceiveCallback " + ex.Message);
             }
         }
-
-       
 
         private int createNewId()
         {
@@ -393,9 +430,9 @@ namespace ServerSide
                 {
          
                     //ShowErrorDialog("DelegateMethod play, id is: " + id + ", in Socket: " + clientSocket.RemoteEndPoint);
-                    if (!CheckConnection(clientSocket))
+                    if (!CheckConnection(id,clientSocket))
                     {
-                        ShowErrorDialog("The monitored computer has not yet connected");
+                        ShowErrorDialog("Client Not connect");
                         s.addClientToCheckBoxLst(program.Allclients[id].Name, id, null);
                     }
                     else { 
@@ -446,10 +483,13 @@ namespace ServerSide
 
 
         }
-        public static bool CheckConnection(Socket clientSocket) {
+        public static bool CheckConnection(int id, Socket clientSocket) {
 
             if (internetConnection() && socketConnected(clientSocket))
+            {
                 return true;
+            }
+                
             else
                 return false;
         }
@@ -489,7 +529,7 @@ namespace ServerSide
             {
                 if (program.Allclients[i].id == id)
                 {
-                    if(CheckConnection(program.Allclients[i].ClientSocket))
+                    if(CheckConnection(id,program.Allclients[i].ClientSocket))
                     {
                         program.sendDataToClient(program.Allclients[i].ClientSocket, "setting\r\n" + setting);
                         index = i;
@@ -528,6 +568,32 @@ namespace ServerSide
                 }
             }
         }
+    
+        public static void checckClientConnection(int id)
+        {
+            for (int i = 0; i < program.Allclients.Count(); i++)
+            {
+                if (program.Allclients[i].id  == id)
+                {
+                    if (!CheckConnection(id,program.Allclients[i].ClientSocket))
+                    {
+                       
+                        if (program.Allclients[i].ClientSocket != null) { 
+                            s.setClientNotConnect(program.Allclients[i].ClientSocket.RemoteEndPoint); 
+                        }
+                        else
+                        {
+                            s.addClientToCheckBoxLst(program.Allclients[i].Name, program.Allclients[i].id,null);
+                        }
+                    
+                    }
+                    else
+                    {
+                        s.addClientToCheckBoxLst(program.Allclients[i].Name, id, program.Allclients[i].ClientSocket);
 
+                    }
+                }
+            }
+        }
     }
 }
