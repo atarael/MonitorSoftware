@@ -60,7 +60,7 @@ namespace ClientSide
                         input += (char)i; 
 
                         if (i == 32) // if type space 
-                        {
+                        { 
                             //ShowErrorDialog(input+", "+ifLive);
                             if(ifLive)
                             {
@@ -76,10 +76,10 @@ namespace ClientSide
                              {
 
                                  string xb = badWord.Replace(" ", "");
-                                 if (replacement.ToLower().Equals(badWord))
+                                if (replacement.ToLower().Equals(badWord) && xb.Length>0)
                                  {
                                      reportOrSendAlert(badWord);                                  
-                                 }
+                                 }   // atara 
                             }
                             input = "";
                         }
@@ -87,9 +87,8 @@ namespace ClientSide
                        
                     }
                 }
-            }  
-
-        }
+            }
+            }
      
         private void reportOrSendAlert(string badWord)
         {
@@ -98,7 +97,7 @@ namespace ClientSide
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
                 Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
-                ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: " + badWord );
+                ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: |" + badWord + "|");
 
             }
 
@@ -106,7 +105,7 @@ namespace ClientSide
             {
                 base.DBInstance.connectToDatabase();
                 base.DBInstance.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
-                ShowErrorDialog("update DB\nTypedin trigger occur\nword: " + badWord);
+                ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord+"|");
             }
         }
 
@@ -145,6 +144,6 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-    }
+    } 
 }
 //abbabb

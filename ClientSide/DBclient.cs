@@ -103,7 +103,7 @@ namespace ClientSide
         }
         public void fillGeneralDetailsTable(string detail, string value)
         {
-            string sql = "insert into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
+            string sql = "insert or replace into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 

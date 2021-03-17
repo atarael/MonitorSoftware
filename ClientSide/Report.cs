@@ -55,15 +55,17 @@ namespace ClientSide
         public static string frequencyWord;
          
         public static Setting settingClient;
-        public static string mailAddress; 
-        
+        public static string mailAddress;
+        public static string emailFrom;
+
         public DBclient DBInstance = DBclient.Instance;
-        private Setting SettingInstance = Setting.Instance;
+        public Setting SettingInstance = Setting.Instance;
       
         public Report()
         {
-           
-             
+          
+
+
         }
 
         public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string trigger)
@@ -105,7 +107,8 @@ namespace ClientSide
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                 mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                mail.To.Add("ataraelmal@gmail.com");
+                Setting settingInstance = Setting.Instance;
+                mail.To.Add(settingInstance.email);
                 mail.Subject = "Alert " + TriggerDescription;
                
                 switch (trigger)
@@ -202,7 +205,9 @@ namespace ClientSide
                     {
 
                         mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                        mail.To.Add("ataraelmal@gmail.com");
+                        Setting settingInstance = Setting.Instance;
+                        mail.To.Add(settingInstance.email);
+                     
                         mail.Subject = "Report File ";
 
                         Attachment attachment;
@@ -215,7 +220,7 @@ namespace ClientSide
 
                         SmtpServer.Send(mail);
                         // delete report and DB !!  
-                        ShowErrorDialog("jjj");
+                        ShowErrorDialog("report send");
 
                         removeTriggers();
 
@@ -277,7 +282,7 @@ namespace ClientSide
             //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
             _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
 
-    //sara atara 
+  
 
 
         }
@@ -289,14 +294,14 @@ namespace ClientSide
             string projectDirectory = Environment.CurrentDirectory;
             string path = Directory.GetParent(projectDirectory).Parent.FullName;
 
-            PdfWriter.GetInstance(Report, new FileStream(path + "/Report.pdf", FileMode.Create));
+             PdfWriter.GetInstance(Report, new FileStream(path + "/Report.pdf", FileMode.Create));
             //PdfWriter.GetInstance(Report, new FileStream(path + "/logo.JPG", FileMode.Create));
 
             Report.Open();
             Image jpg = Image.GetInstance(path + "/logo.JPG");
             jpg.ScalePercent(12f);
             jpg.SetAbsolutePosition(Report.PageSize.Width - 410f,
-                  Report.PageSize.Height - 130f);
+                  Report.PageSize.Height - 130f); 
 
             Report.Add(jpg);
             Report.Add(new Paragraph(DateTime.Now.ToString()));

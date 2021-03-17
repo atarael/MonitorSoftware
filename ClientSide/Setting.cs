@@ -25,7 +25,7 @@ namespace ClientSide
         public double reportFrequencyInSecond; //Frequency of reporting in seconds
         public string reportFrequencyInWord = "";//daily,weekly..
         private List<string> offensiveWords = new List<string>();
-        string email;
+        public string email;
 
 
         private static readonly Setting instance = new Setting();
@@ -68,11 +68,11 @@ namespace ClientSide
             if (settingStringSplited.Length > 6)
             {
                 email = settingStringSplited[6].Split('\r')[0];
-                //ShowErrorDialog("email is: |"+email+"|");
+                ShowErrorDialog("email is: |"+email+"|");
                 
             }
         }
-
+        // s atat atara sara 
         private void installationSetting()
         {
             string[] settingStringSplited = settingString.Split('\n');
