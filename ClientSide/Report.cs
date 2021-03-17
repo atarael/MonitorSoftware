@@ -55,6 +55,7 @@ namespace ClientSide
         public static string frequencyWord;
          
         public static Setting settingClient;
+<<<<<<< HEAD
         public static string mailAddress; 
         
         public DBclient DBInstance = DBclient.Instance;
@@ -64,6 +65,19 @@ namespace ClientSide
         {
            
              
+=======
+        public static string mailAddress;
+        public static string emailFrom;
+
+        public DBclient DBInstance = DBclient.Instance;
+        public Setting SettingInstance = Setting.Instance;
+      
+        public Report()
+        {
+          
+
+
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
         }
 
         public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string trigger)
@@ -105,7 +119,12 @@ namespace ClientSide
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                 mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+<<<<<<< HEAD
                 mail.To.Add("ataraelmal@gmail.com");
+=======
+                Setting settingInstance = Setting.Instance;
+                mail.To.Add(settingInstance.email);
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                 mail.Subject = "Alert " + TriggerDescription;
                
                 switch (trigger)
@@ -202,7 +221,13 @@ namespace ClientSide
                     {
 
                         mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+<<<<<<< HEAD
                         mail.To.Add("ataraelmal@gmail.com");
+=======
+                        Setting settingInstance = Setting.Instance;
+                        mail.To.Add(settingInstance.email);
+                     
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                         mail.Subject = "Report File ";
 
                         Attachment attachment;
@@ -215,7 +240,11 @@ namespace ClientSide
 
                         SmtpServer.Send(mail);
                         // delete report and DB !!  
+<<<<<<< HEAD
                         ShowErrorDialog("jjj");
+=======
+                        ShowErrorDialog("report send");
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
                         removeTriggers();
 
@@ -277,7 +306,11 @@ namespace ClientSide
             //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
             _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
 
+<<<<<<< HEAD
     //sara atara 
+=======
+  
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
 
         }
@@ -289,14 +322,22 @@ namespace ClientSide
             string projectDirectory = Environment.CurrentDirectory;
             string path = Directory.GetParent(projectDirectory).Parent.FullName;
 
+<<<<<<< HEAD
             PdfWriter.GetInstance(Report, new FileStream(path + "/Report.pdf", FileMode.Create));
+=======
+             PdfWriter.GetInstance(Report, new FileStream(path + "/Report.pdf", FileMode.Create));
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
             //PdfWriter.GetInstance(Report, new FileStream(path + "/logo.JPG", FileMode.Create));
 
             Report.Open();
             Image jpg = Image.GetInstance(path + "/logo.JPG");
             jpg.ScalePercent(12f);
             jpg.SetAbsolutePosition(Report.PageSize.Width - 410f,
+<<<<<<< HEAD
                   Report.PageSize.Height - 130f);
+=======
+                  Report.PageSize.Height - 130f); 
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
             Report.Add(jpg);
             Report.Add(new Paragraph(DateTime.Now.ToString()));

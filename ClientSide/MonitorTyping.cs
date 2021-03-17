@@ -60,7 +60,11 @@ namespace ClientSide
                         input += (char)i; 
 
                         if (i == 32) // if type space 
+<<<<<<< HEAD
                         {
+=======
+                        { 
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                             //ShowErrorDialog(input+", "+ifLive);
                             if(ifLive)
                             {
@@ -76,10 +80,17 @@ namespace ClientSide
                              {
 
                                  string xb = badWord.Replace(" ", "");
+<<<<<<< HEAD
                                  if (replacement.ToLower().Equals(badWord))
                                  {
                                      reportOrSendAlert(badWord);                                  
                                  }
+=======
+                                if (replacement.ToLower().Equals(badWord) && xb.Length>0)
+                                 {
+                                     reportOrSendAlert(badWord);                                  
+                                 }   // atara 
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                             }
                             input = "";
                         }
@@ -87,9 +98,14 @@ namespace ClientSide
                        
                     }
                 }
+<<<<<<< HEAD
             }  
 
         }
+=======
+            }
+            }
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
      
         private void reportOrSendAlert(string badWord)
         {
@@ -98,7 +114,11 @@ namespace ClientSide
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
                 Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
+<<<<<<< HEAD
                 ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: " + badWord );
+=======
+                ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: |" + badWord + "|");
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
             }
 
@@ -106,7 +126,11 @@ namespace ClientSide
             {
                 base.DBInstance.connectToDatabase();
                 base.DBInstance.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
+<<<<<<< HEAD
                 ShowErrorDialog("update DB\nTypedin trigger occur\nword: " + badWord);
+=======
+                ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord+"|");
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
             }
         }
 
@@ -145,6 +169,10 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+<<<<<<< HEAD
     }
+=======
+    } 
+>>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 }
 //abbabb

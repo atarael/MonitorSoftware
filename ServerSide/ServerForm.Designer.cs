@@ -64,6 +64,7 @@
             this.checkLstAllClient.Name = "checkLstAllClient";
             this.checkLstAllClient.Size = new System.Drawing.Size(655, 35);
             this.checkLstAllClient.TabIndex = 4;
+            this.checkLstAllClient.SelectedIndexChanged += new System.EventHandler(this.checkLstAllClient_SelectedIndexChanged);
             // 
             // btnSetSystem
             // 
@@ -79,7 +80,6 @@
             this.btnSetSystem.TabIndex = 5;
             this.btnSetSystem.Text = "Set Setting";
             this.btnSetSystem.UseVisualStyleBackColor = false;
-            this.btnSetSystem.Click += new System.EventHandler(this.btnSetSystem_Click);
             // 
             // groupBox1
             // 
@@ -116,7 +116,6 @@
             this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvConnectedClients.Size = new System.Drawing.Size(600, 138);
             this.dgvConnectedClients.TabIndex = 72;
-            this.dgvConnectedClients.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvConnectedClients_CellClick);
             // 
             // Column1
             // 

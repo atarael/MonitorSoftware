@@ -15,7 +15,7 @@ namespace ServerSide
     public partial class ServerForm : Form
     {
 
-        const string NOT_CONNECTED = "Not_connected";
+
         public MonitorSetting monitorSystem;
         public DBserver dbs;
 
@@ -23,7 +23,6 @@ namespace ServerSide
         {
             InitializeComponent();
         }
-   
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == NativeMethods.WM_SHOWME)
@@ -32,7 +31,6 @@ namespace ServerSide
             }
             base.WndProc(ref m);
         }
-      
         private void ShowMe()
         {
             this.Show();
@@ -48,7 +46,26 @@ namespace ServerSide
             TopMost = top;
         }
 
-        
+ 
+
+
+        private void btnSetSystem_Click(object sender, EventArgs e)
+        {
+
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+            {
+
+                if (row.Cells[0].Value.ToString() == "True")
+                {
+                    int id = int.Parse(row.Cells[3].Value.ToString());
+                    MonitorSetting monitorSystem = new MonitorSetting(id);
+                    monitorSystem.ShowDialog();
+                }
+            }
+
+            
+
+        }
         public void btnGetCurrentState_Click(object sender, EventArgs e)
         {
 
@@ -57,7 +74,6 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
-
                     int id = int.Parse(row.Cells[3].Value.ToString());
                     playCurrentState handler = Program.startCurrentState;
                     handler(id);
@@ -69,7 +85,6 @@ namespace ServerSide
 
 
         }
-       
         public void addClientToCheckBoxLst(string Name, int id, Socket ClientSocket)
         {
 
@@ -81,7 +96,7 @@ namespace ServerSide
                     {
                         if (ClientSocket == null)
                         {
-                            row.Cells[2].Value = NOT_CONNECTED;
+                            row.Cells[2].Value = "Not Connnected";
                         }
                         else
                         {
@@ -117,7 +132,7 @@ namespace ServerSide
                     else
                     {
                         line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
-                        dgvConnectedClients.Rows.Add(false, Name, NOT_CONNECTED, id);
+                        dgvConnectedClients.Rows.Add(false, Name, "not connect", id);
                     }
                     // Check if id exists in checkbox
                     for (int i = 0; i < checkLstAllClient.Items.Count; i++)
@@ -139,27 +154,6 @@ namespace ServerSide
                         checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);
 
                 });
-            }
-        }
-
-        public void serverConnect()
-        {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {
-                int id = int.Parse(row.Cells[3].Value.ToString());
-
-                checkClientSocket handler = Program.checckClientConnection;
-                handler(id);
-
-            }
-        }
-
-        public void serverNotConnect()
-        {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {
-                row.Cells[2].Value = "NO Internet";
-                
             }
         }
 
@@ -214,7 +208,11 @@ namespace ServerSide
 
 
         }
- 
+
+        private void checkLstAllClient_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -228,7 +226,6 @@ namespace ServerSide
 
 
             dgvConnectedClients.Columns[0].Width = 20; // checkbox
-          //  dgvConnectedClients.Columns[0].
             dgvConnectedClients.Columns[1].Width = 150; // socket number
             dgvConnectedClients.Columns[2].Width = 250; // client name
             dgvConnectedClients.AllowUserToAddRows = false;
@@ -277,7 +274,6 @@ namespace ServerSide
 
 
         }
-       
         public bool SocketConnected(Socket s)
         {
             bool part1 = s.Poll(1000, SelectMode.SelectRead);
@@ -287,10 +283,19 @@ namespace ServerSide
             else
                 return true;
         }
-      
+
+
+        public void checkConnections()
+        {
+
+
+
+        }
+
+
         private void setSttingToNewClient(object sender, DataGridViewCellEventArgs e)
         {
-            ShowErrorDialog("set setting");
+            //ShowErrorDialog("set setting");
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
@@ -321,56 +326,10 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
-                    if (row.Cells[2].Value.ToString() == NOT_CONNECTED)
-                    {
-                        ShowErrorDialog("Client not connected\r\nCannot show last report ");
-
-                    }
-                    else {
-                        int id = int.Parse(row.Cells[3].Value.ToString());
-                        showLastReport handler = Program.ShowLastReportFromServer;
-                        handler(id);
-                    }
-                }
-            }
-        }
-
-        internal void setClientNotConnect(EndPoint remoteEndPoint)
-        {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {
-
-                if (row.Cells[2].Value.ToString() == remoteEndPoint.ToString())
-                {
-                    row.Cells[2].Value = NOT_CONNECTED;
-                }
-            }
-        }
-
-        private void btnSetSystem_Click(object sender, EventArgs e)
-        {
-
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {
-
-                if (row.Cells[0].Value.ToString() == "True")
-                {
                     int id = int.Parse(row.Cells[3].Value.ToString());
-                    MonitorSetting monitorSystem = new MonitorSetting(id);
-                    monitorSystem.ShowDialog();
+                    showLastReport handler = Program.ShowLastReportFromServer;
+                    handler(id);
                 }
-            }
-
-        }
-
-        private void dgvConnectedClients_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {                
-                int id = int.Parse(row.Cells[3].Value.ToString());
-               // showLastReport handler = Program.ShowLastReportFromServer;
-               // handler(id);
-
             }
         }
     }
