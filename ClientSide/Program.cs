@@ -27,6 +27,8 @@ namespace ClientSide
         const string LIVE = "get current state";
         const string STOP_LIVE = "stop current state";
         const string REMOVE_CLIENT = "remove client";
+        const string LAST_REPORT = "last report";
+
         private String id;
         private Socket clientSocket;
         private String name;
@@ -109,15 +111,15 @@ namespace ClientSide
                 string data = Encoding.ASCII.GetString(buffer);            
 
                 var dataFromServer = data.Split(new[] { '\r', '\n', '\0' }, 2);
-              //  ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                 
-                // dataFromServer[0] contain request subject from server side
-                // in switch the request sent to handler function
+                DBclient DBInstance = DBclient.Instance;
+
                 switch (dataFromServer[0])
                 {
                     // Get uniqe id 
                     case ID:                    
                         id = dataFromServer[1].Split('\r', '\n', '\0')[0];
+                        DBInstance.fillGeneralDetailsTable("id",id);
                         //ShowErrorDialog("get id"); 
                         break;
 
@@ -137,8 +139,13 @@ namespace ClientSide
 
                     // Stop live reporting mode
                     case STOP_LIVE:
-                       // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                         stopLiveMode(clientSocket);
+                        break;
+
+                    // Stop live reporting mode
+                    case LAST_REPORT:
+                        sendLastReport(clientSocket);                        
                         break;
 
                     // Remove computer from monitoring
@@ -157,12 +164,20 @@ namespace ClientSide
              
             catch (SocketException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("ReceiveCallback " + ex.Message);
+                reConnect();
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("ReceiveCallback " + ex.Message);
             }
+        }
+
+        private void sendLastReport(Socket socket)
+        {
+            DBclient DBInstance = DBclient.Instance;
+            //string lastReport = DBInstance.getLastReport();
+            SendData(socket, "last report\rlastReport");
         }
 
         private void removeClient()
@@ -306,8 +321,10 @@ namespace ClientSide
                 while (openClientForm.IsAlive) ;
 
                 name = clientForm.clientName;
-                ip = clientForm.ip; 
-               
+                ip = clientForm.ip;
+                DBclient DBInstance = DBclient.Instance;
+                DBInstance.fillGeneralDetailsTable("name",name);
+                DBInstance.fillGeneralDetailsTable("ip", ip);
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -339,6 +356,7 @@ namespace ClientSide
             else
                 return false;
         }
+    
         public static bool SocketConnected(Socket s)
         {
             bool part1 = s.Poll(1000, SelectMode.SelectRead);
@@ -348,6 +366,7 @@ namespace ClientSide
             else
                 return true;
         }
+      
         public static bool internetConnection()
         {
             try
@@ -382,8 +401,11 @@ namespace ClientSide
                     name = sr.ReadLine();
                     id = sr.ReadLine();
                     //ip = "10.0.0.4";
-                    ip = "127.0.0.1";
-                    
+                    //ip = "127.0.0.1";
+
+                    DBclient DBInstance = DBclient.Instance;
+                    ip = DBInstance.getGeneralDetailsTable("ip");
+                    ShowErrorDialog("ipppp: "+ip);
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
                     {
@@ -406,8 +428,6 @@ namespace ClientSide
         {
             clientForm.ShowDialog();
         }
-
-
 
         public void SendData(Socket clientSocket, String data)
         {

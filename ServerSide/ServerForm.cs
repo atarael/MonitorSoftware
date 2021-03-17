@@ -318,6 +318,20 @@ namespace ServerSide
             }
 
         }
+
+        private void btnLastReport_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+            {
+
+                if (row.Cells[0].Value.ToString() == "True")
+                {
+                    int id = int.Parse(row.Cells[3].Value.ToString());
+                    showLastReport handler = Program.ShowLastReportFromServer;
+                    handler(id);
+                }
+            }
+        }
     }
 
 }

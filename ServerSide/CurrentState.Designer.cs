@@ -39,7 +39,7 @@
             // 
             // txbProcesses
             // 
-            this.txbProcesses.Location = new System.Drawing.Point(58, 84);
+            this.txbProcesses.Location = new System.Drawing.Point(58, 124);
             this.txbProcesses.Multiline = true;
             this.txbProcesses.Name = "txbProcesses";
             this.txbProcesses.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -48,7 +48,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(305, 704);
+            this.btnStop.Location = new System.Drawing.Point(275, 21);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(466, 66);
             this.btnStop.TabIndex = 2;
@@ -58,7 +58,7 @@
             // 
             // txbTyped
             // 
-            this.txbTyped.Location = new System.Drawing.Point(512, 451);
+            this.txbTyped.Location = new System.Drawing.Point(512, 491);
             this.txbTyped.Multiline = true;
             this.txbTyped.Name = "txbTyped";
             this.txbTyped.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -67,7 +67,7 @@
             // 
             // txbSites
             // 
-            this.txbSites.Location = new System.Drawing.Point(512, 84);
+            this.txbSites.Location = new System.Drawing.Point(512, 124);
             this.txbSites.Multiline = true;
             this.txbSites.Name = "txbSites";
             this.txbSites.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -78,7 +78,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(508, 428);
+            this.label1.Location = new System.Drawing.Point(508, 468);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(141, 20);
@@ -89,7 +89,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(508, 61);
+            this.label2.Location = new System.Drawing.Point(508, 101);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 20);
@@ -100,7 +100,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(58, 61);
+            this.label3.Location = new System.Drawing.Point(58, 101);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(127, 20);
@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1178, 962);
+            this.ClientSize = new System.Drawing.Size(1146, 1050);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -119,9 +119,11 @@
             this.Controls.Add(this.txbSites);
             this.Controls.Add(this.txbTyped);
             this.Controls.Add(this.txbProcesses);
-            this.MaximumSize = new System.Drawing.Size(1200, 1218);
-            this.MinimumSize = new System.Drawing.Size(1200, 1018);
+            this.Location = new System.Drawing.Point(100, 100);
+            this.MaximumSize = new System.Drawing.Size(2000, 2000);
             this.Name = "CurrentState";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CurrentState";
             this.Load += new System.EventHandler(this.CurrentState_Load);
             this.ResumeLayout(false);

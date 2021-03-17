@@ -60,10 +60,7 @@ namespace ClientSide
                     {
                         sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
                         sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
-                        sb.Append("Window Handle:\t" + p.MainWindowHandle.ToString() + Environment.NewLine);
-                        sb.Append("Memory Allocation:\t" + p.PrivateMemorySize64.ToString() + Environment.NewLine);
-                        sb.Append("Memory Allocation:\t" + p.Handle.ToString()+ Environment.NewLine);
-
+                        
 
                     sb.Append(Environment.NewLine);
                     }

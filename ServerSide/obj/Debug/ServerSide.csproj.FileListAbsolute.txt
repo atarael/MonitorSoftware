@@ -51,3 +51,4 @@ C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.exe
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.pdb
 C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csprojAssemblyReference.cache
+C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ViewPDF.resources

@@ -27,6 +27,7 @@ namespace ClientSide
             connectToDatabase();
             createTable();
             createSiteLinkTable();
+            createGeneralDetailsTable();
             fillSiteLinkTable();
             createWebsiteMonitoringTable();
         }
@@ -87,8 +88,26 @@ namespace ClientSide
             }
         }
 
+        private void createGeneralDetailsTable()
+        {
 
+            string sql = "CREATE TABLE IF NOT EXISTS GeneralDetailsTable(detail TEXT, value  TEXT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        private void updateGeneralDetailsTable(string detail, string value)
+        {
+            string sql = "Update GeneralDetailsTable set value='" + value + "' where detail='" + detail + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void fillGeneralDetailsTable(string detail, string value)
+        {
+            string sql = "insert into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
 
+        }
         private void createSiteLinkTable()
         {
             
@@ -104,11 +123,7 @@ namespace ClientSide
             funAddCategorySiteTable(EconomySites, "economy");
             funAddCategorySiteTable(SocialSites, "social");
             funAddCategorySiteTable(VocationSites, "vacation");
-         
-
-
         }
-
         public void funAddCategorySiteTable(string[] category, string nameCategory)
         {
 
@@ -216,6 +231,24 @@ namespace ClientSide
 
            
         }
+        public string getGeneralDetailsTable(string detail)
+        {
+            string s = "";
+            string sql = "select  *  from  GeneralDetailsTable where detail='" + detail + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                s += reader["value"];
+            }
+
+
+
+            return s;
+        }
+
+
+         
         public string getTriggerById(int idTrigger)
         {
             string Text = "";
@@ -237,7 +270,9 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-       
+
 
     }
+ 
+
 }

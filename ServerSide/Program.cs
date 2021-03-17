@@ -18,6 +18,8 @@ namespace ServerSide
     public delegate void playCurrentState(int id);
     public delegate void stopCurrentState(int id);
     public delegate void RemoveClient(int id);
+    public delegate void showLastReport(int id);
+
     public delegate void setSetting(int id, string setting);
     class Program
     {
@@ -272,6 +274,7 @@ namespace ServerSide
 
 
                 }
+           
                 if (dataFromClient[0] == "open live form")
                 {
 
@@ -287,6 +290,13 @@ namespace ServerSide
 
 
                 }
+             
+                if (dataFromClient[0] == "last report")
+                {
+                    ShowErrorDialog("PDF");
+                    ViewPDF vp = new ViewPDF();
+                    vp.ShowDialog();
+                }
 
             }
             // Avoid Pokemon exception handling in cases like these.
@@ -300,6 +310,8 @@ namespace ServerSide
                 ShowErrorDialog("ReceiveCallback " + ex.Message);
             }
         }
+
+       
 
         private int createNewId()
         {
@@ -506,7 +518,16 @@ namespace ServerSide
             }
         }
 
-
+        public static void ShowLastReportFromServer(int id)
+        {
+            for (int i = 0; i < program.Allclients.Count(); i++)
+            {
+                if (program.Allclients[i].id  == id)
+                {
+                    program.sendDataToClient(program.Allclients[i].ClientSocket, "last report");
+                }
+            }
+        }
 
     }
 }

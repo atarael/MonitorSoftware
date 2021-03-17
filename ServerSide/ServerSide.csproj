@@ -166,6 +166,12 @@
     <Compile Include="ServerForm.Designer.cs">
       <DependentUpon>ServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewPDF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewPDF.Designer.cs">
+      <DependentUpon>ViewPDF.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -184,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ServerForm.resx">
       <DependentUpon>ServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewPDF.resx">
+      <DependentUpon>ViewPDF.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
