@@ -1,0 +1,509 @@
+DisplayName: cisco webex meetings
+Publisher: cisco webex llc
+DisplayIcon: c:\users\sara\appdata\local\webex\atcliun.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ActiveTouchMeetingClient
+DisplayName: youtube music desktop app 1.13.0
+Publisher: adler luiz
+DisplayIcon: c:\users\sara\appdata\local\programs\youtube-music-desktop-app\youtube music desktop app.exe,0
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\afca255d-79c9-539f-84c6-b3a7619889d5
+DisplayName: anaconda3 2020.11 (python 3.8.5 64-bit)
+Publisher: anaconda, inc.
+DisplayIcon: "c:\users\sara\anaconda3\uninstall-anaconda3.exe"
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Anaconda3 2020.11 (Python 3.8.5 64-bit)
+DisplayName: codeblocks
+Publisher: the code::blocks team
+DisplayIcon: c:\program files (x86)\codeblocks\uninstall.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CodeBlocks
+DisplayName: github desktop
+Publisher: github, inc.
+DisplayIcon: c:\users\sara\appdata\local\githubdesktop\app.ico
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\GitHubDesktop
+DisplayName: mongodb compass community
+Publisher: mongodb inc
+DisplayIcon: c:\users\sara\appdata\local\mongodbcompasscommunity\app.ico
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\MongoDBCompassCommunity
+DisplayName: movavi video editor plus 2021
+Publisher: movavi
+DisplayIcon: "c:\users\sara\appdata\roaming\movavi video editor plus 2021\videoeditorplus.exe",0
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Movavi Video Editor Plus 2021
+DisplayName: microsoft onedrive
+Publisher: microsoft corporation
+DisplayIcon: c:\users\sara\appdata\local\microsoft\onedrive\20.201.1005.0009\onedrivesetup.exe,-101
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe
+DisplayName: postman-win64-7.18.0
+Publisher: postman
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Postman
+DisplayName: spotify
+Publisher: spotify ab
+DisplayIcon: c:\users\sara\appdata\roaming\spotify\spotify.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Spotify
+DisplayName: microsoft teams
+Publisher: microsoft corporation
+DisplayIcon: c:\users\sara\appdata\local\microsoft\teams\app.ico
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Teams
+DisplayName: whatsapp
+Publisher: whatsapp
+DisplayIcon: c:\users\sara\appdata\local\whatsapp\app.ico
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WhatsApp
+DisplayName: zoom
+Publisher: zoom video communications, inc.
+DisplayIcon: c:\users\sara\appdata\roaming\zoom\bin\zoom.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ZoomUMX
+DisplayName: microsoft visual studio code insiders (user)
+Publisher: microsoft corporation
+DisplayIcon: c:\users\sara\appdata\local\programs\microsoft vs code insiders\code - insiders.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217B4C08-948D-4276-BFBB-BEE930AE5A2C}_is1
+DisplayName: microsoft visual studio code (user)
+Publisher: microsoft corporation
+DisplayIcon: c:\users\sara\appdata\local\programs\microsoft vs code\code.exe
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1
+DisplayName: python 3.9.1 (64-bit)
+Publisher: python software foundation
+DisplayIcon: c:\users\sara\appdata\local\package cache\{b2be55ad-3177-42aa-a6c2-53004684e4ea}\python-3.9.1-amd64.exe,0
+subkey: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{b2be55ad-3177-42aa-a6c2-53004684e4ea}
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ACR_11_3_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ACR_12_2_1_32
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\AddressBook
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Adobe Creative Cloud
+DisplayIcon: c:\program files (x86)\adobe\adobe creative cloud\utils\creative cloud uninstaller.exe
+Publisher: © the computer guy tony
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Adobe Photoshop CS6
+DisplayIcon: c:\program files (x86)\adobe\adobe photoshop cs6\uninstall.exe
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\be553bb1
+DisplayIcon: c:\program files (x86)\microsoft visual studio\2019\community\common7\ide\devenv.exe
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CCXP_3_1_3_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CCXP_3_8_1_32
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CDEC_1_0_0
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\COCM_1_0_32
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Connection Manager
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\COPS_1_0_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CORE_1_0_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\CORG_1_1_32
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\COSY_4_3_12_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\COSY_4_3_57_32
+Publisher: tomax technologies ltd
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\d4f86e2d-4cfd-568c-ba19-32ff635def5d
+DisplayIcon: c:\program files\tet\uninstallericon.ico
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DirectDrawEx
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DXM_Runtime
+Publisher: easeus
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\EaseUS MobiMover_is1
+DisplayIcon: c:\program files (x86)\easeus\easeus mobimover\bin\mobimoverui.exe,0
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\EyeLeo
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Fontcore
+Publisher: free time
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\FormatFactory
+DisplayIcon: c:\program files (x86)\formatfactory\formatfactory.exe
+Publisher: foxit software inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Foxit Reader_is1
+DisplayIcon: c:\program files (x86)\foxit software\foxit reader\foxitreader.exe
+Publisher: fxhome
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\FXHOME Imerge Pro
+DisplayIcon: c:\program files\fxhome\imerge pro\exe.ico
+Publisher: google llc
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Google Chrome
+DisplayIcon: c:\program files (x86)\google\chrome\application\chrome.exe,0
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IDSN_15_0_1
+DisplayIcon: c:\program files\common files\adobe\installers\adobeindesign15appbase\installer-releasex64.ico
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IE40
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IE4Data
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IE5BAKEX
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IEData
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\KANC_2_0_1_32
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Dependency Package_is1
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\LIBS_3_4_3_32
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\LIBS_3_9_23_32
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge
+DisplayIcon: c:\program files (x86)\microsoft\edge\application\msedge.exe,0
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\MobileOptionPack
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\MPlayer2
+Publisher: notepad++ team
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad++
+DisplayIcon: c:\program files (x86)\notepad++\notepad++.exe
+Publisher: "pcentra"
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Pcentra Ravkavonline
+DisplayIcon: "c:\program files (x86)\pcentra\ravkavonline\ravkavonline.ico"
+Publisher: nch software
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PhotoPad
+DisplayIcon: c:\program files (x86)\nch software\photopad\photopad.exe
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PHSP_20_0_5
+DisplayIcon: c:\program files\adobe\adobe photoshop cc 2019\amt\core key files\addremoveinfo\ps_installpkg.ico
+Publisher: adobe inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PHSP_21_1_2
+DisplayIcon: c:\program files\adobe\adobe photoshop 2020\amt\core key files\addremoveinfo\ps_installpkg.ico
+Publisher: free time
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PicosmosTools
+DisplayIcon: c:\program files\picosmostools\picosmostoolsx64.exe
+Publisher: nch software
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Pixillion
+DisplayIcon: c:\program files (x86)\nch software\pixillion\pixillion.exe
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PPRO_13_1_4
+DisplayIcon: c:\program files\common files\adobe\keyfiles\premierepro\13.0\icons\pr_cc_pkg.ico
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SchedulingAgent
+Publisher: teamviewer
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TeamViewer
+DisplayIcon: c:\program files (x86)\teamviewer\teamviewer.exe
+Publisher: lenovo group ltd.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1
+DisplayIcon: c:\program files (x86)\lenovo\vantageservice\3.4.16.0\uninstall.exe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WIC
+Publisher: bitnami
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\xampp
+DisplayIcon: c:\xampp/install/xampp.ico
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0243F145-076D-423A-8F77-218DC8840261}
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{033E378E-6AD3-4AD5-BDEB-CBD69B31046C}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{050d4fc8-5d48-4b8f-8972-47c82c46020f}
+DisplayIcon: c:\programdata\package cache\{050d4fc8-5d48-4b8f-8972-47c82c46020f}\vcredist_x64.exe,0
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{08D2E121-7F6A-43EB-97FD-629B44903403}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0A2D9E0D-0B02-4227-A890-A26AF5862C32}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0A54CADD-CBA1-4BC9-A134-6C9F91F41B9A}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0D5009C8-F5AF-4A81-B4F8-F334A6358CCA}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{0FA68574-690B-4B00-89AA-B28946231449}
+Publisher: microsoft
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{111EA02F-B08D-42ED-ADA5-E2A4B58815E5}
+Publisher: apple inc.
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{11C4575B-4B32-44D2-A097-D59A00BA60DE}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{126dedf0-cc0e-4b48-9ece-806b0e437195}
+DisplayIcon: c:\programdata\package cache\{126dedf0-cc0e-4b48-9ece-806b0e437195}\winsdksetup.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{12702494-9E6A-3F5E-9441-2B7D258A639B}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{12B0E23A-5181-4D41-A311-C3221BDC2328}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{135ED615-775A-4D03-9590-F2A115D132C0}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{13952D7A-B7B3-F4F8-5F29-5CD18E8168B7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{154EEEB2-18D9-4FD5-EDE1-6D0B318FAC53}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{15E06EC7-2755-BD07-45AD-98DF1679A6BE}
+Publisher: adobe systems incorporated
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{15FEDA5F-141C-4127-8D7E-B962D1742728}
+DisplayIcon: c:\program files (x86)\common files\adobe\adobe photoshop cs5\amt_driver key files\ps_installpkg.ico
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{166BCCDD-48C1-8103-A7E7-0F3DE471223D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{16D7574C-1007-4A85-93FF-666E74AD60D2}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1784A8CD-F7FE-47E2-A87D-1F31E7242D0D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{19E8AE59-4D4A-3534-B567-6CC08FA4102E}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1A7F0A9D-4C93-4260-967E-C1DD196CD5D6}
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2151757
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2467173
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2524860
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2544655
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2549743
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB2565063
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}.KB982573
+Publisher: filemail as
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1dd2678e-fa13-4410-86d6-5a7c0c858917}_is1
+DisplayIcon: c:\users\sara\appdata\local/filemaildesktop/\filemaildesktop.exe
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{20C00582-BD18-B599-CF98-61011567D747}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{21514D7D-4124-E52E-8483-727380B855D7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217E19C8-ACC0-C7ED-AB69-A30F3F96C625}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{238F56B7-7D14-F8EB-3F4D-8CFF18C19E2B}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{250D5341-0879-4016-399C-BBCD87B80E95}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{271F1F42-B547-4498-825F-590DBB1774F7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{27B16914-BC5D-4018-8074-071262A27F6D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2BC3BD4D-FABA-4394-93C7-9AC82A263FE2}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2CC6A4A7-AAC2-46C9-9DBB-3727B5954F65}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2E6C6299-BF5F-379D-55F2-8FD3367F5918}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{30AD20A4-1FFF-2632-4555-EFAF9D8A32CD}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{30D97A69-3C0F-4552-9A72-60E591B210C7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{315CD35B-6684-383F-B9DF-83E17B38A1F4}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{33d1fd90-4274-48a1-9bc1-97e33d9c2d6f}
+DisplayIcon: c:\programdata\package cache\{33d1fd90-4274-48a1-9bc1-97e33d9c2d6f}\vcredist_x86.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{34B51780-922E-5CBF-C16F-13F0A9502267}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{36AE12FB-4349-6EAA-B6E4-5F4E06FA8AE8}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{39692B57-0BA8-2197-8BC5-4108DFB8475A}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{39EDCC7D-7B63-5D99-C053-C8CDF02DC5ED}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{3A98BFB1-16A6-576B-FFC8-7FEF26B40DBA}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{3CEE8EB6-538E-DDA2-51A5-842ECE6CE1E8}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{3DC4086C-B365-3DE4-878B-659DEB72904E}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{452ABC9E-731E-71B2-8824-C5B2595370AF}
+Publisher: microsoft
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{47CA7775-2AED-421F-B2A9-E4D0CD941483}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{48A8F171-52F2-372B-8414-EA50617708BE}
+Publisher: oracle corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{4A03706F-666A-4037-7777-5F2748764D10}
+Publisher: sysinfotools
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{4C69FCDD-A765-4455-8CA9-0981B84A294C}_is1
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{4CA7ABF1-DB68-0F9E-5AD9-58550198D0AC}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{4D33D909-B071-41D2-B305-96B8586F911E}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{52CE7A43-B499-5F4B-A525-AA8794D3580F}
+Publisher: wondershare
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5363CE84-5F09-48A1-8B6C-6BB590FFEDF2}_is1
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{540ADDB0-7A37-9B99-3568-FD1EA33D3B38}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{54140689-B7DB-B9CF-537D-8FEB279410F9}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{568191A0-2DF9-44B7-B81A-92C60B6F45B1}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{56E962F0-4FB0-3C67-88DB-9EAA6EEFC493}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5C3F08FC-E0D4-6C94-90EF-72DE63DDA885}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5C7D8ED1-94E3-377E-BB2F-D20CA97F8A6F}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5D60A4EF-6EDF-AAF4-F0F0-49FDD40176B8}
+Publisher: microsoft corporations
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5F56BF12-0818-B58A-5862-939784E12F8B}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5FAF2ED2-CA24-0313-8CAF-C28DEE421200}
+Publisher: google llc
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{60EC980A-BDA2-4CB6-A427-B07A5498B4CA}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{61087a79-ac85-455c-934d-1fa22cc64f36}
+DisplayIcon: c:\programdata\package cache\{61087a79-ac85-455c-934d-1fa22cc64f36}\vcredist_x86.exe,0
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{635FED5B-2C6D-49BE-87E6-7A6FCD22BC5A}
+Publisher: microsoft
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{63AAA877-5536-9481-2385-28A082100D78}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{65e650ff-30be-469d-b63a-418d71ea1765}
+DisplayIcon: c:\programdata\package cache\{65e650ff-30be-469d-b63a-418d71ea1765}\vc_redist.x86.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{65E9398F-77A0-8681-026C-8CF092A71F11}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{66483041-F590-EC46-4AF0-EE39C62FB680}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{672AD782-9047-4F2B-ADD8-3A4D14FA1543}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{67EE3804-9642-62BA-EBF1-B1561FB4ECBE}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6913e92a-b64e-41c9-a5e6-cef39207fe89}
+DisplayIcon: c:\programdata\package cache\{6913e92a-b64e-41c9-a5e6-cef39207fe89}\vc_redist.x64.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{692A0FB3-E6A2-4D41-AC03-4136B4312DC0}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6A0C6700-EA93-372C-8871-DCCF13D160A4}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6A96DEED-D0D8-6DD0-21BD-7D8F60714854}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6B03A6A4-643C-57CE-CA6F-4E19BF47497A}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6B25D94A-4B50-45E2-BBD3-54E68700E1BC}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6B37CC5B-78DF-5050-2215-68479716A587}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6EEDDD9D-BF7B-8229-92B4-89DFCF7481ED}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6F54BF87-2EE6-FA6D-431D-33A665992D49}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{725CC962-98BD-42C7-87D8-51C680FB1779}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{73681F86-CD86-4208-572F-959B45430B04}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{737FDDA7-B944-4CB5-92D9-3D56373BD301}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{74CBC330-ED16-31B9-E8BE-0C6A8E67DE32}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{78500789-0EBE-4490-BE43-F9EF8250BF42}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{795E8F11-37DE-611E-921E-7D70BE09BF7B}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7C2070BF-8E07-4B5F-A182-FADB0B95AB39}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7D94CF67-6666-4111-B027-D7AB7F189F70}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7DAD0258-515C-3DD4-8964-BD714199E0F7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7DB17E2A-450D-4DBD-9C17-545A95804B0C}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7EF010FF-7800-28BA-FF49-2D219EC7BA82}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{847D4DAF-0182-265B-324F-406462E8A90D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{86ADBBAE-77AE-FA26-7C17-802AE28AC316}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{8BC3EEC9-090F-4C53-A8DA-1BEC913040F9}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{8E3AE0EF-D067-700C-BDB4-10D5552155DC}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{8F21D4CD-9CB4-2648-EECC-60147DE7B32D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{918A448F-59E8-FBF5-B087-D3F07160C7E0}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{929EAD9A-42D2-4FC7-B7E6-529AAD5F6D0D}
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{92D58719-BBC1-4CC3-A08B-56C9E884CC2C}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{92D8CBA6-0F6D-4A32-8D98-E5E6939F0684}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{949C0535-171C-480F-9CF4-D25C9E60FE88}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{95E79BBC-97FD-4FEB-91B5-CC0231324812}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{995DDD4F-928C-4EBA-9702-E7CD3F6A7A9D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9A25302D-30C0-39D9-BD6F-21E6EC160475}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9C61E6D2-C43E-6746-B519-6185558C4A24}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9DA29C3D-9E36-AC22-59C8-FFCF413DC068}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9F7B0D96-881D-8850-C303-43F3A08E6902}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{A1611231-89EF-48C4-A5F4-5F7B0BAE2733}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{A5174AE6-3704-EE0A-BEFF-21BC5275BA02}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{A5EF45C5-FA27-7E8F-1AE8-E3D39BAC779E}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{AD0C92A4-1514-4BC1-A723-A272A8343924}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B175520C-86A2-35A7-8619-86DC379688B9}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B3DAF54F-DB25-4586-9EF1-96D24BB14088}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B4A7994D-DBA1-8B4D-621A-03EE52CF838A}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B517DBD3-B542-4FC8-9957-FFB2C3E65D1D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B5E3A3E1-1529-4D5A-9E95-34971FA07825}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{BA7E28F8-29C9-4F6D-B719-DD305A263BAA}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{BAE4530E-AEA1-4F1F-AE7F-E83A87D20CE7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{BAF91847-0A64-405E-98EC-A0BA6FB4BC4E}
+Publisher: intel(r) corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{bd366c5e-00cd-46ed-b647-0b9874f32140}
+DisplayIcon: c:\programdata\package cache\{bd366c5e-00cd-46ed-b647-0b9874f32140}\setupchipset.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{BD95A8CD-1D9F-35AD-981A-3E7925026EBB}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{C13D21F1-E9A3-FB93-18C4-B905FB47F122}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{C309FC3D-20C2-4F48-AF46-E59674774602}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{C33E412F-4981-4953-825C-9DEA45ABEC01}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ca67548a-5ebe-413a-b50c-4b9ceb6d66c6}
+DisplayIcon: c:\programdata\package cache\{ca67548a-5ebe-413a-b50c-4b9ceb6d66c6}\vcredist_x64.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{CEDD7BE6-97B5-9AE8-57C0-B390E0C4328F}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{CFEF48A8-BFB8-3EAC-8BA5-DE4F8AA267CE}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{CFEF48A8-BFB8-3EAC-8BA5-DE4F8AA267CE}.KB2504637
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{D1A19B02-817E-4296-A45B-07853FD74D57}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{D4BD6DA8-0E15-4C37-8743-4B4ADDA40D40}
+Publisher: adobe
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{D92BBB52-82FF-42ED-8A3C-4E062F944AB7}
+Publisher: eth zurich
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{D9858C96-DD74-4FC8-9523-F473FA98107F}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{DB4DB790-64DD-1902-4BF2-833B3B6DBCA1}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{DBABDF5D-F6E9-46FC-81EF-9C583C22E8B7}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{DDAF4CFD-D635-8305-5157-9ECEA9F89678}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E208E682-50EE-4F2F-9860-C91B906B8A03}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E30D8B21-D82D-3211-82CC-0F0A5D1495E8}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E47B4703-2337-4ED0-BA24-3EC08D643684}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E67F1F03-FB4A-3D61-8999-E6A4C4B26F34}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E6F877A1-2F65-4BF0-87B6-A4071B7663D3}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E7C7A69B-34C1-463C-8789-6E5AB73A1277}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{E957D37E-05B8-4A46-965E-A27D1F666554}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EC04CD66-C03A-470D-B0D2-4BBC87F6382D}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EECD89A4-F3F0-47BE-ACCF-ADFFCF2E1769}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EF0C772D-F5E3-36D0-BDAB-FD378533CD40}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ef6b00ec-13e1-4c25-9064-b2f383cb8412}
+DisplayIcon: c:\programdata\package cache\{ef6b00ec-13e1-4c25-9064-b2f383cb8412}\vcredist_x64.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2151757
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2467173
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2524860
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2544655
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2549743
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB2565063
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}.KB982573
+Publisher: intel corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0E3AD40-2BBD-4360-9C76-B9AC9A5886EA}
+DisplayIcon: c:\program files (x86)\intel\intel(r) processor graphics\uninstall\igxpin.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F5C67FC5-BF18-4304-9268-A971876B245A}
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{f65db027-aff3-4070-886a-0d87064aabb1}
+DisplayIcon: c:\programdata\package cache\{f65db027-aff3-4070-886a-0d87064aabb1}\vcredist_x86.exe,0
+Publisher: microsoft corporation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FDC38876-AD68-4616-942D-AC3194DAB0A3}
+Publisher: python software foundation
+subkey: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FFC95928-6A14-4FB3-8D73-7A62382F66AC}
+
