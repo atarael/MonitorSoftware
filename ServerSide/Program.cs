@@ -10,6 +10,10 @@ using System.Net;
 using System.Threading;
 using IWshRuntimeLibrary;
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Security.Cryptography;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace ServerSide
 {
@@ -30,7 +34,9 @@ namespace ServerSide
         private byte[] buffer;
         public MonitorSetting monitorSystem;
         private List<int> clientIds = new List<int>();
-        public DBserver dbs;
+
+        DBserver DBInstance;
+        
         private int numOfClient;
         private String name;
         private static ServerForm s;
@@ -51,8 +57,8 @@ namespace ServerSide
                 s = new ServerForm();
                 s.Text = "Server";
                 program.StartServer();
-                Thread interntAvilable = new Thread(checkInterntConnection);
-                interntAvilable.Start();
+                //Thread interntAvilable = new Thread(checkInterntConnection);
+                //interntAvilable.Start();
                 Application.Run(s);
                 mutex.ReleaseMutex();
             }
@@ -124,8 +130,8 @@ namespace ServerSide
                 serverSocket.Bind(new IPEndPoint(IPAddress.Any, 3333));
                 serverSocket.Listen(10);
                 serverSocket.BeginAccept(AcceptCallback, null);
-                dbs = new DBserver();
-                Allclients = dbs.initialServer();
+                DBInstance = DBserver.Instance;
+                Allclients = DBInstance.initialServer();
                 numOfClient = Allclients.Count();
                 //ShowErrorDialog("num" + numOfClient);
 
@@ -264,20 +270,42 @@ namespace ServerSide
                     {
                         buffer = client.buffer;
                         client.buffer = new byte[client.ClientSocket.ReceiveBufferSize];
-
+                        
                         // Start receiving data from this client Socket.
                         client.ClientSocket.BeginReceive(client.buffer, 0, client.buffer.Length, SocketFlags.None, this.ReceiveCallback, client.ClientSocket);
 
                     }
                 }
-                string data = Encoding.UTF8.GetString(buffer);
-               // ShowErrorDialog("get data in sokcet: \n" + CurrentClientSocket.RemoteEndPoint + "\nData from client is:\n" + data);
-                var dataFromClient = data.Split(new[] { '\r', '\0', '\n' }, 2);
-
-                // client send name at first time
-                if (dataFromClient[0] == "name")
+                //string data = Encoding.UTF8.GetString(buffer);
+                using (Aes myAes = Aes.Create())
                 {
-                    name = dataFromClient[1].Split('\0')[0];
+
+                    // Encrypt the string to an array of bytes.
+                    //byte[] encrypted = Crypto.EncryptStringToBytes_Aes(data, myAes.Key, myAes.IV);
+
+                    List<byte> encrypted = new List<byte>();
+                    foreach (Byte b in buffer) {
+                        if (b != 0)
+                        {
+                            encrypted.Add(b);
+                        }
+                    }
+                    Byte[] buf = encrypted.ToArray();
+                    string data = Encoding.UTF8.GetString(buf);
+                    // Decrypt the bytes to a string.
+                    string roundtrip = Crypto.Decrypt(data);
+                    string dataFromClient = roundtrip.Split('\0')[0];
+                     
+
+                                    
+                string decryptionSubject = dataFromClient.Split(new char[]{ '\r' },2)[0];
+                 string decryptionMessage = dataFromClient.Split(new char[] { '\r' }, 2).Last();
+
+                 
+                // client send name at first time 
+                if (decryptionSubject == "name")
+                {
+                    name = decryptionMessage;
                     int newId = createNewId();
 
 
@@ -291,14 +319,14 @@ namespace ServerSide
                 }
 
                 // client send id to connect or reconnect
-                if (dataFromClient[0] == "id")
+                if (decryptionSubject == "id")
                 {
-                    reConnectSocket(CurrentClientSocket, dataFromClient[1]);
+                    reConnectSocket(CurrentClientSocket, decryptionMessage);
 
                 }
 
                 // client send data in live
-                if (dataFromClient[0] == "current state")
+                if (decryptionSubject == "current state")
                 {
                     
                     foreach (Client client in Allclients)
@@ -306,7 +334,7 @@ namespace ServerSide
                         if (client.ClientSocket == CurrentClientSocket)
                         {
                             // the function open form to disply data from client
-                            client.openCurrentStateForm(dataFromClient[1].Split('\0')[0]);
+                            client.openCurrentStateForm(decryptionMessage);
 
                         }
                     }
@@ -314,7 +342,7 @@ namespace ServerSide
 
                 }
            
-                if (dataFromClient[0] == "open live form")
+                if (decryptionSubject == "open live form")
                 {
 
                     foreach (Client client in Allclients)
@@ -324,19 +352,31 @@ namespace ServerSide
                             // the function open form to disply data from client
                             client.openCurrentStateForm("open CurrentState form");
 
-                        }
+                        } 
                     }
 
 
                 }
              
-                if (dataFromClient[0] == "last report")
+                if (decryptionSubject == "last report")
                 {
-                    ShowErrorDialog("PDF");
-                    ViewPDF vp = new ViewPDF();
-                    vp.ShowDialog();
+                    // find the buffer that get data from client
+                    foreach (Client client in Allclients)
+                    {
+                        if (client.ClientSocket == CurrentClientSocket)
+                        {
+                                Report.createReportPDFFile(decryptionMessage, client.id);
+                        }
+                    }
+                   
+                     
                 }
-
+            
+                if (decryptionSubject == "start send data by parts")
+                {
+                      
+                }
+                }
             }
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
@@ -347,9 +387,10 @@ namespace ServerSide
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("ReceiveCallback " + ex.Message);
-            }
+            }//dfrg bdhdh ghfgds 
         }
 
+       
         private int createNewId()
         {
             int newId = 0;
@@ -365,9 +406,10 @@ namespace ServerSide
         private void reConnectSocket(Socket current, string id)
         {
 
-            int CID = Int32.Parse(id.Split('\0')[0]);
+            int CID = Int32.Parse(id);
             ShowErrorDialog(CID + " try reconnect");
-            if (CID < Allclients.Count)
+          
+            if (Allclients[CID].ClientSocket == null && CID < Allclients.Count)
             {
                 Allclients[CID].ClientSocket = current;
                 Allclients[CID].buffer = new byte[Allclients[CID].ClientSocket.ReceiveBufferSize];
@@ -383,7 +425,7 @@ namespace ServerSide
 
         private void openMonitorDialog()
         {
-
+            // sajska 
             monitorSystem.ShowDialog();
         }
 
@@ -397,6 +439,7 @@ namespace ServerSide
                     {
                         client.buffer = Encoding.ASCII.GetBytes(data);
                         client.ClientSocket.BeginSend(client.buffer, 0, client.buffer.Length, SocketFlags.None, SendCallback, client.ClientSocket);
+                        //client.buffer = new byte[ClientSocket.ReceiveBufferSize];
                     }
                 }
             }
@@ -417,7 +460,7 @@ namespace ServerSide
             
 
         // Create a method for a delegate.
-        public static void startCurrentState(int id)
+        public static void startLiveMode(int id)
         {
 
             if (id < program.Allclients.Count)
@@ -436,7 +479,7 @@ namespace ServerSide
                         s.addClientToCheckBoxLst(program.Allclients[id].Name, id, null);
                     }
                     else { 
-                        program.sendDataToClient(program.Allclients[id].ClientSocket, "get current state"); 
+                        program.sendDataToClient(program.Allclients[id].ClientSocket, "start live mode"); 
                     }
 
                 }
@@ -470,14 +513,14 @@ namespace ServerSide
                 {
                     Socket clientSocket = program.Allclients[i].ClientSocket;
                     program.sendDataToClient(program.Allclients[i].ClientSocket, "remove client");
-
+                    
                 }
             }
 
             program.clientIds.Remove(id);
             s.removeClientFromCheckBoxLst(id);
-
-            program.dbs.removeClient(id.ToString());
+            program.DBInstance = DBserver.Instance;
+            program.DBInstance.removeClient(id.ToString());
             program.removeClientfromMemory(id.ToString());
 
 
@@ -521,8 +564,8 @@ namespace ServerSide
         }
         public static void setSettingDeleGate(int id, string setting)
         {
-
-            program.dbs.fillClientsTable(id, program.name, setting);
+            program.DBInstance = DBserver.Instance;
+            program.DBInstance.fillClientsTable(id, program.name, setting);
             int index = 0;
             // Start receiving data from this client Socket.
             for (int i = 0; i < program.Allclients.Count; i++)
@@ -564,7 +607,8 @@ namespace ServerSide
             {
                 if (program.Allclients[i].id  == id)
                 {
-                    program.sendDataToClient(program.Allclients[i].ClientSocket, "last report");
+                    program.sendDataToClient(program.Allclients[i].ClientSocket, "send last report");
+                    //program.Allclients[i].buffer = new byte[program.Allclients[i].ClientSocket.ReceiveBufferSize];
                 }
             }
         }

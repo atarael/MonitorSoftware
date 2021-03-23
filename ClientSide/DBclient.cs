@@ -20,9 +20,9 @@ namespace ClientSide
         static DBclient()
         {
         }
-        private DBclient( )
+        private DBclient()
         {
-            DB =  Environment.UserName+ "_DB.sqlite";
+            DB = Environment.UserName + "_DB.sqlite";
             createNewDatabase();
             connectToDatabase();
             createTable();
@@ -38,8 +38,8 @@ namespace ClientSide
                 return instance;
             }
         }
-       
-        
+
+
 
         SQLiteConnection m_dbConnection;
         private String DB = "";
@@ -55,31 +55,33 @@ namespace ClientSide
         public string[] SocialSites = { "facebook.com", "twitter.com", "instagram.com", "linkedin.com", "cafe.themarker.com", "pinterest.com", "so.cl", "secure.tagged.com", "badoo.com", "bizmakebiz.co.il",
             "camoni.co.il","facebook.com/lan2lan.StatusHunter","youtube.com","vimeo.com","flickr.com","flix.tapuz.co.il","skype.com/he","whatsapp.com/?l=he" ,"messenger.com","yahav.org" };
         public string[] VocationSites = { "lametayel.co.il", "masa.co.il", "ynet.co.il/vacation", "megalim.co.il", "travel.walla.co.il", "gotravel.co.il", "gotravel.co.il", "mako.co.il/travel", "mouse.co.il/world", "worldtravelguide.net", "tripadvisor.com", "travel.yahoo.com" };
-       
-       
 
-        
+
+
+
         public string getCategorySites(string url)
         {
-           //url = "";
+            //url = "";
             string sql = "SELECT  category FROM SiteLinkTable WHERE link='" + url + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             // string Result=command.ExecuteNonQuery();
             var res = command.ExecuteScalar();
-            if (res!=null ) {
+            if (res != null)
+            {
                 Console.WriteLine(res);
                 //m_dbConnection.Close();
                 return res.ToString();
             }
             //m_dbConnection.Close();
             return string.Empty;
-               
+
 
 
         }
-        public void removeIgnoredSites(string [] IgnoredSites)
+
+        public void removeIgnoredSites(string[] IgnoredSites)
         {
-           
+
             foreach (var url in IgnoredSites)
             {
                 string sql = "DELETE FROM SiteLinkTable  WHERE link='" + url + "'";
@@ -95,30 +97,30 @@ namespace ClientSide
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
+
         private void updateGeneralDetailsTable(string detail, string value)
         {
             string sql = "Update GeneralDetailsTable set value='" + value + "' where detail='" + detail + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
+
         public void fillGeneralDetailsTable(string detail, string value)
         {
-<<<<<<< HEAD
-            string sql = "insert into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
-=======
             string sql = "insert or replace into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
         }
+
         private void createSiteLinkTable()
         {
-            
+
             string sql = "CREATE TABLE IF NOT EXISTS SiteLinkTable(category TEXT, link TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
+
         public void fillSiteLinkTable()
         {
             funAddCategorySiteTable(newSites, "news");
@@ -128,6 +130,7 @@ namespace ClientSide
             funAddCategorySiteTable(SocialSites, "social");
             funAddCategorySiteTable(VocationSites, "vacation");
         }
+
         public void funAddCategorySiteTable(string[] category, string nameCategory)
         {
 
@@ -160,7 +163,7 @@ namespace ClientSide
         // Creates a table named 'clientData' with two columns: name (a string of max 20 characters) and score (an int)
         public void createTable()
         {
-          
+
             string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTrigger INTEGER ,dateTrigger TEXT, DesTrigger TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -173,18 +176,18 @@ namespace ClientSide
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
-       
+
         public void fillWebsiteMonitoringTable(string s)
         {
             string[] words = s.Split(' ');
             string MonitorSites;
-          
+
             for (int i = 0; i < words.Length - 1; i = i + 2)
             {
                 MonitorSites = words[i + 1];
                 helpFunfillWebsiteMonitoringTable(words[i], (int)Char.GetNumericValue(MonitorSites[0]), (int)Char.GetNumericValue(MonitorSites[1]), (int)Char.GetNumericValue(MonitorSites[2]));
             }
-           
+
         }
 
         public void helpFunfillWebsiteMonitoringTable(string category, int reportImmediately, int updateReport, int block)
@@ -192,12 +195,12 @@ namespace ClientSide
             string sql = "insert into WebsiteMonitoringTable(category,reportImmediately,updateReport,block) values('" + category + "','" + reportImmediately + "','" + updateReport + "','" + block + "');";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-           
+
         }
 
         public void RemoveTriggersTable()
         {
-           
+
             string sql = "DELETE  FROM  TriggersTable";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -213,11 +216,11 @@ namespace ClientSide
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-           
+
         }
-       
+
         // Writes the clientData to the console sorted on score in descending order.
-        public string  getTriggerTable()
+        public string getTriggerTable()
         {
             //connectToDatabase();
             string Text = "";
@@ -228,13 +231,14 @@ namespace ClientSide
             {
                 Text += "id: " + reader["idTrigger"] + "date: " + reader["dateTrigger"] + "\tdescription: " + reader["DesTrigger"] + "\n";
             }
-   
-            return Text;
 
             return Text;
 
-           
+            return Text;
+
+
         }
+
         public string getGeneralDetailsTable(string detail)
         {
             string s = "";
@@ -251,25 +255,24 @@ namespace ClientSide
             return s;
         }
 
-
-         
         public string getTriggerById(int idTrigger)
         {
             string Text = "";
             string sql = "SELECT  * FROM TriggersTable WHERE idTrigger='" + idTrigger + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-             
+
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-            {                
-                Text +=  reader["dateTrigger"] + "\t  " + reader["DesTrigger"] + "\n";
+            {
+                Text += reader["dateTrigger"] + "\t  " + reader["DesTrigger"] + "\n";
             }
-   
+
             return Text;
 
-             
+
         }
+
         public static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -277,6 +280,6 @@ namespace ClientSide
 
 
     }
- 
+
 
 }

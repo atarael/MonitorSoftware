@@ -16,7 +16,8 @@ namespace ClientSide
     class MonitorInstallations:Monitor
     {
 
-        public MonitorInstallations() { }
+        public MonitorInstallations() {
+        }
 
 
 

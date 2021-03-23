@@ -25,11 +25,7 @@ namespace ClientSide
         public double reportFrequencyInSecond; //Frequency of reporting in seconds
         public string reportFrequencyInWord = "";//daily,weekly..
         private List<string> offensiveWords = new List<string>();
-<<<<<<< HEAD
-        string email;
-=======
         public string email;
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
 
         private static readonly Setting instance = new Setting();
@@ -39,7 +35,7 @@ namespace ClientSide
         private Setting()
         {
 
-            readSettingFromFile(); 
+            readSettingFromFile();
             createOffensiveWordsList();
             installationSetting();
             reportFrequencyInSecond = buildReportFrequency();
@@ -47,7 +43,7 @@ namespace ClientSide
             anotherSitesIgnore = buildAnotherSitesIgnoreList();
             buildCategoryList();// build triggersForAlert list and triggersForRepor list 
             getEmail(settingString);
-           
+
             // connect to DB
             DBclient DBInstance = DBclient.Instance;
             DBInstance.removeIgnoredSites(anotherSitesIgnore.ToArray());
@@ -65,26 +61,18 @@ namespace ClientSide
 
 
 
-            
+
         private void getEmail(string settingString)
         {
             string[] settingStringSplited = settingString.Split('\n');
             if (settingStringSplited.Length > 6)
             {
                 email = settingStringSplited[6].Split('\r')[0];
-<<<<<<< HEAD
-                //ShowErrorDialog("email is: |"+email+"|");
-                
-            }
-        }
+                //ShowErrorDialog("email is: |" + email + "|");
 
-=======
-                ShowErrorDialog("email is: |"+email+"|");
-                
             }
         }
         // s atat atara sara 
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
         private void installationSetting()
         {
             string[] settingStringSplited = settingString.Split('\n');
@@ -123,9 +111,11 @@ namespace ClientSide
             }
 
             string[] settingStringSplited = settingString.Split('\n');
-            if (settingStringSplited.Length > 5) {
+            if (settingStringSplited.Length > 5)
+            {
                 string setBadWord = settingStringSplited[4];
-                if (setBadWord[0].Equals('1')) {
+                if (setBadWord[0].Equals('1'))
+                {
                     triggersForReport.Add("badWord");
                 }
                 if (setBadWord[1].Equals('1'))
@@ -139,11 +129,11 @@ namespace ClientSide
                     offensiveWords.Add(w.Split('\r')[0]);
                 }
             }
-                
-                
-               
 
-           
+
+
+
+
 
             // foreach (string l in offensiveWords) { ShowErrorDialog(l); }
         }
@@ -159,8 +149,8 @@ namespace ClientSide
                  ShowErrorDialog("settttt" + x);
              }*/
             string[] settingStringSplited = settingString.Split('\n');
-            
-             
+
+
             if (settingStringSplited.Length > 7)
             {
                 // frequency by minutes
@@ -205,11 +195,12 @@ namespace ClientSide
                 }
 
 
-                
+
                 this.futureDateToReport = updateDate.ToString();
                 //ShowErrorDialog("jjj"+updateDate.ToString());
             }
-            else {
+            else
+            {
                 ShowErrorDialog("frequency not exist");
             }
             return Convert.ToDouble(second);
@@ -221,7 +212,7 @@ namespace ClientSide
             anotherSitesIgnore = new List<string>();
             string[] settingStringSplited = settingString.Split('\n');
             if (settingStringSplited.Length > 2)
-            {                 
+            {
                 string[] settingStringArray = settingStringSplited[2].Split(' ');
                 foreach (var word in settingStringArray)
                 {
@@ -244,7 +235,7 @@ namespace ClientSide
                 if (word != "" && word != "\t")
                 {
                     anotherSitesReport.Add(word);
-                   // ShowErrorDialog("report Sites: " + word + "|");
+                    // ShowErrorDialog("report Sites: " + word + "|");
                 }
 
             }
@@ -291,10 +282,10 @@ namespace ClientSide
             //ShowErrorDialog("filepath is: \n" + filepath);
             if (!Directory.Exists(filepath))
             {
-                return ;
+                return;
             }
-            
-            using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, "setting_"+ userName +".txt")))
+
+            using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, "setting_" + userName + ".txt")))
             {
                 sr.ReadLine();
                 sr.ReadLine();
@@ -311,7 +302,7 @@ namespace ClientSide
 
 
         }
-    
+
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);

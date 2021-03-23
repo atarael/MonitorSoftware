@@ -240,6 +240,7 @@
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DBclient.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="ManageMonitor.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="MonitorTyping.cs" />

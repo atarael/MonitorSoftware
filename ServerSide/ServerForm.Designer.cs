@@ -113,6 +113,7 @@
             this.dgvConnectedClients.RowHeadersVisible = false;
             this.dgvConnectedClients.RowHeadersWidth = 62;
             this.dgvConnectedClients.RowTemplate.Height = 28;
+            this.dgvConnectedClients.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvConnectedClients.Size = new System.Drawing.Size(600, 138);
             this.dgvConnectedClients.TabIndex = 72;
@@ -279,7 +280,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1297, 927);
+            this.ClientSize = new System.Drawing.Size(1297, 977);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximumSize = new System.Drawing.Size(1600, 1600);

@@ -56,6 +56,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.nudMinuteReport = new System.Windows.Forms.NumericUpDown();
+            this.lblallBadWord = new System.Windows.Forms.Label();
+            this.lblUnBlockSites = new System.Windows.Forms.Label();
+            this.lblBadWords = new System.Windows.Forms.Label();
+            this.btnShowBlockedSites = new System.Windows.Forms.Button();
+            this.btnShowUnBlockedSites = new System.Windows.Forms.Button();
+            this.btnShowBadWord = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgCategorySites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinuteReport)).BeginInit();
             this.SuspendLayout();
@@ -64,7 +70,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(100, 200);
+            this.label2.Location = new System.Drawing.Point(90, 200);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(207, 20);
             this.label2.TabIndex = 2;
@@ -134,7 +140,7 @@
             this.Category,
             this.ReportImmediately,
             this.UpdateReport});
-            this.dtgCategorySites.Location = new System.Drawing.Point(85, 265);
+            this.dtgCategorySites.Location = new System.Drawing.Point(91, 223);
             this.dtgCategorySites.Name = "dtgCategorySites";
             this.dtgCategorySites.RowHeadersVisible = false;
             this.dtgCategorySites.RowHeadersWidth = 200;
@@ -165,11 +171,11 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(90, 511);
+            this.label4.Location = new System.Drawing.Point(90, 495);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(283, 20);
+            this.label4.Size = new System.Drawing.Size(287, 20);
             this.label4.TabIndex = 9;
-            this.label4.Text = "Please Add Sites To Cancel Monitoring";
+            this.label4.Text = "Please Add Sites To Cancel Monitoring:";
             // 
             // label3
             // 
@@ -183,7 +189,7 @@
             // 
             // txbUnblockedSites
             // 
-            this.txbUnblockedSites.Location = new System.Drawing.Point(95, 532);
+            this.txbUnblockedSites.Location = new System.Drawing.Point(91, 523);
             this.txbUnblockedSites.Name = "txbUnblockedSites";
             this.txbUnblockedSites.Size = new System.Drawing.Size(507, 26);
             this.txbUnblockedSites.TabIndex = 13;
@@ -238,14 +244,14 @@
             // 
             // txbBlockedSites
             // 
-            this.txbBlockedSites.Location = new System.Drawing.Point(92, 458);
+            this.txbBlockedSites.Location = new System.Drawing.Point(92, 443);
             this.txbBlockedSites.Name = "txbBlockedSites";
             this.txbBlockedSites.Size = new System.Drawing.Size(507, 26);
             this.txbBlockedSites.TabIndex = 13;
             // 
             // btnAddSiteToCancelMonitoring
             // 
-            this.btnAddSiteToCancelMonitoring.Location = new System.Drawing.Point(617, 532);
+            this.btnAddSiteToCancelMonitoring.Location = new System.Drawing.Point(613, 523);
             this.btnAddSiteToCancelMonitoring.Name = "btnAddSiteToCancelMonitoring";
             this.btnAddSiteToCancelMonitoring.Size = new System.Drawing.Size(143, 30);
             this.btnAddSiteToCancelMonitoring.TabIndex = 30;
@@ -255,7 +261,7 @@
             // 
             // btnAddSiteToMonitoring
             // 
-            this.btnAddSiteToMonitoring.Location = new System.Drawing.Point(617, 454);
+            this.btnAddSiteToMonitoring.Location = new System.Drawing.Point(617, 439);
             this.btnAddSiteToMonitoring.Name = "btnAddSiteToMonitoring";
             this.btnAddSiteToMonitoring.Size = new System.Drawing.Size(143, 30);
             this.btnAddSiteToMonitoring.TabIndex = 30;
@@ -265,14 +271,14 @@
             // 
             // txbAddBadWords
             // 
-            this.txbAddBadWords.Location = new System.Drawing.Point(92, 776);
+            this.txbAddBadWords.Location = new System.Drawing.Point(95, 790);
             this.txbAddBadWords.Name = "txbAddBadWords";
             this.txbAddBadWords.Size = new System.Drawing.Size(260, 26);
             this.txbAddBadWords.TabIndex = 13;
             // 
             // btnAddBadWords
             // 
-            this.btnAddBadWords.Location = new System.Drawing.Point(358, 774);
+            this.btnAddBadWords.Location = new System.Drawing.Point(369, 788);
             this.btnAddBadWords.Name = "btnAddBadWords";
             this.btnAddBadWords.Size = new System.Drawing.Size(143, 30);
             this.btnAddBadWords.TabIndex = 30;
@@ -284,11 +290,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(90, 436);
+            this.label1.Location = new System.Drawing.Point(90, 415);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(230, 20);
+            this.label1.Size = new System.Drawing.Size(234, 20);
             this.label1.TabIndex = 9;
-            this.label1.Text = "Please Add Sites To Monitoring";
+            this.label1.Text = "Please Add Sites To Monitoring:";
             // 
             // txbEmail
             // 
@@ -309,7 +315,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(123, 966);
+            this.label7.Location = new System.Drawing.Point(132, 965);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(261, 20);
             this.label7.TabIndex = 1;
@@ -317,10 +323,70 @@
             // 
             // nudMinuteReport
             // 
-            this.nudMinuteReport.Location = new System.Drawing.Point(263, 965);
+            this.nudMinuteReport.Location = new System.Drawing.Point(263, 962);
             this.nudMinuteReport.Name = "nudMinuteReport";
-            this.nudMinuteReport.Size = new System.Drawing.Size(1, 26);
+            this.nudMinuteReport.Size = new System.Drawing.Size(61, 26);
             this.nudMinuteReport.TabIndex = 31;
+            // 
+            // lblallBadWord
+            // 
+            this.lblallBadWord.AutoSize = true;
+            this.lblallBadWord.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblallBadWord.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblallBadWord.Location = new System.Drawing.Point(393, 446);
+            this.lblallBadWord.Name = "lblallBadWord";
+            this.lblallBadWord.Size = new System.Drawing.Size(0, 20);
+            this.lblallBadWord.TabIndex = 9;
+            // 
+            // lblUnBlockSites
+            // 
+            this.lblUnBlockSites.AutoSize = true;
+            this.lblUnBlockSites.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblUnBlockSites.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblUnBlockSites.Location = new System.Drawing.Point(99, 564);
+            this.lblUnBlockSites.Name = "lblUnBlockSites";
+            this.lblUnBlockSites.Size = new System.Drawing.Size(0, 20);
+            this.lblUnBlockSites.TabIndex = 9;
+            // 
+            // lblBadWords
+            // 
+            this.lblBadWords.AutoSize = true;
+            this.lblBadWords.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblBadWords.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblBadWords.Location = new System.Drawing.Point(235, 784);
+            this.lblBadWords.Name = "lblBadWords";
+            this.lblBadWords.Size = new System.Drawing.Size(0, 20);
+            this.lblBadWords.TabIndex = 10;
+            // 
+            // btnShowBlockedSites
+            // 
+            this.btnShowBlockedSites.Location = new System.Drawing.Point(774, 439);
+            this.btnShowBlockedSites.Name = "btnShowBlockedSites";
+            this.btnShowBlockedSites.Size = new System.Drawing.Size(228, 29);
+            this.btnShowBlockedSites.TabIndex = 33;
+            this.btnShowBlockedSites.Text = "View added blocking sites";
+            this.btnShowBlockedSites.UseVisualStyleBackColor = true;
+            this.btnShowBlockedSites.Click += new System.EventHandler(this.btnShowBlockedSites_Click);
+            // 
+            // btnShowUnBlockedSites
+            // 
+            this.btnShowUnBlockedSites.Location = new System.Drawing.Point(770, 522);
+            this.btnShowUnBlockedSites.Name = "btnShowUnBlockedSites";
+            this.btnShowUnBlockedSites.Size = new System.Drawing.Size(228, 29);
+            this.btnShowUnBlockedSites.TabIndex = 33;
+            this.btnShowUnBlockedSites.Text = "View added Unblocking sites";
+            this.btnShowUnBlockedSites.UseVisualStyleBackColor = true;
+            this.btnShowUnBlockedSites.Click += new System.EventHandler(this.btnShowUnBlockedSites_Click);
+            // 
+            // btnShowBadWord
+            // 
+            this.btnShowBadWord.Location = new System.Drawing.Point(521, 788);
+            this.btnShowBadWord.Name = "btnShowBadWord";
+            this.btnShowBadWord.Size = new System.Drawing.Size(228, 29);
+            this.btnShowBadWord.TabIndex = 33;
+            this.btnShowBadWord.Text = "View added bad words";
+            this.btnShowBadWord.UseVisualStyleBackColor = true;
+            this.btnShowBadWord.Click += new System.EventHandler(this.btnShowBadWord_Click);
             // 
             // MonitorSetting
             // 
@@ -332,7 +398,10 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1269, 1152);
+            this.ClientSize = new System.Drawing.Size(1415, 1195);
+            this.Controls.Add(this.btnShowBadWord);
+            this.Controls.Add(this.btnShowUnBlockedSites);
+            this.Controls.Add(this.btnShowBlockedSites);
             this.Controls.Add(this.nudMinuteReport);
             this.Controls.Add(this.btnAddBadWords);
             this.Controls.Add(this.btnAddSiteToMonitoring);
@@ -342,8 +411,11 @@
             this.Controls.Add(this.chblFrequency);
             this.Controls.Add(this.txbBlockedSites);
             this.Controls.Add(this.txbUnblockedSites);
+            this.Controls.Add(this.lblUnBlockSites);
+            this.Controls.Add(this.lblallBadWord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.lblBadWords);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dtgCategorySites);
             this.Controls.Add(this.btnOK);
@@ -396,5 +468,11 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown nudMinuteReport;
+        private System.Windows.Forms.Label lblallBadWord;
+        private System.Windows.Forms.Label lblUnBlockSites;
+        private System.Windows.Forms.Label lblBadWords;
+        private System.Windows.Forms.Button btnShowBlockedSites;
+        private System.Windows.Forms.Button btnShowUnBlockedSites;
+        private System.Windows.Forms.Button btnShowBadWord;
     }
 }

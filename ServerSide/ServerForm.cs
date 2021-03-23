@@ -59,7 +59,7 @@ namespace ServerSide
                 {
 
                     int id = int.Parse(row.Cells[3].Value.ToString());
-                    playCurrentState handler = Program.startCurrentState;
+                    playCurrentState handler = Program.startLiveMode;
                     handler(id);
                 }
             }
@@ -146,10 +146,12 @@ namespace ServerSide
         {
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
-                int id = int.Parse(row.Cells[3].Value.ToString());
-
-                checkClientSocket handler = Program.checckClientConnection;
-                handler(id);
+                if (row.Cells[3].Value != null) { 
+                    int id = int.Parse(row.Cells[3].Value.ToString());
+                    checkClientSocket handler = Program.checckClientConnection;
+                    handler(id);
+                }
+               
 
             }
         }
@@ -174,19 +176,15 @@ namespace ServerSide
 
         public void removeClientFromCheckBoxLst(int id)
         {
-
-            for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
 
-                string l = (string)checkLstAllClient.Items[i];
-                string stringId = l.Split(',')[1].Split(' ')[1];
-                if (stringId == id.ToString())
+                if (row.Cells[3].Value.ToString() == id.ToString())
                 {
-                    // ShowErrorDialog("remove" + stringId);
-                    checkLstAllClient.Items.RemoveAt(i);
-                    break;
+                    dgvConnectedClients.Rows.Remove(row);
                 }
             }
+ 
 
         }
 
@@ -197,20 +195,26 @@ namespace ServerSide
 
         private void btnRemoveClient_Click(object sender, EventArgs e)
         {
-            List<int> selectedClient = new List<int>();
-
-            Invoke((Action)delegate
+            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
-                for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    if (checkLstAllClient.GetItemChecked(i))
-                    {
-                        string l = (string)checkLstAllClient.Items[i];
-                        string stringId = l.Split(',')[1].Split(' ')[1];
-                        RemoveClient handler = Program.removeClient;
-                        handler(Int32.Parse(stringId));
-                    }
 
-            });
+                if (row.Cells[0].Value.ToString() == "True")
+                {
+                    if (row.Cells[2].Value.ToString() == NOT_CONNECTED)
+                    {
+                        ShowErrorDialog("Client not connected\r\nCannot show last report ");
+
+                    }
+                    else
+                    {
+                        int id = int.Parse(row.Cells[3].Value.ToString());
+                        RemoveClient handler = Program.removeClient;
+                        handler(id);
+                    }
+                }
+            }
+
+            
 
 
         }
@@ -290,7 +294,7 @@ namespace ServerSide
       
         private void setSttingToNewClient(object sender, DataGridViewCellEventArgs e)
         {
-            ShowErrorDialog("set setting");
+            //ShowErrorDialog("set setting");
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
