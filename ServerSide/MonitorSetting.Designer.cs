@@ -70,7 +70,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(90, 200);
+            this.label2.Location = new System.Drawing.Point(112, 273);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(207, 20);
             this.label2.TabIndex = 2;
@@ -80,7 +80,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label5.Location = new System.Drawing.Point(88, 572);
+            this.label5.Location = new System.Drawing.Point(110, 645);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(201, 20);
             this.label5.TabIndex = 2;
@@ -91,7 +91,7 @@
             // 
             this.chbAppInstallUpdate.AutoSize = true;
             this.chbAppInstallUpdate.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbAppInstallUpdate.Location = new System.Drawing.Point(115, 605);
+            this.chbAppInstallUpdate.Location = new System.Drawing.Point(137, 678);
             this.chbAppInstallUpdate.Name = "chbAppInstallUpdate";
             this.chbAppInstallUpdate.Size = new System.Drawing.Size(134, 24);
             this.chbAppInstallUpdate.TabIndex = 0;
@@ -102,7 +102,7 @@
             // 
             this.chbAppInstallReport.AutoSize = true;
             this.chbAppInstallReport.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbAppInstallReport.Location = new System.Drawing.Point(269, 605);
+            this.chbAppInstallReport.Location = new System.Drawing.Point(291, 678);
             this.chbAppInstallReport.Name = "chbAppInstallReport";
             this.chbAppInstallReport.Size = new System.Drawing.Size(171, 24);
             this.chbAppInstallReport.TabIndex = 0;
@@ -112,7 +112,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(87, 829);
+            this.label10.Location = new System.Drawing.Point(109, 902);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(210, 20);
             this.label10.TabIndex = 1;
@@ -123,7 +123,7 @@
             this.btnOK.BackColor = System.Drawing.SystemColors.ControlDark;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnOK.ForeColor = System.Drawing.Color.Lime;
-            this.btnOK.Location = new System.Drawing.Point(95, 1054);
+            this.btnOK.Location = new System.Drawing.Point(117, 1127);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(312, 54);
             this.btnOK.TabIndex = 7;
@@ -140,7 +140,7 @@
             this.Category,
             this.ReportImmediately,
             this.UpdateReport});
-            this.dtgCategorySites.Location = new System.Drawing.Point(91, 223);
+            this.dtgCategorySites.Location = new System.Drawing.Point(113, 296);
             this.dtgCategorySites.Name = "dtgCategorySites";
             this.dtgCategorySites.RowHeadersVisible = false;
             this.dtgCategorySites.RowHeadersWidth = 200;
@@ -171,7 +171,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(90, 495);
+            this.label4.Location = new System.Drawing.Point(112, 568);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(287, 20);
             this.label4.TabIndex = 9;
@@ -181,7 +181,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(88, 753);
+            this.label3.Location = new System.Drawing.Point(110, 826);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(267, 20);
             this.label3.TabIndex = 10;
@@ -189,7 +189,7 @@
             // 
             // txbUnblockedSites
             // 
-            this.txbUnblockedSites.Location = new System.Drawing.Point(91, 523);
+            this.txbUnblockedSites.Location = new System.Drawing.Point(113, 596);
             this.txbUnblockedSites.Name = "txbUnblockedSites";
             this.txbUnblockedSites.Size = new System.Drawing.Size(507, 26);
             this.txbUnblockedSites.TabIndex = 13;
@@ -198,7 +198,7 @@
             // 
             this.chbBadWordUpdate.AutoSize = true;
             this.chbBadWordUpdate.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbBadWordUpdate.Location = new System.Drawing.Point(115, 687);
+            this.chbBadWordUpdate.Location = new System.Drawing.Point(137, 760);
             this.chbBadWordUpdate.Name = "chbBadWordUpdate";
             this.chbBadWordUpdate.Size = new System.Drawing.Size(134, 24);
             this.chbBadWordUpdate.TabIndex = 0;
@@ -209,7 +209,7 @@
             // 
             this.chbBadWordReport.AutoSize = true;
             this.chbBadWordReport.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chbBadWordReport.Location = new System.Drawing.Point(269, 687);
+            this.chbBadWordReport.Location = new System.Drawing.Point(291, 760);
             this.chbBadWordReport.Name = "chbBadWordReport";
             this.chbBadWordReport.Size = new System.Drawing.Size(171, 24);
             this.chbBadWordReport.TabIndex = 0;
@@ -220,7 +220,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label14.Location = new System.Drawing.Point(88, 654);
+            this.label14.Location = new System.Drawing.Point(110, 727);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(198, 20);
             this.label14.TabIndex = 2;
@@ -236,7 +236,7 @@
             "Each Week",
             "Two once each week",
             "Each Month"});
-            this.chblFrequency.Location = new System.Drawing.Point(127, 859);
+            this.chblFrequency.Location = new System.Drawing.Point(149, 932);
             this.chblFrequency.Name = "chblFrequency";
             this.chblFrequency.Size = new System.Drawing.Size(200, 96);
             this.chblFrequency.TabIndex = 14;
@@ -244,14 +244,14 @@
             // 
             // txbBlockedSites
             // 
-            this.txbBlockedSites.Location = new System.Drawing.Point(92, 443);
+            this.txbBlockedSites.Location = new System.Drawing.Point(114, 516);
             this.txbBlockedSites.Name = "txbBlockedSites";
             this.txbBlockedSites.Size = new System.Drawing.Size(507, 26);
             this.txbBlockedSites.TabIndex = 13;
             // 
             // btnAddSiteToCancelMonitoring
             // 
-            this.btnAddSiteToCancelMonitoring.Location = new System.Drawing.Point(613, 523);
+            this.btnAddSiteToCancelMonitoring.Location = new System.Drawing.Point(635, 596);
             this.btnAddSiteToCancelMonitoring.Name = "btnAddSiteToCancelMonitoring";
             this.btnAddSiteToCancelMonitoring.Size = new System.Drawing.Size(143, 30);
             this.btnAddSiteToCancelMonitoring.TabIndex = 30;
@@ -261,7 +261,7 @@
             // 
             // btnAddSiteToMonitoring
             // 
-            this.btnAddSiteToMonitoring.Location = new System.Drawing.Point(617, 439);
+            this.btnAddSiteToMonitoring.Location = new System.Drawing.Point(639, 512);
             this.btnAddSiteToMonitoring.Name = "btnAddSiteToMonitoring";
             this.btnAddSiteToMonitoring.Size = new System.Drawing.Size(143, 30);
             this.btnAddSiteToMonitoring.TabIndex = 30;
@@ -271,14 +271,14 @@
             // 
             // txbAddBadWords
             // 
-            this.txbAddBadWords.Location = new System.Drawing.Point(95, 790);
+            this.txbAddBadWords.Location = new System.Drawing.Point(117, 863);
             this.txbAddBadWords.Name = "txbAddBadWords";
             this.txbAddBadWords.Size = new System.Drawing.Size(260, 26);
             this.txbAddBadWords.TabIndex = 13;
             // 
             // btnAddBadWords
             // 
-            this.btnAddBadWords.Location = new System.Drawing.Point(369, 788);
+            this.btnAddBadWords.Location = new System.Drawing.Point(391, 861);
             this.btnAddBadWords.Name = "btnAddBadWords";
             this.btnAddBadWords.Size = new System.Drawing.Size(143, 30);
             this.btnAddBadWords.TabIndex = 30;
@@ -290,7 +290,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(90, 415);
+            this.label1.Location = new System.Drawing.Point(112, 488);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(234, 20);
             this.label1.TabIndex = 9;
@@ -298,7 +298,7 @@
             // 
             // txbEmail
             // 
-            this.txbEmail.Location = new System.Drawing.Point(370, 1009);
+            this.txbEmail.Location = new System.Drawing.Point(392, 1082);
             this.txbEmail.Name = "txbEmail";
             this.txbEmail.Size = new System.Drawing.Size(452, 26);
             this.txbEmail.TabIndex = 13;
@@ -306,7 +306,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(89, 1012);
+            this.label6.Location = new System.Drawing.Point(111, 1085);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(277, 20);
             this.label6.TabIndex = 1;
@@ -315,7 +315,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(132, 965);
+            this.label7.Location = new System.Drawing.Point(154, 1038);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(261, 20);
             this.label7.TabIndex = 1;
@@ -323,7 +323,7 @@
             // 
             // nudMinuteReport
             // 
-            this.nudMinuteReport.Location = new System.Drawing.Point(263, 962);
+            this.nudMinuteReport.Location = new System.Drawing.Point(285, 1035);
             this.nudMinuteReport.Name = "nudMinuteReport";
             this.nudMinuteReport.Size = new System.Drawing.Size(61, 26);
             this.nudMinuteReport.TabIndex = 31;
@@ -333,7 +333,7 @@
             this.lblallBadWord.AutoSize = true;
             this.lblallBadWord.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblallBadWord.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblallBadWord.Location = new System.Drawing.Point(393, 446);
+            this.lblallBadWord.Location = new System.Drawing.Point(415, 519);
             this.lblallBadWord.Name = "lblallBadWord";
             this.lblallBadWord.Size = new System.Drawing.Size(0, 20);
             this.lblallBadWord.TabIndex = 9;
@@ -343,7 +343,7 @@
             this.lblUnBlockSites.AutoSize = true;
             this.lblUnBlockSites.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblUnBlockSites.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblUnBlockSites.Location = new System.Drawing.Point(99, 564);
+            this.lblUnBlockSites.Location = new System.Drawing.Point(121, 637);
             this.lblUnBlockSites.Name = "lblUnBlockSites";
             this.lblUnBlockSites.Size = new System.Drawing.Size(0, 20);
             this.lblUnBlockSites.TabIndex = 9;
@@ -353,14 +353,14 @@
             this.lblBadWords.AutoSize = true;
             this.lblBadWords.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblBadWords.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblBadWords.Location = new System.Drawing.Point(235, 784);
+            this.lblBadWords.Location = new System.Drawing.Point(257, 857);
             this.lblBadWords.Name = "lblBadWords";
             this.lblBadWords.Size = new System.Drawing.Size(0, 20);
             this.lblBadWords.TabIndex = 10;
             // 
             // btnShowBlockedSites
             // 
-            this.btnShowBlockedSites.Location = new System.Drawing.Point(774, 439);
+            this.btnShowBlockedSites.Location = new System.Drawing.Point(796, 512);
             this.btnShowBlockedSites.Name = "btnShowBlockedSites";
             this.btnShowBlockedSites.Size = new System.Drawing.Size(228, 29);
             this.btnShowBlockedSites.TabIndex = 33;
@@ -370,7 +370,7 @@
             // 
             // btnShowUnBlockedSites
             // 
-            this.btnShowUnBlockedSites.Location = new System.Drawing.Point(770, 522);
+            this.btnShowUnBlockedSites.Location = new System.Drawing.Point(792, 595);
             this.btnShowUnBlockedSites.Name = "btnShowUnBlockedSites";
             this.btnShowUnBlockedSites.Size = new System.Drawing.Size(228, 29);
             this.btnShowUnBlockedSites.TabIndex = 33;
@@ -380,7 +380,7 @@
             // 
             // btnShowBadWord
             // 
-            this.btnShowBadWord.Location = new System.Drawing.Point(521, 788);
+            this.btnShowBadWord.Location = new System.Drawing.Point(543, 861);
             this.btnShowBadWord.Name = "btnShowBadWord";
             this.btnShowBadWord.Size = new System.Drawing.Size(228, 29);
             this.btnShowBadWord.TabIndex = 33;

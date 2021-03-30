@@ -35,13 +35,14 @@ namespace ClientSide
         private String name;
         private String ip;
         private Byte[] buffer;
-        private DBclient dbs;
+        private DBclient dbc;
         private Setting set;
         private ClientForm clientForm;
         public Boolean sendCurrentData;
         string keyDate;
         public static Program program;
         ManageMonitor manageMonitor;
+        private static bool checkConnection;
 
 
 
@@ -54,8 +55,7 @@ namespace ClientSide
             // sqliteForm sf = new sqliteForm();
             // sf.ShowDialog();
 
-            // Set up the software that will work when you turn on the computer           
-            connectAtReStartComputer();
+            
 
             program = new Program();
             Application.EnableVisualStyles();
@@ -63,7 +63,7 @@ namespace ClientSide
 
 
             // check if connect at first time or reconnect         
-            if (!program.initialClient())
+            if (!program.connectToExistClient())
             {
                 program.connectToServer();
             }
@@ -74,9 +74,10 @@ namespace ClientSide
 
         public static void checkInterntConnection()
         {
-            while (true)
+            checkConnection = true; 
+            while (checkConnection)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(5000);
                 try
                 {
                     using (var client = new WebClient())
@@ -84,7 +85,8 @@ namespace ClientSide
                     {
                         // try send data to server
                         try {
-                            //   program.SendData(program.clientSocket, "check connection"); 
+                            //   program.SendData(program.clientSocket, "check connection");
+                            
                         }
                         catch (SocketException ex) {
                             break;
@@ -222,12 +224,29 @@ namespace ClientSide
         }
 
         private void removeClient()
-        {
-            // set setting file
-            // db
-            // restart
-            // turn off all theards 
+        { 
             ShowErrorDialog("removeeeeeeeeeeee");
+            
+            // turn off all theards 
+            manageMonitor.stopAllTriggers();
+           
+            // create last report
+            Report.createLastReport();
+           
+            // db
+            DBclient DBInstance = DBclient.Instance;
+            DBInstance.deleteDB();
+                     
+            // restart - delete key 
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            rkApp.DeleteValue("ClientSide.exe", false);
+
+            // stop theard checkConnection
+            checkConnection = false;
+
+
+
+
 
         }
 
@@ -355,6 +374,7 @@ namespace ClientSide
             {
 
                 clientForm = new ClientForm();
+                clientForm.Text = "Connecting to monitoring software";
                 Thread openClientForm = new Thread(openClientFormDialog);
                 openClientForm.SetApartmentState(ApartmentState.STA);
                 openClientForm.Start();
@@ -375,7 +395,9 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
-                //ShowErrorDialog("connect to ip: " + ip);
+                
+                // Set up the software that will work when you turn on the computer           
+                connectAtReStartComputer();
             }
             catch (SocketException ex)
             {
@@ -422,7 +444,7 @@ namespace ClientSide
             }
         }
 
-        private bool initialClient()
+        private bool connectToExistClient()
         {
 
             string set = "";
@@ -584,14 +606,12 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
-
-                // Play all monitors
-                if (manageMonitor == null)
-                {
-                    //manageMonitor = new ManageMonitor();
-                    //manageMonitor.playAllTriggers();
+                DBclient DBInstance = DBclient.Instance;
+                string immadiateAlerts = DBInstance.getReportImmediateTable();
+                if (immadiateAlerts.Length > 0) {
+                    Report.sendImadiateAlertsToMail(immadiateAlerts);
                 }
-            
+
             }
             catch (SocketException ex)
             {

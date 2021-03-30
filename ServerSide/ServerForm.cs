@@ -247,10 +247,10 @@ namespace ServerSide
             {
                 dataGridView1.Rows.Add(value, id);
                 DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-                btn.Text = "Set setting";
+                btn.Text = "Confirm";
                 btn.FillWeight = 200;
                 btn.UseColumnTextForButtonValue = true;
-                btn.Width = 150;
+                btn.Width = 120;
                 dataGridView1.Columns.Add(btn);
 
             });

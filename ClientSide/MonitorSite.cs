@@ -129,7 +129,7 @@ namespace ClientSide
             {
                 string FilePic = Picters.ScreenCapture();
                 Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "Site trigger occur", fullURL, "siteTrigger");
+                Report.sendAlertToMail(FilePic, "Site trigger occur", fullURL, "Site");
                 ShowErrorDialog("send alert to mail\nSite trigger occur\ncategory: " + category +", path: "+ fullURL);
             }
 

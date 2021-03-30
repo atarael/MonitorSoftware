@@ -16,6 +16,23 @@ namespace ClientSide
 {
     public sealed class DBclient
     {
+
+        SQLiteConnection m_dbConnection;
+        private string DB = "";
+        //string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
+
+        public string[] newSites = { "ynet.co.il/news", "news.walla.co.il" , "maariv.co.il" , "haaretz.co.il/news" , "israelhayom.co.il" , "makorrishon.co.il", "n12.co.il" , "glz.co.il","kan.org.il/live/radio.aspx?stationid=3","kan.org.il/live/radio.aspx?stationid=3","debka.co.il","kikar.co.il","0404.co.il",
+            "megafon-news.co.il/asys","al-monitor.com/pulse/iw/israel-pulse","972mag.com","al-monitor.com/pulse/iw/israel-pulse","jpost.com","news.google.com","timesofisrael.com"
+       ,"israeltoday.co.il","haaretz.com","mivzakim.net" ,"newsnow.co.il/?hnsgid=76","mivzakon.co.il","mako.co.il/mako-vod-live-tv/VOD-6540b8dcb64fd31006.htm"};
+        public string[] shopingSites = { "wallashops.co.il", "getit.co.il", "olsale.co.il", "p1000.co.il", "ynetshops.co.il", "21.tv", "p1000.co.il", "ynetshops.co.il", "21.tv", "dailyshops.co.il", "sakal-group.co.il", "bestbuy.co.il", "ktl.co.il", "lastprice.co.il/%20rel=", "bestbuy.co.il", "sakal-group.co.il", "dutyfree.co.il" };
+        public string[] sportSites = { "one.co.il", "sport5.co.il", "sport2.co.il", "sports.walla.co.il", "telesport.co.il", "ynet.co.il/sport", "makorrishon.co.il", "israelsport.co.il", "sportline.co.il", "israsport.co.il", "israsport.co.il", "ynet.co.il/sport/kick", "haaretz.co.il/sport", "eurosport.com", "msn.foxsports.com", "skysports.com", "schoolsport.co.il",
+            "sport5.co.il/broadcastsheet.aspx?FolderID=99&Mode=0&lang=he", "sports.walla.co.il/livegames", "sports.walla.co.il/?w=/4502" };
+        public string[] EconomySites = { "globes.co.il", "themarker.com", "calcalist.co.il/home/0,7340,L-8,00.html", "talniri.co.il", "forbes.co.il", "makorrishon.co.il", "il.investing.com" };
+        public string[] SocialSites = { "facebook.com", "twitter.com", "instagram.com", "linkedin.com", "cafe.themarker.com", "pinterest.com", "so.cl", "secure.tagged.com", "badoo.com", "bizmakebiz.co.il",
+            "camoni.co.il","facebook.com/lan2lan.StatusHunter","youtube.com","vimeo.com","flickr.com","flix.tapuz.co.il","skype.com/he","whatsapp.com/?l=he" ,"messenger.com","yahav.org" };
+        public string[] VocationSites = { "lametayel.co.il", "masa.co.il", "ynet.co.il/vacation", "megalim.co.il", "travel.walla.co.il", "gotravel.co.il", "gotravel.co.il", "mako.co.il/travel", "mouse.co.il/world", "worldtravelguide.net", "tripadvisor.com", "travel.yahoo.com" };
+
+
         private static readonly DBclient instance = new DBclient();
         static DBclient()
         {
@@ -30,6 +47,7 @@ namespace ClientSide
             createGeneralDetailsTable();
             fillSiteLinkTable();
             createWebsiteMonitoringTable();
+            createReportImmediateTable();
         }
         public static DBclient Instance
         {
@@ -39,22 +57,6 @@ namespace ClientSide
             }
         }
 
-
-
-        SQLiteConnection m_dbConnection;
-        private String DB = "";
-        //string d = "News 010 Sport 020 shopping 030 Vocation 000 Economy 000 Email 000 Social 000 Vocation 000";
-
-        public string[] newSites = { "ynet.co.il/news", "news.walla.co.il" , "maariv.co.il" , "haaretz.co.il/news" , "israelhayom.co.il" , "makorrishon.co.il", "n12.co.il" , "glz.co.il","kan.org.il/live/radio.aspx?stationid=3","kan.org.il/live/radio.aspx?stationid=3","debka.co.il","kikar.co.il","0404.co.il",
-            "megafon-news.co.il/asys","al-monitor.com/pulse/iw/israel-pulse","972mag.com","al-monitor.com/pulse/iw/israel-pulse","jpost.com","news.google.com","timesofisrael.com"
-       ,"israeltoday.co.il","haaretz.com","mivzakim.net" ,"newsnow.co.il/?hnsgid=76","mivzakon.co.il","mako.co.il/mako-vod-live-tv/VOD-6540b8dcb64fd31006.htm"};
-        public string[] shopingSites = { "wallashops.co.il", "getit.co.il", "olsale.co.il", "p1000.co.il", "ynetshops.co.il", "21.tv", "p1000.co.il", "ynetshops.co.il", "21.tv", "dailyshops.co.il", "sakal-group.co.il", "bestbuy.co.il", "ktl.co.il", "lastprice.co.il/%20rel=", "bestbuy.co.il", "sakal-group.co.il", "dutyfree.co.il" };
-        public string[] sportSites = { "one.co.il", "sport5.co.il", "sport2.co.il", "sports.walla.co.il", "telesport.co.il", "ynet.co.il/sport", "makorrishon.co.il", "israelsport.co.il", "sportline.co.il", "israsport.co.il", "israsport.co.il", "ynet.co.il/sport/kick", "haaretz.co.il/sport", "eurosport.com", "msn.foxsports.com", "skysports.com", "schoolsport.co.il",
-            "sport5.co.il/broadcastsheet.aspx?FolderID=99&Mode=0&lang=he", "sports.walla.co.il/livegames", "sports.walla.co.il/?w=/4502" };
-        public string[] EconomySites = { "globes.co.il", "themarker.com", "calcalist.co.il/home/0,7340,L-8,00.html", "talniri.co.il", "forbes.co.il", "makorrishon.co.il", "il.investing.com" };
-        public string[] SocialSites = { "facebook.com", "twitter.com", "instagram.com", "linkedin.com", "cafe.themarker.com", "pinterest.com", "so.cl", "secure.tagged.com", "badoo.com", "bizmakebiz.co.il",
-            "camoni.co.il","facebook.com/lan2lan.StatusHunter","youtube.com","vimeo.com","flickr.com","flix.tapuz.co.il","skype.com/he","whatsapp.com/?l=he" ,"messenger.com","yahav.org" };
-        public string[] VocationSites = { "lametayel.co.il", "masa.co.il", "ynet.co.il/vacation", "megalim.co.il", "travel.walla.co.il", "gotravel.co.il", "gotravel.co.il", "mako.co.il/travel", "mouse.co.il/world", "worldtravelguide.net", "tripadvisor.com", "travel.yahoo.com" };
 
 
 
@@ -190,6 +192,72 @@ namespace ClientSide
 
         }
 
+        public void deleteDB()
+        {
+            string DatabasePath = Environment.CurrentDirectory;
+            DatabasePath = Path.Combine(DatabasePath, DB + ".sqlite");
+            
+            
+            FileInfo fi = new FileInfo(DatabasePath);
+            try
+            {
+                if (fi.Exists)
+                {
+                    m_dbConnection.Close();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    fi.Delete();
+                    //string sqlCommandText = "DROP DATABASE " + DB;
+                    //SQLiteCommand sqlCommand = new SQLiteCommand(sqlCommandText, m_dbConnection);
+                    //sqlCommand.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                fi.Delete();
+            }
+        }
+        private void createReportImmediateTable()
+        {
+
+            string sql = "CREATE TABLE IF NOT EXISTS ReportImmediateTable(triggerName TEXT, triggerDesciption  TEXT,triggerDetails TEXT,triggerdate TEXT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void fillReportImmediateTable(string triggerName, string triggerDesciption, string triggerDetails, string triggerdate)
+        {
+
+            string sql = "insert into ReportImmediateTable(triggerName,triggerDesciption,triggerDetails,triggerdate) values('" + triggerName + "','" + triggerDesciption + "','" + triggerDetails + "','" + triggerdate + "');";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+
+        }
+        public void RemoveReportImmediateTable()
+        {
+
+            string sql = "DELETE FROM  ReportImmediateTable";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+
+        }
+        public string getReportImmediateTable()
+        {
+            //connectToDatabase();
+            string Text = "";
+            string sql = "select * from ReportImmediateTable";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {// string picname, string triggerId, string triggerDetails, string triggerdate
+                Text += "date: " + reader["triggerdate"]+ "\ttriggerName: " + reader["triggerName"] + "\ttriggerDesciption: " + reader["triggerDesciption"] + "\triggerDetails: " + reader["triggerDetails"] + "\n";
+            }
+
+            return Text;
+
+
+
+
+        }
         public void helpFunfillWebsiteMonitoringTable(string category, int reportImmediately, int updateReport, int block)
         {
             string sql = "insert into WebsiteMonitoringTable(category,reportImmediately,updateReport,block) values('" + category + "','" + reportImmediately + "','" + updateReport + "','" + block + "');";
@@ -234,7 +302,7 @@ namespace ClientSide
 
             return Text;
 
-            return Text;
+            
 
 
         }

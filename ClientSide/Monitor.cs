@@ -12,9 +12,7 @@ namespace ClientSide
     {
         protected Thread monitorThread;
         protected bool monitorAlive;
-        protected static Program program;
-        protected Thread monitorProccess;
-         
+        
         protected DBclient DBInstance = DBclient.Instance;
         protected Setting SettingInstance = Setting.Instance;
 

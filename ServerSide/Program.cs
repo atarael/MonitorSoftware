@@ -55,7 +55,7 @@ namespace ServerSide
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 s = new ServerForm();
-                s.Text = "Server";
+                s.Text = "Monitoring Interface";
                 program.StartServer();
                 //Thread interntAvilable = new Thread(checkInterntConnection);
                 //interntAvilable.Start();
@@ -372,10 +372,7 @@ namespace ServerSide
                      
                 }
             
-                if (decryptionSubject == "start send data by parts")
-                {
-                      
-                }
+                
                 }
             }
             // Avoid Pokemon exception handling in cases like these.
@@ -511,7 +508,7 @@ namespace ServerSide
             {
                 if (program.Allclients[i].id == id)
                 {
-                    Socket clientSocket = program.Allclients[i].ClientSocket;
+                    
                     program.sendDataToClient(program.Allclients[i].ClientSocket, "remove client");
                     
                 }

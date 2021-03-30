@@ -52,7 +52,7 @@ namespace ClientSide
             while (base.monitorAlive)
             {
                 Thread.Sleep(5);
-                for (int i = 32; i < 127; i++)
+                for (int i = 32; i < 127; i++) 
                 {
                     int keyState = GetAsyncKeyState(i);
                     if (keyState == 32769)

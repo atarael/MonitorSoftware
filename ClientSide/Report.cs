@@ -46,12 +46,8 @@ namespace ClientSide
     {
         private static string screenPic;
         private static string cameraPic;
-        static System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
-        static int alarmCounter = 1;
-        static bool exitFlag = false;
         private static Timer _timer;
-        private static DateTime timetoReport;
-        private static int count = 1;
+         
         public static double frequencySecond;
         public static string frequencyWord;
 
@@ -59,8 +55,8 @@ namespace ClientSide
         public static string mailAddress;
 
         public DBclient DBInstance = DBclient.Instance;
-        private Setting SettingInstance = Setting.Instance;
         private static string stringReport;
+        private static bool lastReport;
 
         public Report()
         {
@@ -68,9 +64,15 @@ namespace ClientSide
 
         }
 
-        public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string trigger)
+        public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string triggerName)
         {
-            string[] args = { picName, TriggerDescription, triggerDetails, trigger };
+            DBclient DBInstance = DBclient.Instance;
+            string date = DateTime.Now.ToString();
+            // if no internet - save imadiate alert in DB 
+            DBInstance.fillReportImmediateTable(triggerName, TriggerDescription, triggerDetails, date);
+
+          
+            string[] args = { picName, TriggerDescription, triggerDetails, triggerName };
             Thread alertTread = new Thread(playSendAlertThread);
             alertTread.Start(args);
 
@@ -116,7 +118,7 @@ namespace ClientSide
                     case ("typing"):
                         mail.Body = "The user typing word: " + triggerDetails;
                         break;
-                    case ("siteTrigger"):
+                    case ("Site"):
                         mail.Body = "The user browse in site: " + triggerDetails;
                         break;
                     case ("Insta"):
@@ -209,7 +211,15 @@ namespace ClientSide
                         mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
                         Setting settingInstance = Setting.Instance;
                         mail.To.Add(settingInstance.email);
-                        mail.Subject = "Report File ";
+                        if (lastReport)
+                        {
+                            mail.Subject = "Last Report File ";
+                        }
+                        else
+                        {
+                            mail.Subject = "Report File ";
+                        }
+                        
 
                         Attachment attachment;
                         attachment = new Attachment(reportPath);
@@ -220,26 +230,44 @@ namespace ClientSide
                         SmtpServer.EnableSsl = true;
 
                         SmtpServer.Send(mail);
-                        // delete report and DB !!  
-                        ShowErrorDialog("jjj");
+                        if(lastReport)
+                        { 
+                            // delete fiels folder
+                            // this folder contain files such setting file and pichtures to report
+                            string userName = Environment.UserName;
+                            string fielsfolderDirectory = Environment.CurrentDirectory;
+                            fielsfolderDirectory = Directory.GetParent(fielsfolderDirectory).Parent.FullName;
+                            fielsfolderDirectory = Path.Combine(fielsfolderDirectory, "files");
 
-                        removeTriggers();
-
-                        if (File.Exists(reportPath))
-                        {
-                            try
+                            if (Directory.Exists(fielsfolderDirectory))
                             {
-                                File.Delete(reportPath);
+                                try
+                                {
+                                    Directory.Delete(fielsfolderDirectory, true);
+                                }
+                                catch (IOException ex)
+                                {
+                                    ShowErrorDialog("cannot delete files folder\n" + ex);
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                //ShowErrorDialog("fail delete report adter send:\n"+ex);
-                            }
-
-
-
                         }
-                    }
+                        else
+                        {
+                            // delete report and DB !!  
+                            removeTriggers();
+                            if (File.Exists(reportPath))
+                            {
+                                try
+                                {
+                                    File.Delete(reportPath);
+                                }
+                                catch (Exception ex)
+                                {
+                                    //ShowErrorDialog("fail delete report adter send:\n"+ex);
+                                }
+                           }
+                        }
+                    }                     
 
 
                 }
@@ -263,6 +291,59 @@ namespace ClientSide
 
         }
 
+        public static void sendImadiateAlertsToMail(string missingAlerts)
+        {
+
+            Thread imadiateAlerts = new Thread(playSendImadiateAlertsThread);
+            imadiateAlerts.Start(missingAlerts);
+
+        }
+
+        public static void playSendImadiateAlertsThread(object parameterObj)
+        {
+
+            string missingAlerts = (string)parameterObj;
+            using (MailMessage mail = new MailMessage())
+            using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
+            {
+
+                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                Setting settingInstance = Setting.Instance;
+                mail.To.Add(settingInstance.email);
+                mail.Subject = "Alerts collected from offline mode ";
+                mail.Body= missingAlerts;                 
+                       
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
+                SmtpServer.EnableSsl = true;
+                try
+                {
+                    SmtpServer.Send(mail);
+                    DBclient dbInstance = DBclient.Instance;
+                    dbInstance.RemoveReportImmediateTable();
+                }
+                catch(Exception ex ) {
+                    ShowErrorDialog("fail send missing alerts\n"+ex);
+                } 
+               
+               // ShowErrorDialog("send missingAlerts\n"+ missingAlerts);       
+               
+            }
+
+
+               
+
+        }
+
+        public static void createLastReport()
+        {
+            lastReport = true;
+            _timer.Dispose();
+            createReportFile(); // send last report
+
+         
+        }
+
         private static void removeTriggers()
         {
             DBclient DBInstance = DBclient.Instance;
@@ -277,15 +358,17 @@ namespace ClientSide
             //createReportFile(db);
             DateTime timeToReport = DateTime.Parse(SettingInstance.futureDateToReport);
             double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
+            if (SettingInstance.reportFrequencyInSecond>0) {
+                tickTime = SettingInstance.reportFrequencyInSecond;
+            }
             //ShowErrorDialog(timeToReport.ToString());
             //ShowErrorDialog(""+tickTime);
 
             // Initialization of _timer  
-            //_timer = new Timer(x => { createReportFile(db); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
-            _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(50), TimeSpan.FromSeconds(1200));
+            _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
+            //_timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(600), TimeSpan.FromSeconds(1200));
 
-            //sara atara
-
+             
 
         }
 
@@ -370,7 +453,7 @@ namespace ClientSide
             if (siteTrigger.Length > 0)
             {
                 Report.Add(new Paragraph("\nOn the dates listed the user browsed the following sites:"));
-                Report.Add(new Paragraph());
+                Report.Add(new Paragraph(siteTrigger));
                 stringReport += "On the dates listed the user browsed the following sites:\n" + siteTrigger + "\n";
             }
             else
@@ -422,6 +505,9 @@ namespace ClientSide
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+       
+
 
 
     }
