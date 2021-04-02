@@ -37,7 +37,7 @@ namespace ClientSide
 
         public void playMonitorInstallations()
         {
-            int hour = 60000;
+            int hour = 60000; // 1 hour
             while (base.monitorAlive)
             {
                 bool install = false;
@@ -64,6 +64,7 @@ namespace ClientSide
             }
              
         }
+     
         private void reportOrSendAlert(string programName, bool ifInstall)
         {
 
@@ -76,16 +77,16 @@ namespace ClientSide
             
             if (base.SettingInstance.triggersForAlert.Contains("installation") == true)
             {
-                string FilePic = Picters.ScreenCapture();
-                Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "installation trigger occur", programName, "installationTrigger");
+                string FilePic = ScreenCapture();
+                CaptureCamera(FilePic);
+                sendAlertToMail(FilePic, "installation trigger occur", programName, "installationTrigger");
                 ShowErrorDialog("send alert to mail\nInstallation trigger occur\nProgramName: " + programName);
 
            }
 
            if (base.SettingInstance.triggersForReport.Contains("installation") == true)
             {
-                base.DBInstance.fillTable(3, DateTime.Now.ToString(), programName + " download " + statusInstall);
+                base.DBInstance.fillTriggersTable(3, DateTime.Now.ToString(), programName + " download " + statusInstall);
                 ShowErrorDialog("update DB\nInstallation trigger occur\nProgramName: " + programName + "\n"+ programName + " download " + statusInstall);
             }
         }
@@ -116,7 +117,7 @@ namespace ClientSide
             List<FileInfo> myFile = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
                 .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
                 .ToList();
-
+            
             string desktop = GetPath(KnownFolder.Desktop);
             directory = new DirectoryInfo(desktop);
 

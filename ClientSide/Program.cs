@@ -67,37 +67,32 @@ namespace ClientSide
             {
                 program.connectToServer();
             }
-            Thread interntAvilable = new Thread(checkInterntConnection);
-            interntAvilable.Start();
+           
             Application.Run();
         }
 
         public static void checkInterntConnection()
         {
+            
             checkConnection = true; 
             while (checkConnection)
             {
                 Thread.Sleep(5000);
                 try
                 {
-                    using (var client = new WebClient())
-                    using (var stream = client.OpenRead("http://www.google.com"))
-                    {
-                        // try send data to server
-                        try {
-                            //   program.SendData(program.clientSocket, "check connection");
-                            
-                        }
-                        catch (SocketException ex) {
-                            break;
-                        }
 
-                    }
+                    string crypto = Crypto.Encrypt("check connection");
+                    string decrypto = Crypto.Decrypt(crypto);
+                    //ShowErrorDialog("Send: "+ crypto);
+                    var sendData = Encoding.UTF8.GetBytes(crypto);
+                    program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
+
 
                 }
-                catch
+                catch(Exception ex)
                 {
-                    //           program.reConnect();
+                    Console.WriteLine("ERROR CONNECT TO SERVER");
+                    program.reConnect();
 
                 }
 
@@ -105,7 +100,6 @@ namespace ClientSide
             }
 
         }
-
 
         private static void connectAtReStartComputer()
         {
@@ -129,8 +123,6 @@ namespace ClientSide
             //  rkApp.DeleteValue("ClientSide.exe", false);
 
         }
-
-
 
         // The function is activated as soon as data is received in the socket
         private void ReceiveCallback(IAsyncResult AR)
@@ -165,7 +157,8 @@ namespace ClientSide
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
                         // save setting 
-                        saveSettingFile(setting);
+                        //saveSettingFile(setting);
+                        DBInstance.fillGeneralDetailsTable("setting", setting);
                         playAllTrigers(); //This method obtains the settings string from the server
                         break;
 
@@ -201,19 +194,19 @@ namespace ClientSide
 
             catch (SocketException ex)
             {
-                ShowErrorDialog("ReceiveCallback - RECONNECT \n" + ex.Message);
-                reConnect();
+                ShowErrorDialog("ReceiveCallback\n" + ex.Message);
+                //reConnect();
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("ReceiveCallback " + ex.Message);
+                ShowErrorDialog("ReceiveCallback\n " + ex.Message);
             }
         }
 
         private void sendLastReport(Socket socket)
         {
 
-            string lastReport = Report.getReportString();
+            string lastReport = PeriodicReporting.getReportString();
             if (lastReport == null)
             {
                 SendData(socket, "last report\r" + "NO REPORT TO SHOW");
@@ -231,7 +224,7 @@ namespace ClientSide
             manageMonitor.stopAllTriggers();
            
             // create last report
-            Report.createLastReport();
+            PeriodicReporting.createLastReport();
            
             // db
             DBclient DBInstance = DBclient.Instance;
@@ -249,7 +242,6 @@ namespace ClientSide
 
 
         }
-
 
         private void stopLiveMode(Socket clientSocket)
         {
@@ -280,8 +272,11 @@ namespace ClientSide
             manageMonitor = new ManageMonitor();
             manageMonitor.playAllTriggers();
 
-            // Set Report
-            Report.setReportFrequency();
+            // Set Periodic Report
+            PeriodicReporting.setReportPeriodic();
+
+            // set daiely report
+            PeriodicReporting.setDailyReport();
         }
 
         private void saveSettingFile(string setting)
@@ -312,7 +307,7 @@ namespace ClientSide
 
 
             // play Reporting scheduling
-            Report.setReportFrequency();
+            PeriodicReporting.setReportPeriodic();
         }
 
         // Defines functions for sending and receiving data through the socket
@@ -330,17 +325,26 @@ namespace ClientSide
                     SendData(clientSocket, "id\r" + id);
                 else SendData(clientSocket, "name\r" + name);
 
+                // play thread to check connection to server socket
+                if (checkConnection)
+                {
+                    checkConnection = false;                    
+                }
+                Thread interntAvilable = new Thread(checkInterntConnection);
+                interntAvilable.Start();
+
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
+                // ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
+                Console.WriteLine("ConnectCallback send SocketException -RECONNECT \r\n" + ex.Message);
 
                 reConnect();
 
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("ConnectCallback send ObjectDisposedException \r\n" + ex.Message);
+                Console.WriteLine("ConnectCallback send ObjectDisposedException \r\n" + ex.Message);
             }
         }
 
@@ -498,7 +502,8 @@ namespace ClientSide
  
             try
             {
-                if (CheckConnection(clientSocket))
+                //if (CheckConnection(clientSocket))
+                if(clientSocket!=null)
                 {
                     string crypto = Crypto.Encrypt(data);
                     string decrypto = Crypto.Decrypt(crypto);
@@ -510,6 +515,7 @@ namespace ClientSide
 
                 }
                 else {
+                    Console.WriteLine("send data fail, socket disconnection");
                     //reConnect();
                     SendData(clientSocket, data);
                 }
@@ -519,9 +525,10 @@ namespace ClientSide
             {
                 if (!CheckConnection(clientSocket))
                 {
-                    ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
-                    //reConnect();
-                    SendData(clientSocket, data);
+                    Console.WriteLine("send data fail, Socket Exception \r\n" + ex.Message);
+                    // ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
+                    // reConnect();
+                    // SendData(clientSocket, data);
 
                 }
 
@@ -530,8 +537,9 @@ namespace ClientSide
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("SendData send ObjectDisposedException \r\n" + ex.Message);
-                reConnect();
+                Console.WriteLine("send data fail, ObjectDisposed Exception \r\n" + ex.Message);
+                // ShowErrorDialog("SendData send ObjectDisposedException \r\n" + ex.Message);
+                //reConnect();
             }
         }
          
@@ -595,7 +603,7 @@ namespace ClientSide
         public void reConnect()
         {
             try
-            {
+            {// sara  
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -606,10 +614,13 @@ namespace ClientSide
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), 3333);
                 // The function ConnectCallback set callback to receive and send 
                 clientSocket.BeginConnect(endPoint, ConnectCallback, clientSocket);
+
+                // send to server alert who missing 
                 DBclient DBInstance = DBclient.Instance;
                 string immadiateAlerts = DBInstance.getReportImmediateTable();
-                if (immadiateAlerts.Length > 0) {
-                    Report.sendImadiateAlertsToMail(immadiateAlerts);
+                if (immadiateAlerts.Length > 0)
+                {
+                    PeriodicReporting.sendMissingReportsToMail(immadiateAlerts);
                 }
 
             }
@@ -621,6 +632,9 @@ namespace ClientSide
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+            }
+            catch (InvalidOperationException ex) {
+                ShowErrorDialog("reConnect send InvalidOperationException \r\n" + ex.Message);
             }
         }
 

@@ -42,12 +42,13 @@ namespace ClientSide
             DB = Environment.UserName + "_DB.sqlite";
             createNewDatabase();
             connectToDatabase();
-            createTable();
+            createTriggersTable();
             createSiteLinkTable();
             createGeneralDetailsTable();
             fillSiteLinkTable();
             createWebsiteMonitoringTable();
             createReportImmediateTable();
+            createDailyUrlTable();
         }
         public static DBclient Instance
         {
@@ -109,7 +110,7 @@ namespace ClientSide
 
         public void fillGeneralDetailsTable(string detail, string value)
         {
-            string sql = "insert or replace into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
+            string sql = "replace into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -163,7 +164,7 @@ namespace ClientSide
         }
 
         // Creates a table named 'clientData' with two columns: name (a string of max 20 characters) and score (an int)
-        public void createTable()
+        public void createTriggersTable()
         {
 
             string sql = "CREATE TABLE IF NOT EXISTS TriggersTable(idTrigger INTEGER ,dateTrigger TEXT, DesTrigger TEXT)";
@@ -278,7 +279,7 @@ namespace ClientSide
 
         // Inserts some values in the clientData table.
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
-        public void fillTable(int idTrigger, string dateTrigger, string DesTrigger)
+        public void fillTriggersTable(int idTrigger, string dateTrigger, string DesTrigger)
         {
             string sql = "insert into TriggersTable(idTrigger,dateTrigger,DesTrigger) values('" + idTrigger + "','" + dateTrigger + "','" + DesTrigger + "');";
 
@@ -340,6 +341,71 @@ namespace ClientSide
 
 
         }
+
+        private void createDailyUrlTable()
+        {
+            string sql = "CREATE TABLE IF NOT EXISTS DailyUrlTable(date TEXT,url TEXT,UNIQUE(date ,url))";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void fillDailyUrlTable(string date, string url)
+        {
+            string sql = "INSERT OR IGNORE into DailyUrlTable(date,url) values('" + date + "','" + url + "');";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void RemoveDailyUrlTable(string date)
+        {
+            string sql = "DELETE  FROM  DailyUrlTable where date='" + date + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        private void createDailyProcessTable()
+        {
+            string sql = "CREATE TABLE IF NOT EXISTS DailyProcessTable(date TEXT,Process TEXT,UNIQUE(date ,Process))";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void fillProcessTable(string date, string Process)
+        {
+            string sql = "INSERT OR IGNORE into DailyProcessTable(date,Process) values('" + date + "','" + Process + "');";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public void RemoveDailyProcessTable(string date)
+        {
+            string sql = "DELETE  FROM DailyProcessTable WHERE  date='" + date + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+        public string getDailyProcessTable(string date)
+        {
+            string Text = "";
+            string sql = "select * from  DailyProcessTable where date='" + date + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Text += "date: " + reader["date"] + "Process: " + reader["Process"] + "\n";
+            }
+
+            return Text;
+        }
+        public string getDailyUrlTable(string date)
+        {
+            string Text = "";
+            string sql = "select * from  DailyUrlTable where date='" + date + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Text += "Date: " + reader["date"] + "URL: " + reader["url"] + "\n";
+            }
+
+            return Text;
+        }
+
+
 
         public static void ShowErrorDialog(string message)
         {

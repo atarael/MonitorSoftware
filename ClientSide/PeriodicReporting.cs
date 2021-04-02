@@ -1,199 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.IO.Compression;
-using System.IO;
-using System.Threading;
-using System.Diagnostics;
-using System.Drawing;
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Parsing;
-using Syncfusion.Pdf.Graphics;
-using Syncfusion.Pdf.Grid;
-using GemBox.Document;
-using PdfSharp.Drawing;
-using iTextSharp.text;
+﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Paragraph = iTextSharp.text.Paragraph;
-using Image = iTextSharp.text.Image;
-using Rectangle = iTextSharp.text.Rectangle;
-using Color = iTextSharp.text.Color;
-using Element = iTextSharp.text.Element;
-using Spire.Pdf.Exporting.XPS.Schema;
-using Path = System.IO.Path;
-using Font = iTextSharp.text.Font;
-using BaseLib.Graphic;
-using System.Runtime.CompilerServices;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Mail;
+using System.Security.Policy;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
-using Timer = System.Threading.Timer;
-using VisioForge.MediaFramework.ONVIF;
 using DateTime = System.DateTime;
-using System.Runtime.Remoting.Messaging;
-
+using Image = iTextSharp.text.Image;
+using Paragraph = iTextSharp.text.Paragraph;
+using Path = System.IO.Path;
+using Timer = System.Threading.Timer;
 namespace ClientSide
 {
-
-    // 1. get frequency from server
-    // 2. difine time to create report
-    // 3. create report from DB
-    // 4. send mail
-
-    class Report
+    class PeriodicReporting
     {
-        private static string screenPic;
-        private static string cameraPic;
-        private static Timer _timer;
-         
+
+        private static Timer periodicTimer;
+        private static Timer dailyTimer;
         public static double frequencySecond;
         public static string frequencyWord;
-
-        public static Setting settingClient;
-        public static string mailAddress;
 
         public DBclient DBInstance = DBclient.Instance;
         private static string stringReport;
         private static bool lastReport;
 
-        public Report()
+        public PeriodicReporting()
         {
 
 
         }
 
-        public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string triggerName)
+
+
+        public static void sendReportFileToMail(string subject, string fileName)
         {
-            DBclient DBInstance = DBclient.Instance;
-            string date = DateTime.Now.ToString();
-            // if no internet - save imadiate alert in DB 
-            DBInstance.fillReportImmediateTable(triggerName, TriggerDescription, triggerDetails, date);
-
-          
-            string[] args = { picName, TriggerDescription, triggerDetails, triggerName };
-            Thread alertTread = new Thread(playSendAlertThread);
-            alertTread.Start(args);
-
+            string[] args = { subject, fileName };
+             
+            Thread reportThread = new Thread(playSendReportThread);
+            reportThread.Start(args);
 
         }
 
-        private static void playSendAlertThread(object parameterObj)
+        public static void playSendReportThread(object parameterObj)
         {
             string[] args = (string[])parameterObj;
-            string picName = args[0];
-            string TriggerDescription = args[1];
-            string triggerDetails = args[2];
-            string trigger = args[3];
+            string subject = args[0];
+            string fileName = args[1];
 
-            // get directory to pictures
-            string projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-
-
-            // get Camera picture
-            string[] paths = new string[] { @filepath, "files", picName };
-            cameraPic = Path.Combine(paths);
-
-
-            // get screenshot picture
-            paths = new string[] { @filepath, "files", "snapshot_" + picName };
-            screenPic = Path.Combine(paths);
-
-            Thread.Sleep(60000);
-
-            try
-            {
-
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                Setting settingInstance = Setting.Instance;
-                mail.To.Add(settingInstance.email);
-                mail.Subject = "Alert " + TriggerDescription;
-
-                switch (trigger)
-                {
-                    case ("typing"):
-                        mail.Body = "The user typing word: " + triggerDetails;
-                        break;
-                    case ("Site"):
-                        mail.Body = "The user browse in site: " + triggerDetails;
-                        break;
-                    case ("Insta"):
-                        mail.Body = "The user try install app " + triggerDetails;
-                        break;
-                }
-
-                Attachment attachment;
-                attachment = new Attachment(cameraPic);
-                mail.Attachments.Add(attachment);
-
-                Debug.WriteLine("add camera pic");
-
-                Attachment attachment2;
-                attachment2 = new Attachment(screenPic);//sara
-                mail.Attachments.Add(attachment2);
-
-                Debug.WriteLine("add screen pic");
-
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
-                SmtpServer.EnableSsl = true;
-
-                SmtpServer.Send(mail);
-                mail.Attachments.Dispose();
-                Thread.Sleep(120000);
-                if (File.Exists(cameraPic))
-                    File.Delete(cameraPic);
-                if (File.Exists(screenPic))
-                    File.Delete(screenPic);
-                Debug.WriteLine("send email seccess");
-
-            }
-
-            catch (SmtpException ex)
-            {
-                Thread.Sleep(5000);
-                ShowErrorDialog("fail send mailllll: \n" + ex);
-                Thread alertThread = new Thread(playSendAlertThread);
-                alertThread.Start(args);
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("fail send mail: \n" + ex);
-                ShowErrorDialog("fail send mail: \n" + ex);
-            }
-
-
-
-
-
-
-            Thread reportThread = new Thread(playSendReportThread);
-            reportThread.Start();
-
-        }
-
-        public static void sendReportFileToMail()
-        {
-
-            Thread reportThread = new Thread(playSendReportThread);
-            reportThread.Start();
-
-        }
-
-        public static void playSendReportThread()
-        {
             Debug.WriteLine("insert to sendAlertToMail");
             // get directory to report
             string projectDirectory = Environment.CurrentDirectory;
             string reportPath = Directory.GetParent(projectDirectory).Parent.FullName;
 
             // get report file
-            string[] paths = new string[] { @reportPath, "Report.pdf" };
+            string[] paths = new string[] { @reportPath, fileName };
             reportPath = Path.Combine(paths);
 
 
@@ -211,16 +74,8 @@ namespace ClientSide
                         mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
                         Setting settingInstance = Setting.Instance;
                         mail.To.Add(settingInstance.email);
-                        if (lastReport)
-                        {
-                            mail.Subject = "Last Report File ";
-                        }
-                        else
-                        {
-                            mail.Subject = "Report File ";
-                        }
+                        mail.Subject = subject;
                         
-
                         Attachment attachment;
                         attachment = new Attachment(reportPath);
                         mail.Attachments.Add(attachment);
@@ -230,8 +85,8 @@ namespace ClientSide
                         SmtpServer.EnableSsl = true;
 
                         SmtpServer.Send(mail);
-                        if(lastReport)
-                        { 
+                        if (lastReport)
+                        {
                             // delete fiels folder
                             // this folder contain files such setting file and pichtures to report
                             string userName = Environment.UserName;
@@ -265,9 +120,9 @@ namespace ClientSide
                                 {
                                     //ShowErrorDialog("fail delete report adter send:\n"+ex);
                                 }
-                           }
+                            }
                         }
-                    }                     
+                    }
 
 
                 }
@@ -291,85 +146,19 @@ namespace ClientSide
 
         }
 
-        public static void sendImadiateAlertsToMail(string missingAlerts)
-        {
-
-            Thread imadiateAlerts = new Thread(playSendImadiateAlertsThread);
-            imadiateAlerts.Start(missingAlerts);
-
-        }
-
-        public static void playSendImadiateAlertsThread(object parameterObj)
-        {
-
-            string missingAlerts = (string)parameterObj;
-            using (MailMessage mail = new MailMessage())
-            using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
-            {
-
-                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                Setting settingInstance = Setting.Instance;
-                mail.To.Add(settingInstance.email);
-                mail.Subject = "Alerts collected from offline mode ";
-                mail.Body= missingAlerts;                 
-                       
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
-                SmtpServer.EnableSsl = true;
-                try
-                {
-                    SmtpServer.Send(mail);
-                    DBclient dbInstance = DBclient.Instance;
-                    dbInstance.RemoveReportImmediateTable();
-                }
-                catch(Exception ex ) {
-                    ShowErrorDialog("fail send missing alerts\n"+ex);
-                } 
-               
-               // ShowErrorDialog("send missingAlerts\n"+ missingAlerts);       
-               
-            }
-
-
-               
-
-        }
-
         public static void createLastReport()
         {
             lastReport = true;
-            _timer.Dispose();
+            periodicTimer.Dispose();
             createReportFile(); // send last report
 
-         
+
         }
 
         private static void removeTriggers()
         {
             DBclient DBInstance = DBclient.Instance;
             DBInstance.RemoveTriggersTable();
-        }
-
-        public static void setReportFrequency()
-        {
-            Setting SettingInstance = Setting.Instance;
-            frequencySecond = SettingInstance.reportFrequencyInSecond;
-            frequencyWord = SettingInstance.reportFrequencyInWord; // dayly or weekly..
-            //createReportFile(db);
-            DateTime timeToReport = DateTime.Parse(SettingInstance.futureDateToReport);
-            double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
-            if (SettingInstance.reportFrequencyInSecond>0) {
-                tickTime = SettingInstance.reportFrequencyInSecond;
-            }
-            //ShowErrorDialog(timeToReport.ToString());
-            //ShowErrorDialog(""+tickTime);
-
-            // Initialization of _timer  
-            _timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
-            //_timer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(600), TimeSpan.FromSeconds(1200));
-
-             
-
         }
 
         public static string getReportString()
@@ -391,22 +180,43 @@ namespace ClientSide
             {
                 using (StreamReader sr = System.IO.File.OpenText(reportStringPath))
                 {
-               
-                string line = "";
-                while ((line = sr.ReadLine()) != null)
-                {
-                    settingString += line + "\r\n";
+
+                    string line = "";
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        settingString += line + "\r\n";
+                    }
                 }
-            }
- 
+
 
             }
             else
             {
                 return string.Empty;
             }
-            
+
             return settingString;
+        }
+
+        public static void setReportPeriodic()
+        {
+            Setting SettingInstance = Setting.Instance;
+            frequencySecond = SettingInstance.reportFrequencyInSecond;
+            frequencyWord = SettingInstance.reportFrequencyInWord; // dayly or weekly..
+            //createReportFile(db);
+            DateTime timeToReport = DateTime.Parse(SettingInstance.futureDateToReport);
+            double tickTime = (double)(timeToReport - DateTime.Now).TotalSeconds;
+            if (SettingInstance.reportFrequencyInSecond > 0)
+            {
+                tickTime = SettingInstance.reportFrequencyInSecond;
+            }
+           
+            // Initialization of periodicTimer  
+            periodicTimer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
+            //periodicTimer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(600), TimeSpan.FromSeconds(1200));
+
+
+
         }
 
         private static void createReportFile()
@@ -428,26 +238,27 @@ namespace ClientSide
                   Report.PageSize.Height - 130f);
 
             Report.Add(jpg);
-            
+
             Report.Add(new Paragraph(DateTime.Now.ToString()));
             stringReport += DateTime.Now.ToString() + "\n";
-                         
+
             Report.Add(new Paragraph("\n\n\n\n\n" + frequencyWord + " report for user: " + userName));
             stringReport += frequencyWord + " report for user: " + userName + "\n";
-            
+
             // add bad word trigger
             string wordsTrigger = DBInstance.getTriggerById(1);
             if (wordsTrigger.Length > 0)
             {
                 Report.Add(new Paragraph("\nOn the dates listed, the following words were typed:"));
                 Report.Add(new Paragraph(wordsTrigger));
-                stringReport += "On the dates listed, the following words were typed:\n" + wordsTrigger + "\n";                
+                stringReport += "On the dates listed, the following words were typed:\n" + wordsTrigger + "\n";
             }
-            else {
+            else
+            {
                 Report.Add(new Paragraph("\nNO TRIGGER KIND BAD WORDS TO REPORT!"));
                 stringReport += "NO TRIGGER KIND BAD WORDS TO REPORT!\n";
             }
-            
+
             // add site trigger
             string siteTrigger = DBInstance.getTriggerById(2);
             if (siteTrigger.Length > 0)
@@ -475,11 +286,11 @@ namespace ClientSide
                 Report.Add(new Paragraph("\nNO TRIGGER KIND INSTALLATIONS TO REPORT!"));
                 stringReport += "NO TRIGGER KIND INSTALLATIONS TO REPORT!\n";
             }
-                     
+
             Report.Close();
 
             ShowErrorDialog("report created, send mail");
-            sendReportFileToMail();
+            sendReportFileToMail("Report File", "Report.pdf");
 
             //db.printClientData();  
             string pathLastReport = Path.Combine(path, "lastReport.txt");
@@ -506,9 +317,156 @@ namespace ClientSide
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-       
+        public static void sendMissingReportsToMail(string missingAlerts)
+        {
+
+            Thread imadiateAlerts = new Thread(playSendMissingReportsThread);
+            imadiateAlerts.Start(missingAlerts);
+
+        }
+
+        public static void playSendMissingReportsThread(object parameterObj)
+        {
+
+            string missingAlerts = (string)parameterObj;
+            using (MailMessage mail = new MailMessage())
+            using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
+            {
+
+                mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                Setting settingInstance = Setting.Instance;
+                mail.To.Add(settingInstance.email);
+                mail.Subject = "Alerts collected from offline mode ";
+                mail.Body = missingAlerts;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
+                SmtpServer.EnableSsl = true;
+                try
+                {
+                    SmtpServer.Send(mail);
+                    DBclient dbInstance = DBclient.Instance;
+                    dbInstance.RemoveReportImmediateTable();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("fail send missing alerts\n" + ex);
+                }
+
+                // ShowErrorDialog("send missingAlerts\n"+ missingAlerts);       
+
+            }
 
 
+
+
+        }
+
+        public static void setDailyReport()
+        {
+            
+           
+           
+            DateTime currentTime = DateTime.Now;            
+            DateTime timeToReportToday = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 10, 0, 0);
+            double tickTime = ConvertDateToSeconds(timeToReportToday) - ConvertDateToSeconds(currentTime);
+
+            // if have some time until daily report
+            if (tickTime>0) {
+                // Initialization of periodicTimer  
+                dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(60 * 60 * 24));
+
+            }
+            else
+            {
+                dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60 * 60 * 24));
+
+            }
+            dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60 * 60 * 24));
+
+
+
+
+        }
+     
+        private static void createDailyReportFile()
+        {
+            DateTime yesterdayDate = DateTime.Today.AddDays(-1);
+            DBclient DBInstance = DBclient.Instance;
+            
+            try
+            {
+                string projectDirectory = Environment.CurrentDirectory;
+                string path = Directory.GetParent(projectDirectory).Parent.FullName;
+                Document Report = new Document();
+                string date = DateTime.UtcNow.ToString("MM-dd-yyyy");
+                date = date.Replace('-', '_');
+
+                string reportName = Environment.UserName + "_" + date + "_DailyReport.pdf";
+
+                if (!File.Exists(Path.Combine(path, reportName)))                 
+                {
+                    PdfWriter.GetInstance(Report, new FileStream(path + "/" + reportName, FileMode.Create));
+                    Report.Open();
+                    Image jpg = Image.GetInstance(path + "/logo.JPG");
+                    jpg.ScalePercent(12f);
+                    jpg.SetAbsolutePosition(Report.PageSize.Width - 410f,
+                            Report.PageSize.Height - 130f);
+
+                    Report.Add(jpg);
+                    Report.Add(new Paragraph("\n\n\n\n\n"));
+                    Report.Add(new Paragraph("DAILY REPORT FOR USER:" + Environment.UserName));
+                    string urls = DBInstance.getDailyUrlTable(yesterdayDate.ToString());
+                    if (urls.Length > 0)
+                    {
+                        Report.Add(new Paragraph("Sites visited by the user yesterday:\r" + urls));
+                    }
+                    else
+                    {
+                        Report.Add(new Paragraph("NO SITETS TOREPORT"));
+                    }
+                    
+                    string proccess = DBInstance.getDailyProcessTable(yesterdayDate.ToString());
+                    if (urls.Length > 0)
+                    {
+                        Report.Add(new Paragraph("Proccess visited by the user yesterday:\r" + urls));
+                    }
+                    else
+                    {
+                        Report.Add(new Paragraph("NO PROCCESS TOREPORT"));
+                    }
+
+                    Report.Close();
+                    sendReportFileToMail("Daily Report "+ DateTime.UtcNow.ToString("MM-dd-yyyy") + ", USER: "+Environment.UserName, reportName);
+
+                }
+
+            }
+
+
+
+
+
+
+
+            catch (Exception ex)
+                {
+                    ShowErrorDialog("" + ex);
+                }
+
+             
+
+          
+            
+            DBInstance.RemoveDailyUrlTable(yesterdayDate.ToString());
+        }
+
+        public static double ConvertDateToSeconds(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return Math.Floor(diff.TotalSeconds);
+        }
 
     }
 }

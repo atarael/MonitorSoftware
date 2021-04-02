@@ -46,30 +46,6 @@ namespace ClientSide
         /// Returns a string containing information on running processes
         /// </summary>
         /// <returns></returns>
-        public static string ListAllApplications()
-        {
-            StringBuilder sb = new StringBuilder();
-
-        foreach (Process p in Process.GetProcesses("."))
-            {
-               
-                try
-                {
-                    
-                    if (p.MainWindowTitle.Length > 0)
-                    {
-                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
-                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
-                        
-
-                    sb.Append(Environment.NewLine);
-                    }
-                }
-                catch { }
-            }
-
-            return sb.ToString();
-        }
         public static String getCurrentURL()
         {
             StringBuilder sb = new StringBuilder();

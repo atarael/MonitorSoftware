@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,9 +14,7 @@ namespace ClientSide
     {
         
         public bool ifLive;
-        public static Program program;
-        public Thread monitorProccess;
-
+        
         public MonitorProccess() { }
         public override void playThreadMonitor()
         {
@@ -38,7 +37,7 @@ namespace ClientSide
         private void playmonitorProccess()
         {
             while (ifLive) {
-                string processes = ShowAllProcess.ListAllApplications();
+                string processes = ListAllApplications();
                 updateProccess handler = Program.updateCurrentProcess;
                 handler(processes);
                 Thread.Sleep(60000);
@@ -47,6 +46,31 @@ namespace ClientSide
             ShowErrorDialog("playmonitorProccess finish");
 
 
+        }
+      
+        public static string ListAllApplications()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Process p in Process.GetProcesses("."))
+            {
+
+                try
+                {
+
+                    if (p.MainWindowTitle.Length > 0)
+                    {
+                        sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
+                        sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
+
+
+                        sb.Append(Environment.NewLine);
+                    }
+                }
+                catch { }
+            }
+
+            return sb.ToString();
         }
 
         private static void ShowErrorDialog(string message)

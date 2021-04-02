@@ -57,8 +57,8 @@ namespace ServerSide
                 s = new ServerForm();
                 s.Text = "Monitoring Interface";
                 program.StartServer();
-                //Thread interntAvilable = new Thread(checkInterntConnection);
-                //interntAvilable.Start();
+                // Thread interntAvilable = new Thread(checkInterntConnection);
+                // interntAvilable.Start();
                 Application.Run(s);
                 mutex.ReleaseMutex();
             }
@@ -82,6 +82,7 @@ namespace ServerSide
 
             while (true)
             {
+                Thread.Sleep(7000);
                 try
                 {
                     using (var client = new WebClient())
@@ -561,15 +562,19 @@ namespace ServerSide
         }
         public static void setSettingDeleGate(int id, string setting)
         {
-            program.DBInstance = DBserver.Instance;
-            program.DBInstance.fillClientsTable(id, program.name, setting);
+           
             int index = 0;
             // Start receiving data from this client Socket.
             for (int i = 0; i < program.Allclients.Count; i++)
             {
                 if (program.Allclients[i].id == id)
                 {
-                    if(CheckConnection(id,program.Allclients[i].ClientSocket))
+                    // save all client data in DB
+                    program.DBInstance = DBserver.Instance;
+                    program.DBInstance.fillClientsTable(id, program.Allclients[i].Name, setting);
+                    
+                    //if (CheckConnection(id,program.Allclients[i].ClientSocket))
+                    if(program.Allclients[i].ClientSocket != null)
                     {
                         program.sendDataToClient(program.Allclients[i].ClientSocket, "setting\r\n" + setting);
                         index = i;
@@ -610,7 +615,7 @@ namespace ServerSide
             }
         }
     
-        public static void checckClientConnection(int id)
+        public static void checkClientConnection(int id)
         {
             for (int i = 0; i < program.Allclients.Count(); i++)
             {

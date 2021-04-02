@@ -148,7 +148,7 @@ namespace ServerSide
             {
                 if (row.Cells[3].Value != null) { 
                     int id = int.Parse(row.Cells[3].Value.ToString());
-                    checkClientSocket handler = Program.checckClientConnection;
+                    checkClientSocket handler = Program.checkClientConnection;
                     handler(id);
                 }
                

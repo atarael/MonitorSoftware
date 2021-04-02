@@ -35,7 +35,7 @@ namespace ClientSide
         private Setting()
         {
 
-            readSettingFromFile();
+            settingString = readSettingFromDB();
             createOffensiveWordsList();
             installationSetting();
             reportFrequencyInSecond = buildReportFrequency();
@@ -269,38 +269,39 @@ namespace ClientSide
             return offensiveWords;
         }
 
-        public void readSettingFromFile()
+        public string readSettingFromDB()
         {
-            string userName = Environment.UserName;
+            //string userName = Environment.UserName;
 
-            String projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            String[] paths = new string[] { @filepath, "files" };
-            filepath = Path.Combine(paths);
-            settingString = "";
-            DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            //ShowErrorDialog("filepath is: \n" + filepath);
-            if (!Directory.Exists(filepath))
-            {
-                return;
-            }
+            //String projectDirectory = Environment.CurrentDirectory;
+            //string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            //String[] paths = new string[] { @filepath, "files" };
+            //filepath = Path.Combine(paths);
+            //string setting = "";
+            //DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            ////ShowErrorDialog("filepath is: \n" + filepath);
+            //if (!Directory.Exists(filepath))
+            //{
+            //    return "";
+            //}
 
-            using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, "setting_" + userName + ".txt")))
-            {
-                sr.ReadLine();
-                sr.ReadLine();
+            //using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, "setting_" + userName + ".txt")))
+            //{
+            //    sr.ReadLine();
+            //    sr.ReadLine();
 
-                //ShowErrorDialog("id\n" + id);
-                string line = "";
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //ShowErrorDialog("line\n" + line);
-                    settingString += line + "\r\n";
-                }
-            }
+            //    //ShowErrorDialog("id\n" + id);
+            //    string line = "";
+            //    while ((line = sr.ReadLine()) != null)
+            //    {
+            //        //ShowErrorDialog("line\n" + line);
+            //        setting += line + "\r\n";
+            //    }
+            //}
 
-
-
+            DBclient DBInstance = DBclient.Instance;
+            string setting = DBInstance.getGeneralDetailsTable("setting");
+            return setting;
         }
 
         private static void ShowErrorDialog(string message)

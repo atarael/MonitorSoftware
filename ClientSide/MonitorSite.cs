@@ -16,6 +16,8 @@ using Condition = System.Windows.Automation.Condition;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+using VisioForge.MediaFramework.ONVIF;
+using DateTime = System.DateTime;
 
 namespace ClientSide
 {
@@ -24,9 +26,7 @@ namespace ClientSide
 
         public bool ifLive;
         
-        public static Program program;
-        public Thread monitorSite;
-
+      
         public MonitorSite()
         {
              
@@ -84,8 +84,14 @@ namespace ClientSide
                             //string sURL = findHostName(fullURL);
                             if (!fullURL.Equals(prev))
                             {
-                                // ShowErrorDialog("URL: " + fullURL);
-                                // send url to send in live state
+                                // update url in DB for daily report
+                                string today = System.DateTime.Today.ToString();
+                                ShowErrorDialog(today);
+                                base.DBInstance.fillDailyUrlTable(today, fullURL);
+
+                                
+                                
+                                // send url if live state
                                 if (ifLive)
                                 { 
                                     SiteFromMonitorSite handler = Program.updateCurrentSite;
@@ -127,36 +133,21 @@ namespace ClientSide
         {
             if (base.SettingInstance.triggersForAlert.Contains(category) == true)
             {
-                string FilePic = Picters.ScreenCapture();
-                Picters.CaptureCamera(FilePic);
-                Report.sendAlertToMail(FilePic, "Site trigger occur", fullURL, "Site");
+                string FilePic = ScreenCapture();
+                CaptureCamera(FilePic);
+                sendAlertToMail(FilePic, "Site trigger occur", fullURL, "Site");
                 ShowErrorDialog("send alert to mail\nSite trigger occur\ncategory: " + category +", path: "+ fullURL);
             }
 
            if (base.SettingInstance.triggersForReport.Contains(category) == true)
             {
                 
-                base.DBInstance.fillTable(2, DateTime.Now.ToString(), fullURL);
+                base.DBInstance.fillTriggersTable(2, DateTime.Now.ToString(), fullURL);
                 ShowErrorDialog("update DB \nSite trigger occur\ncategory: " + category + ", path: " + fullURL);
 
            }
         }
 
-      
-      
-
-        private static string findHostName(string sURL)
-        {
-            var uri = new Uri("http://" + sURL);
-            var host = uri.Host;
-            if (IsValidDomainName(host))
-                return host as string;
-            return string.Empty;
-        }
-        private static bool IsValidDomainName(string name)
-        {
-            return Uri.CheckHostName(name) != UriHostNameType.Unknown;
-        }
         private static void ShowErrorDialog(string message)
         {
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
