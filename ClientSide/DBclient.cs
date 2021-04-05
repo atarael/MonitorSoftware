@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.Data.Sqlite;
 using System.Windows.Forms;
+using System.Data;
 
 namespace ClientSide
 {
@@ -49,6 +50,7 @@ namespace ClientSide
             createWebsiteMonitoringTable();
             createReportImmediateTable();
             createDailyUrlTable();
+            createDailyProcessTable();
         }
         public static DBclient Instance
         {
@@ -110,12 +112,23 @@ namespace ClientSide
 
         public void fillGeneralDetailsTable(string detail, string value)
         {
-            string sql = "replace into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            string sql1 = "SELECT count(*) FROM GeneralDetailsTable WHERE detail='detail'";
+            SQLiteCommand command = new SQLiteCommand(sql1, m_dbConnection);
+            int count = Convert.ToInt32(command.ExecuteNonQuery());
+            if (count == 0)
+            {
+                string sql = "insert  into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
+                SQLiteCommand command1 = new SQLiteCommand(sql, m_dbConnection);
+                command1.ExecuteNonQuery();
+            }
 
+            else
+            {
+                updateGeneralDetailsTable(detail, value);
+            }
         }
 
+        
         private void createSiteLinkTable()
         {
 
@@ -219,7 +232,7 @@ namespace ClientSide
             }
         }
         private void createReportImmediateTable()
-        {
+        {// sara atara 
 
             string sql = "CREATE TABLE IF NOT EXISTS ReportImmediateTable(triggerName TEXT, triggerDesciption  TEXT,triggerDetails TEXT,triggerdate TEXT)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -366,7 +379,7 @@ namespace ClientSide
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
-        public void fillProcessTable(string date, string Process)
+        public void fillDailyProcessTable(string date, string Process)
         {
             string sql = "INSERT OR IGNORE into DailyProcessTable(date,Process) values('" + date + "','" + Process + "');";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -379,14 +392,14 @@ namespace ClientSide
             command.ExecuteNonQuery();
         }
         public string getDailyProcessTable(string date)
-        {
+        { 
             string Text = "";
             string sql = "select * from  DailyProcessTable where date='" + date + "'";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Text += "date: " + reader["date"] + "Process: " + reader["Process"] + "\n";
+                Text += "Process:    " + reader["Process"] + "\n";
             }
 
             return Text;
@@ -399,7 +412,7 @@ namespace ClientSide
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Text += "Date: " + reader["date"] + "URL: " + reader["url"] + "\n";
+                Text += "URL:    " + reader["url"] + "\n";
             }
 
             return Text;
@@ -409,7 +422,8 @@ namespace ClientSide
 
         public static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
         }
 
 

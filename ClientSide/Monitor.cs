@@ -7,7 +7,8 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Text;
-
+using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace ClientSide
 {
@@ -22,7 +23,8 @@ namespace ClientSide
         
         protected DBclient DBInstance = DBclient.Instance;
         protected Setting SettingInstance = Setting.Instance;
-
+        
+        const int ENUM_CURRENT_SETTINGS = -1;
         public Monitor()
         {
 
@@ -35,21 +37,139 @@ namespace ClientSide
         // take screen picture 
         public string ScreenCapture()
         {
-            Bitmap printscreen = new Bitmap(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-            Graphics graphics = Graphics.FromImage(printscreen as Image);
-            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            String projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            string s = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString() + ".jpg";
-            String[] paths = new string[] { @filepath, "files", s };
-            filepath = Path.Combine(paths);
 
-            if (!File.Exists(filepath))
+            foreach (Screen screen in Screen.AllScreens)
             {
-                printscreen.Save(filepath, ImageFormat.Jpeg);
-            }
-            return s;
+                DEVMODE dm = new DEVMODE();
+                dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+                EnumDisplaySettings(screen.DeviceName, ENUM_CURRENT_SETTINGS, ref dm);
+
+                using (Bitmap bmp = new Bitmap(dm.dmPelsWidth, dm.dmPelsHeight))
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CopyFromScreen(dm.dmPositionX, dm.dmPositionY, 0, 0, bmp.Size);
+                    Console.WriteLine(screen.DeviceName.Split('\\').Last() + ".jpeg");
+
+                   //bmp.Save(screen.DeviceName.Split('\\').Last() + ".jpeg");
+                
+                String projectDirectory = Environment.CurrentDirectory;
+                string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+
+                String[] paths = new string[] { @filepath, "files" };
+                filepath = Path.Combine(paths);
+
+                if (!Directory.Exists(filepath))
+                {
+                    Directory.CreateDirectory(filepath);
+                }
+                string s = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString() + ".jpg";
+                paths = new string[] { @filepath, s };
+                filepath = Path.Combine(paths);
+
+                if (!File.Exists(filepath))
+                { 
+                    bmp.Save(filepath);
+                }
+                
+                return s;
+            }}
+            return "";
         }
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DEVMODE
+        {
+            private const int CCHDEVICENAME = 0x20;
+            private const int CCHFORMNAME = 0x20;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public ScreenOrientation dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmFormName;
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Create a new bitmap.
+        //var printscreen = new Bitmap(SystemInformation.VirtualScreen.Width,
+        //                   SystemInformation.VirtualScreen.Height,
+        //                   PixelFormat.Format32bppArgb);
+        //Graphics screenGraph = Graphics.FromImage(printscreen);
+        //screenGraph.CopyFromScreen(SystemInformation.VirtualScreen.X,
+        //                           SystemInformation.VirtualScreen.Y,
+        //                           0,
+        //                           0,
+        //                           SystemInformation.VirtualScreen.Size,
+        //                           CopyPixelOperation.SourceCopy);
+        //String projectDirectory = Environment.CurrentDirectory;
+        //    string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+
+        //    String[] paths = new string[] { @filepath, "files" };
+        //    filepath = Path.Combine(paths);
+
+        //    if (!Directory.Exists(filepath))
+        //    {
+        //        Directory.CreateDirectory(filepath);
+        //    }
+        //    string s = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString() + ".jpg";
+        //    paths = new string[] { @filepath, s };
+        //    filepath = Path.Combine(paths);
+
+        //    if (!File.Exists(filepath))
+        //    {
+        //        printscreen.Save(filepath, ImageFormat.Jpeg);
+        //    }
+        //    return s;
+
+
+
+
+
+
+
+    
+       
+        
         // take user picture
         public void CaptureCamera(string picName)
         {
@@ -71,12 +191,8 @@ namespace ClientSide
         // send immediate alert to server
         public static void sendAlertToMail(string picName, string TriggerDescription, string triggerDetails, string triggerName)
         {
-            DBclient DBInstance = DBclient.Instance;
-            string date = DateTime.Now.ToString();
-            // if no internet - save imadiate alert in DB 
-            DBInstance.fillReportImmediateTable(triggerName, TriggerDescription, triggerDetails, date);
-
-
+            DBclient DBInstance = DBclient.Instance;           
+           
             string[] args = { picName, TriggerDescription, triggerDetails, triggerName };
             Thread alertTread = new Thread(playSendAlertThread);
             alertTread.Start(args);
@@ -90,7 +206,7 @@ namespace ClientSide
             string picName = args[0];
             string TriggerDescription = args[1];
             string triggerDetails = args[2];
-            string trigger = args[3];
+            string triggerName = args[3];
 
             // get directory to pictures
             string projectDirectory = Environment.CurrentDirectory;
@@ -118,7 +234,7 @@ namespace ClientSide
                 mail.To.Add(settingInstance.email);
                 mail.Subject = "Alert " + TriggerDescription;
 
-                switch (trigger)
+                switch (triggerName)
                 {
                     case ("typing"):
                         mail.Body = "The user typing word: " + triggerDetails;
@@ -160,16 +276,21 @@ namespace ClientSide
             }
 
             catch (SmtpException ex)
-            {
-                Thread.Sleep(5000);
+            {  
                 Console.WriteLine("fail send mailllll: \n" + ex);
-                Thread alertThread = new Thread(playSendAlertThread);
-                alertThread.Start(args);
+
+                // if no internet - save imadiate alert in DB 
+                string date = DateTime.Now.ToString();
+
+                DBclient DBInstance = DBclient.Instance;
+                DBInstance.fillReportImmediateTable(triggerName, TriggerDescription, triggerDetails, date);
+
+                 
 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("fail send mail: \n" + ex);
+                
                 Console.WriteLine("fail send mail: \n" + ex);
             }
 

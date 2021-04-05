@@ -47,102 +47,104 @@ namespace ClientSide
         public static void playSendReportThread(object parameterObj)
         {
             string[] args = (string[])parameterObj;
-            string subject = args[0];
-            string fileName = args[1];
+            if (args != null) {
+                string subject = args[0];
+                string fileName = args[1];
 
-            Debug.WriteLine("insert to sendAlertToMail");
-            // get directory to report
-            string projectDirectory = Environment.CurrentDirectory;
-            string reportPath = Directory.GetParent(projectDirectory).Parent.FullName;
+                // get directory to report
+                string projectDirectory = Environment.CurrentDirectory;
+                string reportPath = Directory.GetParent(projectDirectory).Parent.FullName;
 
-            // get report file
-            string[] paths = new string[] { @reportPath, fileName };
-            reportPath = Path.Combine(paths);
-
-
-            bool exists = File.Exists(reportPath);
+                // get report file
+                string[] paths = new string[] { @reportPath, fileName };
+                reportPath = Path.Combine(paths);
 
 
-            if (exists)
-            {
-                try
+                bool exists = File.Exists(reportPath);
+
+
+                if (exists)
                 {
-                    using (MailMessage mail = new MailMessage())
-                    using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
+                    try
                     {
-
-                        mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
-                        Setting settingInstance = Setting.Instance;
-                        mail.To.Add(settingInstance.email);
-                        mail.Subject = subject;
-                        
-                        Attachment attachment;
-                        attachment = new Attachment(reportPath);
-                        mail.Attachments.Add(attachment);
-
-                        SmtpServer.Port = 587;
-                        SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
-                        SmtpServer.EnableSsl = true;
-
-                        SmtpServer.Send(mail);
-                        if (lastReport)
+                        using (MailMessage mail = new MailMessage())
+                        using (SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com"))
                         {
-                            // delete fiels folder
-                            // this folder contain files such setting file and pichtures to report
-                            string userName = Environment.UserName;
-                            string fielsfolderDirectory = Environment.CurrentDirectory;
-                            fielsfolderDirectory = Directory.GetParent(fielsfolderDirectory).Parent.FullName;
-                            fielsfolderDirectory = Path.Combine(fielsfolderDirectory, "files");
 
-                            if (Directory.Exists(fielsfolderDirectory))
+                            mail.From = new MailAddress("bsafemonitoring@gmail.com", "Bsafe ", Encoding.UTF8);
+                            Setting settingInstance = Setting.Instance;
+                            mail.To.Add(settingInstance.email);
+                            mail.Subject = subject;
+
+                            Attachment attachment;
+                            attachment = new Attachment(reportPath);
+                            mail.Attachments.Add(attachment);
+
+                            SmtpServer.Port = 587;
+                            SmtpServer.Credentials = new System.Net.NetworkCredential("bsafemonitoring@gmail.com", "rcza voco ctyq ptal");
+                            SmtpServer.EnableSsl = true;
+
+                            SmtpServer.Send(mail);
+                            if (lastReport)
                             {
-                                try
+                                // delete fiels folder
+                                // this folder contain files such setting file and pichtures to report
+                                string userName = Environment.UserName;
+                                string fielsfolderDirectory = Environment.CurrentDirectory;
+                                fielsfolderDirectory = Directory.GetParent(fielsfolderDirectory).Parent.FullName;
+                                fielsfolderDirectory = Path.Combine(fielsfolderDirectory, "files");
+
+                                if (Directory.Exists(fielsfolderDirectory))
                                 {
-                                    Directory.Delete(fielsfolderDirectory, true);
+                                    try
+                                    {
+                                        Directory.Delete(fielsfolderDirectory, true);
+                                    }
+                                    catch (IOException ex)
+                                    {
+                                        ShowErrorDialog("cannot delete files folder\n" + ex);
+                                    }
                                 }
-                                catch (IOException ex)
+                            }
+                            else
+                            {
+                                // delete report and DB !!  
+                                removeTriggers();
+                                if (File.Exists(reportPath))
                                 {
-                                    ShowErrorDialog("cannot delete files folder\n" + ex);
+                                    try
+                                    {
+                                        File.Delete(reportPath);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        //ShowErrorDialog("fail delete report adter send:\n"+ex);
+                                    }
                                 }
                             }
                         }
-                        else
-                        {
-                            // delete report and DB !!  
-                            removeTriggers();
-                            if (File.Exists(reportPath))
-                            {
-                                try
-                                {
-                                    File.Delete(reportPath);
-                                }
-                                catch (Exception ex)
-                                {
-                                    //ShowErrorDialog("fail delete report adter send:\n"+ex);
-                                }
-                            }
-                        }
+
+
                     }
+                    catch (SmtpException ex)
+                    {
+                        ShowErrorDialog("fail send mailllll: \n" + ex);
+                        Thread reportThread = new Thread(playSendReportThread);
+                        reportThread.Start();
 
-
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("fail send mail: \n" + ex);
+                        ShowErrorDialog("fail send Report to mail: \n" + ex);
+                    }
                 }
-                catch (SmtpException ex)
+                else
                 {
-                    ShowErrorDialog("fail send mailllll: \n" + ex);
-                    Thread reportThread = new Thread(playSendReportThread);
-                    reportThread.Start();
-
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("fail send mail: \n" + ex);
-                    ShowErrorDialog("fail send Report to mail: \n" + ex);
+                    Debug.WriteLine("report file not exist");
                 }
             }
-            else
-            {
-                Debug.WriteLine("report file not exist");
-            }
+         
 
         }
 
@@ -312,9 +314,10 @@ namespace ClientSide
             ShowErrorDialog(stringReport);
         }
 
-        private static void ShowErrorDialog(string message)
+        public static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
         }
 
         public static void sendMissingReportsToMail(string missingAlerts)
@@ -363,10 +366,8 @@ namespace ClientSide
         }
 
         public static void setDailyReport()
-        {
-            
-           
-           
+        {         
+                  
             DateTime currentTime = DateTime.Now;            
             DateTime timeToReportToday = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 10, 0, 0);
             double tickTime = ConvertDateToSeconds(timeToReportToday) - ConvertDateToSeconds(currentTime);
@@ -382,7 +383,7 @@ namespace ClientSide
                 dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60 * 60 * 24));
 
             }
-            dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60 * 60 * 24));
+           // dailyTimer = new Timer(x => { createDailyReportFile(); }, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60 * 60 * 24));
 
 
 
@@ -391,7 +392,7 @@ namespace ClientSide
      
         private static void createDailyReportFile()
         {
-            DateTime yesterdayDate = DateTime.Today.AddDays(-1);
+            DateTime yesterdayDate = DateTime.Today;//.AddDays(-1)
             DBclient DBInstance = DBclient.Instance;
             
             try
@@ -415,21 +416,24 @@ namespace ClientSide
 
                     Report.Add(jpg);
                     Report.Add(new Paragraph("\n\n\n\n\n"));
-                    Report.Add(new Paragraph("DAILY REPORT FOR USER:" + Environment.UserName));
+                    Report.Add(new Paragraph("DAILY REPORT FOR USER:" + Environment.UserName+"\n"+"DATE: "+ yesterdayDate.ToString()));
+                    
+                    // GET BROWSE HISTORY
                     string urls = DBInstance.getDailyUrlTable(yesterdayDate.ToString());
                     if (urls.Length > 0)
                     {
-                        Report.Add(new Paragraph("Sites visited by the user yesterday:\r" + urls));
+                        Report.Add(new Paragraph("\rWeb sites visited by the user yesterday:\r" + urls));
                     }
                     else
                     {
                         Report.Add(new Paragraph("NO SITETS TOREPORT"));
                     }
                     
+                    // GET ALL PROCCESS 
                     string proccess = DBInstance.getDailyProcessTable(yesterdayDate.ToString());
-                    if (urls.Length > 0)
+                    if (proccess.Length > 0)
                     {
-                        Report.Add(new Paragraph("Proccess visited by the user yesterday:\r" + urls));
+                        Report.Add(new Paragraph("\rProccess visited by the user yesterday:\r" + proccess));
                     }
                     else
                     {

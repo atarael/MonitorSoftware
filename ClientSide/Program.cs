@@ -149,7 +149,7 @@ namespace ClientSide
                     case ID:
                         id = dataFromServer[1].Split('\r', '\n', '\0')[0];
                         DBInstance.fillGeneralDetailsTable("id", id);
-                        //ShowErrorDialog("get id"); 
+                        //ShowErrorDialog("get id");  
                         break;
 
                     // Get Setting to implement monitoring
@@ -164,7 +164,7 @@ namespace ClientSide
 
                     // Launch the software in live reporting mode
                     case LIVE:
-                        liveMode(clientSocket);// sara 
+                        liveMode(clientSocket); 
                         break;
 
                     // Stop live reporting mode
@@ -366,9 +366,10 @@ namespace ClientSide
             }
         }
 
-        private static void ShowErrorDialog(string message)
+        public static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
         }
 
 
@@ -451,43 +452,58 @@ namespace ClientSide
         private bool connectToExistClient()
         {
 
-            string set = "";
-            string projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            string[] paths = new string[] { @filepath, "files" };
-            filepath = Path.Combine(paths);
-
-            DirectoryInfo directory = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            //ShowErrorDialog("filepath is: \n" + filepath);
-            string fileName = "setting_" + Environment.UserName + ".txt";
-            if (Directory.Exists(filepath) && System.IO.File.Exists(Path.Combine(filepath, fileName)))
+            DBclient DBInstance = DBclient.Instance;            
+            ip = DBInstance.getGeneralDetailsTable("ip");
+            string setting  = DBInstance.getGeneralDetailsTable("setting");
+            ShowErrorDialog("setting: " + setting+"\nip: "+ip);
+            if (setting.Length > 0)
             {
-
-                using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, fileName)))
-                {
-                    name = sr.ReadLine();
-                    id = sr.ReadLine();
-                    //ip = "10.0.0.4";
-                    //ip = "127.0.0.1";
-
-                    DBclient DBInstance = DBclient.Instance;
-                    ip = DBInstance.getGeneralDetailsTable("ip");
-                    ShowErrorDialog("ipppp: " + ip);
-                    string line = "";
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        //ShowErrorDialog("line\n" + line);
-                        set += line + "\r\n";
-                    }
-                }
+                id = DBInstance.getGeneralDetailsTable("id");
                 reConnect();
                 playAllTrigers();
 
                 return true;
             }
-
-
             return false;
+
+
+            //string set = "";
+            //string projectDirectory = Environment.CurrentDirectory;
+            //string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            //string[] paths = new string[] { @filepath, "files" };
+            //filepath = Path.Combine(paths);
+
+            //DirectoryInfo directory = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            ////ShowErrorDialog("filepath is: \n" + filepath);
+            //string fileName = "setting_" + Environment.UserName + ".txt";
+            //if (Directory.Exists(filepath) && System.IO.File.Exists(Path.Combine(filepath, fileName)))
+            //{
+
+            //    using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, fileName)))
+            //    {
+            //        name = sr.ReadLine();
+            //        id = sr.ReadLine();
+            //        //ip = "10.0.0.4";
+            //        //ip = "127.0.0.1";
+
+            //        DBclient DBInstance = DBclient.Instance;
+            //        ip = DBInstance.getGeneralDetailsTable("ip");
+            //        ShowErrorDialog("ipppp: " + ip);
+            //        string line = "";
+            //        while ((line = sr.ReadLine()) != null)
+            //        {
+            //            //ShowErrorDialog("line\n" + line);
+            //            set += line + "\r\n";
+            //        }
+            //    }
+            //    reConnect();
+            //    playAllTrigers();
+
+            //    return true;
+            //}
+
+
+            //return false;
 
         }
 

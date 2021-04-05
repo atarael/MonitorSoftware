@@ -86,7 +86,7 @@ namespace ClientSide
                             {
                                 // update url in DB for daily report
                                 string today = System.DateTime.Today.ToString();
-                                ShowErrorDialog(today);
+                                //ShowErrorDialog(today);
                                 base.DBInstance.fillDailyUrlTable(today, fullURL);
 
                                 

@@ -36,14 +36,44 @@ namespace ClientSide
 
         private void playmonitorProccess()
         {
-            while (ifLive) {
-                string processes = ListAllApplications();
-                updateProccess handler = Program.updateCurrentProcess;
-                handler(processes);
-                Thread.Sleep(60000);
+            while (monitorAlive)
+            {
 
+                StringBuilder sb = new StringBuilder();
+
+                foreach (Process p in Process.GetProcesses("."))
+                {
+
+                    try
+                    {
+
+                        if (p.MainWindowTitle.Length > 0)
+                        {
+                            sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
+                            sb.Append("Process Name:\t" + p.ProcessName.ToString() + Environment.NewLine);
+                            sb.Append(Environment.NewLine);
+
+                            // update procces in DB for daily report
+                            string today = System.DateTime.Today.ToString();
+                            DBInstance.fillDailyProcessTable(today, "Window Title:\t" + p.MainWindowTitle.ToString() +", Process Name:\t" + p.ProcessName.ToString()+"\r");
+
+                        }
+
+                    }
+                    catch { }
+                }
+
+                if (ifLive)
+                {
+                   // string processes = ListAllApplications();
+                    updateProccess handler = Program.updateCurrentProcess;
+                    handler(sb.ToString());                  
+
+                }
+                Thread.Sleep(60000);
             }
-            ShowErrorDialog("playmonitorProccess finish");
+            
+            //ShowErrorDialog("playmonitorProccess finish");
 
 
         }

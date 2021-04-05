@@ -14,6 +14,7 @@ using System.IO;
 using System.Security.Cryptography;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using System.Reflection;
 
 namespace ServerSide
 {
@@ -46,7 +47,8 @@ namespace ServerSide
         [STAThread]
         static void Main(string[] args)
         {
-            
+            CreateShortcut("BSA-Server", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
+
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 connectAtReStartComputer();
@@ -57,8 +59,8 @@ namespace ServerSide
                 s = new ServerForm();
                 s.Text = "Monitoring Interface";
                 program.StartServer();
-                // Thread interntAvilable = new Thread(checkInterntConnection);
-                // interntAvilable.Start();
+                Thread interntAvilable = new Thread(checkInterntConnection);
+                interntAvilable.Start();
                 Application.Run(s);
                 mutex.ReleaseMutex();
             }
@@ -76,13 +78,32 @@ namespace ServerSide
 
         }
 
+        public static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
+        {
+            var Report = new Document();          
+            string projectDirectory = Environment.CurrentDirectory;
+            string path = Directory.GetParent(projectDirectory).Parent.FullName;
+            string userName = Environment.UserName;
+
+           
+             
+            string shortcutLocation = System.IO.Path.Combine(shortcutPath, shortcutName + ".lnk");
+            WshShell shell = new WshShell();
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            shortcut.Description = "BE SAFE SERVER SIDE ";   // The description of the shortcut
+            shortcut.IconLocation = path + "/besafe-server-icon.ico"; // The icon of the shortcut
+            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
+        }
+
         private static void checkInterntConnection()
         {
             bool connection = true;
 
             while (true)
             {
-                Thread.Sleep(7000);
+                Thread.Sleep(10000);
                 try
                 {
                     using (var client = new WebClient())
@@ -453,7 +474,8 @@ namespace ServerSide
 
         public static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
         }
             
 

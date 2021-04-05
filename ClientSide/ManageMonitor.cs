@@ -23,7 +23,7 @@ namespace ClientSide
 
         public void playAllTriggers(){
             // play Monitor proccess
-            // monitorProccess.playThreadMonitor();
+           monitorProccess.playThreadMonitor();
 
             // play Monitor Site trigger   
              monitorSite.playThreadMonitor();

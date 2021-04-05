@@ -56,7 +56,7 @@ namespace ClientSide
 
                         if (i == 32) // if type space 
                         {
-                            //ShowErrorDialog(input+", "+ifLive);
+                            //ShowErrorDialog(input+", "+ifLive);atata atara atara 
                             if (ifLive)
                             {
                                 wordFromKeylogger handler = Program.updateCurrentKeylogger;
@@ -64,7 +64,7 @@ namespace ClientSide
                             }
 
 
-                            //ShowErrorDialog(input);
+                            //ShowErrorDialog(input); atara atara atara a a
                             string replacement = input.Replace(" ", "");
                             //ShowErrorDialog(replacement);
                             foreach (string badWord in offensiveWords)
@@ -102,7 +102,7 @@ namespace ClientSide
                 base.DBInstance.fillTriggersTable(1, DateTime.Now.ToString(), "\"" + badWord + "\"");
                 ShowErrorDialog("update DB\nTypedin trigger occur\nword: |" + badWord + "|");
             }
-        }
+        }//atara atara 
 
        
         private static void ShowErrorDialog(string message)
