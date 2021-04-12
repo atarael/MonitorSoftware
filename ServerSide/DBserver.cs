@@ -37,10 +37,15 @@ namespace ServerSide
         }
         public int createNewDatabase()
         {
-            if (File.Exists(DB))
+            string projectDirectory = Environment.CurrentDirectory;
+            //string path = Directory.GetParent(projectDirectory).Parent.FullName;
+
+            var dbPath = Path.Combine(projectDirectory, DB);
+           
+            if (File.Exists(dbPath))
                 return 1;
             else
-                SQLiteConnection.CreateFile(DB);
+                SQLiteConnection.CreateFile(dbPath);
             return 0;
         }
         public static void ShowErrorDialog(string message)

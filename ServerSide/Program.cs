@@ -43,11 +43,12 @@ namespace ServerSide
         private static ServerForm s;
         public static Program program;
         static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
+        private static object retuen;
 
         [STAThread]
         static void Main(string[] args)
         {
-            CreateShortcut("BSA-Server", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
+           CreateShortcut("BSA-Server", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
@@ -59,7 +60,7 @@ namespace ServerSide
                 s = new ServerForm();
                 s.Text = "Monitoring Interface";
                 program.StartServer();
-                Thread interntAvilable = new Thread(checkInterntConnection);
+                Thread interntAvilable = new Thread(checkConnections);
                 interntAvilable.Start();
                 Application.Run(s);
                 mutex.ReleaseMutex();
@@ -75,6 +76,24 @@ namespace ServerSide
             }
 
            
+
+        }
+
+        private static void checkConnections()
+        {
+            while (true)
+            {
+
+                if (checkInterntConnection())
+                {
+                    checkAllSocketsConnections();
+                 
+                }
+
+                Thread.Sleep(5000);
+
+
+            }
 
         }
 
@@ -97,38 +116,45 @@ namespace ServerSide
             shortcut.Save();                                    // Save the shortcut
         }
 
-        private static void checkInterntConnection()
+        private static bool checkInterntConnection()
         {
-            bool connection = true;
-
-            while (true)
+            try
             {
-                Thread.Sleep(10000);
-                try
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
                 {
-                    using (var client = new WebClient())
-                    using (var stream = client.OpenRead("http://www.google.com"))
-                    {
-                        //if (!connection)
-                        //{
-                            connection = true;
-                            s.serverConnect();
-                        //}
-                    }
-                }
-                catch
-                {
-                    //if (connection)
-                    //{
-                        connection = false;
-                        s.serverNotConnect();
-                    //}
-                }
-                
+                    return true;
 
+                }
             }
+            catch
+            {
+                s.serverNotConnect();
+                return false;
+            }  
 
         }
+
+     
+
+        private static void checkAllSocketsConnections()
+        {
+            for (int i=0; i < program.Allclients.Count;i++)
+            {
+                Socket socket = program.Allclients[i].ClientSocket;
+                bool conn = checkSocketConnection(socket);
+                if (conn)
+                {
+                    s.addClientToCheckBoxLst(program.Allclients[i].Name, program.Allclients[i].id,socket);
+                }
+                else{
+                    s.addClientToCheckBoxLst(program.Allclients[i].Name, program.Allclients[i].id, null);
+
+                }
+
+            }
+        }
+             
 
         private static void connectAtReStartComputer()
         {
@@ -167,11 +193,11 @@ namespace ServerSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("StartServer" + ex.Message);
+                ShowErrorDialog("StartServer" + ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("StartServer" + ex.Message);
+                ShowErrorDialog("StartServer" + ex.Message + " \n\n" + ex);
             }
         }
 
@@ -190,11 +216,11 @@ namespace ServerSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("AcceptCallback: " + ex.Message);
+                ShowErrorDialog("AcceptCallback: " + ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("AcceptCallback: " + ex.Message);
+                ShowErrorDialog("AcceptCallback: " + ex.Message + " \n\n" + ex);
             }
         }
 
@@ -219,59 +245,13 @@ namespace ServerSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("SendCallback SocketException\n" + ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog(ex.Message);
+                ShowErrorDialog("SendCallback ObjectDisposedException\n" + ex.Message + " \n\n" + ex);
             }
         }
-        /*
-        public void ReceiveCallback(IAsyncResult AR)
-        {
-            try
-            {
-                if (AR.AsyncState as Socket != null)
-                {
-                    int id = -1;
-                    String clientName = "";
-                    for (int i = 0; i < Allclients.Count; i++)
-                    {
-                        if (Allclients[i].ClientSocket == AR.AsyncState as Socket)
-                        {
-                            clientName = Allclients[i].Name;
-                            id = i;
-                            break;
-                        }
-                    }
-                    if (id != -1)
-                    {
-                        int received = Allclients[id].ClientSocket.EndReceive(AR);
-                        if (received == 0)
-                        {
-                            return;
-                        }
-                        string message = Encoding.ASCII.GetString(Allclients[id].buffer);
-                        String[] SplitedMessage = message.Split('\0');
-                        message = SplitedMessage[0];
-                        ShowErrorDialog(message);
-                       
-                        Allclients[id].buffer = new byte[Allclients[id].ClientSocket.ReceiveBufferSize];
-                        Allclients[id].ClientSocket.BeginReceive(Allclients[id].buffer, 0, Allclients[id].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[id].ClientSocket);
-                    }
-                }
-            }
-            // Avoid Pokemon exception handling in cases like these.
-            catch (SocketException ex)
-            {
-                ShowErrorDialog(ex.Message);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                ShowErrorDialog(ex.Message);
-            }
-        }
-        */
       
         public void ReceiveCallback(IAsyncResult AR)
         {
@@ -285,6 +265,14 @@ namespace ServerSide
                     return;
                 }
 
+                if (Allclients==null) {
+                    if(DBInstance == null)
+                    {
+                        DBInstance = DBserver.Instance;
+                    }
+                    Allclients = DBInstance.initialServer();
+                   
+                }
                 // find the buffer that get data from client
                 foreach (Client client in Allclients)
                 {
@@ -292,12 +280,13 @@ namespace ServerSide
                     {
                         buffer = client.buffer;
                         client.buffer = new byte[client.ClientSocket.ReceiveBufferSize];
-                        
+
                         // Start receiving data from this client Socket.
                         client.ClientSocket.BeginReceive(client.buffer, 0, client.buffer.Length, SocketFlags.None, this.ReceiveCallback, client.ClientSocket);
 
                     }
                 }
+
                 //string data = Encoding.UTF8.GetString(buffer);
                 using (Aes myAes = Aes.Create())
                 {
@@ -387,7 +376,14 @@ namespace ServerSide
                     {
                         if (client.ClientSocket == CurrentClientSocket)
                         {
-                                Report.createReportPDFFile(decryptionMessage, client.id);
+                                if (decryptionMessage!= string.Empty) {
+                                    Report.createReportPDFFile(decryptionMessage, client.id);
+                                }
+                                else
+                                {
+                                    ShowErrorDialog("No last report to show");
+                                }
+                                
                         }
                     }
                    
@@ -400,12 +396,12 @@ namespace ServerSide
             // Avoid Pokemon exception handling in cases like these.
             catch (SocketException ex)
             {
-                ShowErrorDialog("ReceiveCallback " + ex.Message);
+                ShowErrorDialog("ReceiveCallback SocketException\n" + ex.Message + "\n" + ex);
                 s.setClientNotConnect(clientSocket.RemoteEndPoint);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("ReceiveCallback " + ex.Message);
+                ShowErrorDialog("ReceiveCallback ObjectDisposedException" + ex.Message +"\n" +ex);
             }//dfrg bdhdh ghfgds 
         }
 
@@ -426,18 +422,19 @@ namespace ServerSide
         {
 
             int CID = Int32.Parse(id);
-            ShowErrorDialog(CID + " try reconnect");
+            Console.WriteLine(CID + " try reconnect");
           
-            if (Allclients[CID].ClientSocket == null && CID < Allclients.Count)
-            {
+             if (  CID < Allclients.Count)
+             {
                 Allclients[CID].ClientSocket = current;
                 Allclients[CID].buffer = new byte[Allclients[CID].ClientSocket.ReceiveBufferSize];
                 Allclients[CID].ClientSocket.BeginReceive(Allclients[CID].buffer, 0, Allclients[CID].buffer.Length, SocketFlags.None, ReceiveCallback, Allclients[CID].ClientSocket);
                 s.addClientToCheckBoxLst(Allclients[CID].Name, CID, Allclients[CID].ClientSocket);
                 sendDataToClient(Allclients[CID].ClientSocket, Allclients[CID].Name + " reconnected in Socket: " + Allclients[CID].ClientSocket.RemoteEndPoint);
             }
-            else {
-                ShowErrorDialog(CID + " fail reconnect " + Allclients.Count);
+            else
+            {
+                Console.WriteLine(CID + " fail reconnect " + Allclients.Count);
             }
 
         }
@@ -465,7 +462,7 @@ namespace ServerSide
             catch (Exception ex)
             {
                 // wait to connect from client
-                ShowErrorDialog("cannot send data to client in socket null\n" + ex);
+                ShowErrorDialog("cannot send data to client in socket null\n" + ex.Message+"\n"+ex);
             }
         }
 
@@ -474,8 +471,8 @@ namespace ServerSide
 
         public static void ShowErrorDialog(string message)
         {
-            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Console.WriteLine(message);
+             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //Console.WriteLine(message);
         }
             
 
@@ -548,7 +545,7 @@ namespace ServerSide
         }
         public static bool CheckConnection(int id, Socket clientSocket) {
 
-            if (internetConnection() && socketConnected(clientSocket))
+            if (internetConnection() && checkSocketConnection(clientSocket))
             {
                 return true;
             }
@@ -556,19 +553,24 @@ namespace ServerSide
             else
                 return false;
         }
-        public static bool socketConnected(Socket s)
+        public static bool checkSocketConnection(Socket s)
         {
             if (s == null)
             {
                 return false;
             }
-            bool part1 = s.Poll(1000, SelectMode.SelectRead);
-           
-            if (part1) 
+            try
+            {
+                program.sendDataToClient(s, "check connection");
+            }
+            catch (SocketException ex) {
                 return false;
-            else
-                return true;
+            }
+
+
+            return true;
         }
+       
         public static bool internetConnection()
         {
             try
@@ -582,6 +584,7 @@ namespace ServerSide
                 return false;
             }
         }
+       
         public static void setSettingDeleGate(int id, string setting)
         {
            
@@ -607,10 +610,17 @@ namespace ServerSide
                 }
 
             }
-            program.Allclients[index].ClientSocket.BeginReceive(program.Allclients[index].buffer, 0, program.Allclients[index].buffer.Length, SocketFlags.None, program.ReceiveCallback, program.Allclients[index].ClientSocket);
+            if(program.Allclients[index].ClientSocket!= null)
+            {
+                program.Allclients[index].ClientSocket.BeginReceive(program.Allclients[index].buffer, 0, program.Allclients[index].buffer.Length, SocketFlags.None, program.ReceiveCallback, program.Allclients[index].ClientSocket);
 
-            s.addClientToCheckBoxLst(program.Allclients[index].Name, program.Allclients[index].id, program.Allclients[index].ClientSocket);
-            s.removeClientToWaitingList(id);
+            }
+            bool connect = checkSocketConnection(program.Allclients[index].ClientSocket);
+            if (connect) {
+                s.addClientToCheckBoxLst(program.Allclients[index].Name, program.Allclients[index].id, program.Allclients[index].ClientSocket);
+                s.removeClientToWaitingList(id);
+            }
+           
         }
 
 
@@ -636,24 +646,25 @@ namespace ServerSide
                 }
             }
         }
-    
+
         public static void checkClientConnection(int id)
         {
             for (int i = 0; i < program.Allclients.Count(); i++)
             {
-                if (program.Allclients[i].id  == id)
+                if (program.Allclients[i].id == id)
                 {
-                    if (!CheckConnection(id,program.Allclients[i].ClientSocket))
+                    if (!CheckConnection(id, program.Allclients[i].ClientSocket))
                     {
-                       
-                        if (program.Allclients[i].ClientSocket != null) { 
-                            s.setClientNotConnect(program.Allclients[i].ClientSocket.RemoteEndPoint); 
+
+                        if (program.Allclients[i].ClientSocket != null)
+                        {
+                            s.setClientNotConnect(program.Allclients[i].ClientSocket.RemoteEndPoint);
                         }
                         else
                         {
-                            s.addClientToCheckBoxLst(program.Allclients[i].Name, program.Allclients[i].id,null);
+                            s.addClientToCheckBoxLst(program.Allclients[i].Name, program.Allclients[i].id, null);
                         }
-                    
+
                     }
                     else
                     {
@@ -663,5 +674,6 @@ namespace ServerSide
                 }
             }
         }
+
     }
 }

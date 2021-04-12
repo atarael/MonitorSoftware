@@ -117,58 +117,7 @@ namespace ClientSide
             public int dmPanningWidth;
             public int dmPanningHeight;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //Create a new bitmap.
-        //var printscreen = new Bitmap(SystemInformation.VirtualScreen.Width,
-        //                   SystemInformation.VirtualScreen.Height,
-        //                   PixelFormat.Format32bppArgb);
-        //Graphics screenGraph = Graphics.FromImage(printscreen);
-        //screenGraph.CopyFromScreen(SystemInformation.VirtualScreen.X,
-        //                           SystemInformation.VirtualScreen.Y,
-        //                           0,
-        //                           0,
-        //                           SystemInformation.VirtualScreen.Size,
-        //                           CopyPixelOperation.SourceCopy);
-        //String projectDirectory = Environment.CurrentDirectory;
-        //    string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-
-        //    String[] paths = new string[] { @filepath, "files" };
-        //    filepath = Path.Combine(paths);
-
-        //    if (!Directory.Exists(filepath))
-        //    {
-        //        Directory.CreateDirectory(filepath);
-        //    }
-        //    string s = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString() + ".jpg";
-        //    paths = new string[] { @filepath, s };
-        //    filepath = Path.Combine(paths);
-
-        //    if (!File.Exists(filepath))
-        //    {
-        //        printscreen.Save(filepath, ImageFormat.Jpeg);
-        //    }
-        //    return s;
-
-
-
-
-
-
-
-    
-       
+         
         
         // take user picture
         public void CaptureCamera(string picName)

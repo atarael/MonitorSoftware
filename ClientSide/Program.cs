@@ -9,10 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using IWshRuntimeLibrary;
-using System.Linq;
+using IWshRuntimeLibrary; 
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Reflection; 
+using System.Runtime.InteropServices; 
+using iTextSharp.text.pdf;
+using iTextSharp.text; 
 
 namespace ClientSide
 {
@@ -43,6 +46,7 @@ namespace ClientSide
         public static Program program;
         ManageMonitor manageMonitor;
         private static bool checkConnection;
+        static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
 
 
 
@@ -52,24 +56,56 @@ namespace ClientSide
         [STAThread]
         static void Main()
         {
+        //     if (mutex.WaitOne(TimeSpan.Zero, true))
+        //    {
+
+                CreateShortcut("BSA-Client", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
+                program = new Program();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+
+                // check if connect at first time or reconnect         
+                if (!program.connectToExistClient())
+                {
+                    program.connectToServer();
+                }
+
+                Application.Run();
+            //    mutex.ReleaseMutex();
+            //}
+            //else
+            //{
+            //    // send our Win32 message to make the currently running instance
+            //    // jump on top of all the other windows
+            //    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
+            //        NativeMethods.WM_SHOWME,
+            //        IntPtr.Zero,
+            //        IntPtr.Zero);
+            //}
+
+
             // sqliteForm sf = new sqliteForm();
             // sf.ShowDialog();
 
-            
 
-            program = new Program();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-
-            // check if connect at first time or reconnect         
-            if (!program.connectToExistClient())
-            {
-                program.connectToServer();
-            }
-           
-            Application.Run();
         }
+        public static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
+        {
+             
+            string projectDirectory = Environment.CurrentDirectory;
+            string path = Directory.GetParent(projectDirectory).Parent.FullName;
+            string userName = Environment.UserName;
+            string shortcutLocation = System.IO.Path.Combine(shortcutPath, shortcutName + ".lnk");
+            WshShell shell = new WshShell();
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            shortcut.Description = "BE SAFE CLIENT SIDE ";   // The description of the shortcut
+            shortcut.IconLocation = path + "/besafe-server-icon.ico"; // The icon of the shortcut
+            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
+        }
+
 
         public static void checkInterntConnection()
         {
@@ -77,7 +113,7 @@ namespace ClientSide
             checkConnection = true; 
             while (checkConnection)
             {
-                Thread.Sleep(5000);
+              
                 try
                 {
 
@@ -91,7 +127,7 @@ namespace ClientSide
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("ERROR CONNECT TO SERVER");
+                    ShowErrorDialog("checkInterntConnection: \n" + ex.Message + " \n\n" + ex);                     
                     program.reConnect();
 
                 }
@@ -156,10 +192,14 @@ namespace ClientSide
                     case SETTING:
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
+                       
                         // save setting 
-                        //saveSettingFile(setting);
                         DBInstance.fillGeneralDetailsTable("setting", setting);
                         playAllTrigers(); //This method obtains the settings string from the server
+
+                        // Set Periodic Report
+                        PeriodicReporting.setReportPeriodic();
+
                         break;
 
                     // Launch the software in live reporting mode
@@ -194,12 +234,12 @@ namespace ClientSide
 
             catch (SocketException ex)
             {
-                ShowErrorDialog("ReceiveCallback\n" + ex.Message);
+                ShowErrorDialog("ReceiveCallback\n" + ex );
                 //reConnect();
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("ReceiveCallback\n " + ex.Message);
+                ShowErrorDialog("ReceiveCallback\n " + ex.Message + " \n\n" + ex);
             }
         }
 
@@ -211,7 +251,7 @@ namespace ClientSide
             {
                 SendData(socket, "last report\r" + "NO REPORT TO SHOW");
             }
-            ShowErrorDialog("last reort is: " + lastReport);
+            Console.WriteLine("last reort is: " + lastReport);
             SendData(socket, "sara ayash\r");
             SendData(socket, "last report\r" + lastReport);
         }
@@ -247,8 +287,8 @@ namespace ClientSide
         {
 
             sendCurrentData = false;
-            //  monitorProccess.ifLive = false;
-            //ShowErrorDialog("stop send current state");
+            // monitorProccess.ifLive = false;
+            // ShowErrorDialog("stop send current state");
             manageMonitor.stopLiveMode();
         }
 
@@ -266,7 +306,7 @@ namespace ClientSide
         private void playAllTrigers()
         {
 
-            //ShowErrorDialog("play all trigers");
+            Console.WriteLine("PLAY ALL TRIGGERRS");
 
             // Play all monitors
             manageMonitor = new ManageMonitor();
@@ -279,38 +319,8 @@ namespace ClientSide
             PeriodicReporting.setDailyReport();
         }
 
-        private void saveSettingFile(string setting)
-        {
-            string userName = Environment.UserName;
-
-
-            String projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-
-
-            String[] paths = new string[] { @filepath, "files" };
-            filepath = Path.Combine(paths);
-
-            if (!Directory.Exists(filepath))
-            {
-                Directory.CreateDirectory(filepath);
-            }
-
-            String settingFile = Path.Combine(filepath, "setting_" + userName + ".txt");
-            if (System.IO.File.Exists(settingFile))
-            {
-                System.IO.File.Delete(settingFile);
-
-            }
-            using (StreamWriter sw = System.IO.File.CreateText(settingFile)) ;
-            System.IO.File.WriteAllText(settingFile, name + "\r\n" + id + "\r\n" + setting);
-
-
-            // play Reporting scheduling
-            PeriodicReporting.setReportPeriodic();
-        }
-
-        // Defines functions for sending and receiving data through the socket
+       
+        // Defines functions for sending and receiving data through the socket kill sara 
         private void ConnectCallback(IAsyncResult AR)
         {
 
@@ -336,15 +346,15 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                // ShowErrorDialog("ConnectCallback send SocketException\r\n" + ex.Message);
-                Console.WriteLine("ConnectCallback send SocketException -RECONNECT \r\n" + ex.Message);
+                  ShowErrorDialog("ConnectCallback send SocketException\n" + ex.Message+" \n\n"+ex);
+                //Console.WriteLine("ConnectCallback send SocketException -RECONNECT \r\n" + ex.Message);
 
                 reConnect();
 
             }
             catch (ObjectDisposedException ex)
             {
-                Console.WriteLine("ConnectCallback send ObjectDisposedException \r\n" + ex.Message);
+                ShowErrorDialog("ConnectCallback send ObjectDisposedException\n" + ex.Message + " \n\n" + ex);
             }
         }
 
@@ -358,18 +368,18 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("SendCallback send SocketException\r\n" + ex.Message);
+                ShowErrorDialog("SendCallback send SocketException\r\n" + ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("SendCallback send ObjectDisposedException \r\n" + ex.Message);
+                ShowErrorDialog("SendCallback send ObjectDisposedException \r\n" + ex.Message + " \n\n" + ex);
             }
         }
 
         public static void ShowErrorDialog(string message)
         {
-            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Console.WriteLine(message);
+            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // Console.WriteLine(message);
         }
 
 
@@ -406,11 +416,11 @@ namespace ClientSide
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("connectToServer send SocketException\r\n" + ex.Message);
+                ShowErrorDialog("connectToServer send SocketException\r\n"+ ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("connectToServer send ObjectDisposedException\r\n" + ex.Message);
+                ShowErrorDialog("connectToServer send ObjectDisposedException\r\n" + ex.Message + " \n\n" + ex);
             }
 
 
@@ -455,7 +465,7 @@ namespace ClientSide
             DBclient DBInstance = DBclient.Instance;            
             ip = DBInstance.getGeneralDetailsTable("ip");
             string setting  = DBInstance.getGeneralDetailsTable("setting");
-            ShowErrorDialog("setting: " + setting+"\nip: "+ip);
+            Console.WriteLine("setting: " + setting+"\nip: "+ip);
             if (setting.Length > 0)
             {
                 id = DBInstance.getGeneralDetailsTable("id");
@@ -541,7 +551,7 @@ namespace ClientSide
             {
                 if (!CheckConnection(clientSocket))
                 {
-                    Console.WriteLine("send data fail, Socket Exception \r\n" + ex.Message);
+                    ShowErrorDialog("send data fail, Socket Exception \r\n" + ex.Message + " \n\n" + ex);
                     // ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
                     // reConnect();
                     // SendData(clientSocket, data);
@@ -553,7 +563,7 @@ namespace ClientSide
             }
             catch (ObjectDisposedException ex)
             {
-                Console.WriteLine("send data fail, ObjectDisposed Exception \r\n" + ex.Message);
+                ShowErrorDialog("send data fail, ObjectDisposed Exception \r\n" + ex.Message + " \n\n" + ex);
                 // ShowErrorDialog("SendData send ObjectDisposedException \r\n" + ex.Message);
                 //reConnect();
             }
@@ -619,8 +629,7 @@ namespace ClientSide
         public void reConnect()
         {
             try
-            {// sara  
-
+            { 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 buffer = new byte[clientSocket.ReceiveBufferSize];
@@ -638,19 +647,17 @@ namespace ClientSide
                 {
                     PeriodicReporting.sendMissingReportsToMail(immadiateAlerts);
                 }
-
             }
             catch (SocketException ex)
             {
-                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message);
-
+                ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message + " \n\n" + ex);
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message);
+                ShowErrorDialog("reConnect send ObjectDisposedException \r\n" + ex.Message + " \n\n" + ex);
             }
             catch (InvalidOperationException ex) {
-                ShowErrorDialog("reConnect send InvalidOperationException \r\n" + ex.Message);
+                ShowErrorDialog("reConnect send InvalidOperationException \r\n" + ex.Message + " \n\n" + ex);
             }
         }
 

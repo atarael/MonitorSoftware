@@ -105,16 +105,16 @@ namespace ClientSide
 
         private void updateGeneralDetailsTable(string detail, string value)
         {
-            string sql = "Update GeneralDetailsTable set value='" + value + "' where detail='" + detail + "'";
+            string sql = "Update GeneralDetailsTable set value='" + value + "' where detail='" + detail + "';";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
         public void fillGeneralDetailsTable(string detail, string value)
         {
-            string sql1 = "SELECT count(*) FROM GeneralDetailsTable WHERE detail='detail'";
+            string sql1 = "SELECT count(*) FROM GeneralDetailsTable WHERE detail='" + detail + "';";
             SQLiteCommand command = new SQLiteCommand(sql1, m_dbConnection);
-            int count = Convert.ToInt32(command.ExecuteNonQuery());
+            int count = Convert.ToInt32(command.ExecuteScalar());
             if (count == 0)
             {
                 string sql = "insert  into GeneralDetailsTable(detail,value) values('" + detail + "','" + value + "');";
@@ -161,10 +161,12 @@ namespace ClientSide
 
         public void createNewDatabase()
         {
-            if (File.Exists(DB))
+            string projectDirectory = Environment.CurrentDirectory;
+            projectDirectory = Path.Combine(projectDirectory, DB);
+            if (File.Exists(projectDirectory))
                 return;
             else
-                SQLiteConnection.CreateFile(DB);
+                SQLiteConnection.CreateFile(projectDirectory);
 
 
         }

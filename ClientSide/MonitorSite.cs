@@ -150,7 +150,8 @@ namespace ClientSide
 
         private static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 

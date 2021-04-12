@@ -253,7 +253,7 @@ namespace ServerSide
         public static string Decrypt(string cipherText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";
-            Console.WriteLine(cipherText+","+cipherText.GetType());
+            //Console.WriteLine(cipherText+","+cipherText.GetType());
             if (!IsBase64String(cipherText))
             {
                 return string.Empty;

@@ -233,6 +233,7 @@
     <Compile Include="Camera.Designer.cs">
       <DependentUpon>Camera.cs</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ClientForm.cs">
       <SubType>Form</SubType>

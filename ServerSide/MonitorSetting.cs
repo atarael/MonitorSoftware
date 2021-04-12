@@ -234,6 +234,13 @@ namespace ServerSide
             setting += "\r\n";
 
             // insert six line -  Typing inappropriate words
+            string[] allBadWord = AddBadWords.Split(' ');
+            AddBadWords = "";
+            foreach (string word in allBadWord)
+            {
+                if(word!="")
+                    AddBadWords += word + " ";
+            }
             setting += AddBadWords + "\r\n";
 
             // insert seven line - mail to get report
@@ -266,7 +273,7 @@ namespace ServerSide
                 setting += select + "\r\n";
                 this.Close();
             }
-            ShowErrorDialog(setting);
+            //ShowErrorDialog(setting);
             setSetting handler = Program.setSettingDeleGate;
             handler(id, setting);
 

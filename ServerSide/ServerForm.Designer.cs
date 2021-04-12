@@ -32,26 +32,26 @@
             this.btnSetSystem = new System.Windows.Forms.Button();
             this.pageSetupDialog1 = new System.Windows.Forms.PageSetupDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvConnectedClients = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkLstAllClient = new System.Windows.Forms.CheckedListBox();
             this.btnLastReport = new System.Windows.Forms.Button();
             this.btnGetCurrentState = new System.Windows.Forms.Button();
             this.btnRemoveClient = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setting = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.checkLstAllClient = new System.Windows.Forms.CheckedListBox();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvConnectedClients = new System.Windows.Forms.DataGridView();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).BeginInit();
+            this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSetSystem
@@ -82,6 +82,72 @@
             this.groupBox1.TabIndex = 70;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "List of computers for monitoring:";
+            // 
+            // dgvConnectedClients
+            // 
+            this.dgvConnectedClients.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvConnectedClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvConnectedClients.ColumnHeadersVisible = false;
+            this.dgvConnectedClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column3,
+            this.Column4,
+            this.Column2});
+            this.dgvConnectedClients.GridColor = System.Drawing.Color.FloralWhite;
+            this.dgvConnectedClients.Location = new System.Drawing.Point(22, 61);
+            this.dgvConnectedClients.MaximumSize = new System.Drawing.Size(600, 200);
+            this.dgvConnectedClients.MinimumSize = new System.Drawing.Size(600, 100);
+            this.dgvConnectedClients.Name = "dgvConnectedClients";
+            this.dgvConnectedClients.RowHeadersVisible = false;
+            this.dgvConnectedClients.RowHeadersWidth = 62;
+            this.dgvConnectedClients.RowTemplate.Height = 28;
+            this.dgvConnectedClients.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvConnectedClients.Size = new System.Drawing.Size(600, 166);
+            this.dgvConnectedClients.TabIndex = 72;
+            this.dgvConnectedClients.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvConnectedClients_CellClick);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MinimumWidth = 8;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 20;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "socket";
+            this.Column3.MinimumWidth = 70;
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 70;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "name";
+            this.Column4.MinimumWidth = 70;
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 70;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "id";
+            this.Column2.MinimumWidth = 8;
+            this.Column2.Name = "Column2";
+            this.Column2.Visible = false;
+            this.Column2.Width = 8;
+            // 
+            // checkLstAllClient
+            // 
+            this.checkLstAllClient.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.checkLstAllClient.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.checkLstAllClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.checkLstAllClient.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.checkLstAllClient.FormattingEnabled = true;
+            this.checkLstAllClient.Location = new System.Drawing.Point(22, 61);
+            this.checkLstAllClient.Name = "checkLstAllClient";
+            this.checkLstAllClient.Size = new System.Drawing.Size(392, 35);
+            this.checkLstAllClient.TabIndex = 4;
             // 
             // btnLastReport
             // 
@@ -127,7 +193,7 @@
             this.btnRemoveClient.Name = "btnRemoveClient";
             this.btnRemoveClient.Size = new System.Drawing.Size(274, 117);
             this.btnRemoveClient.TabIndex = 5;
-            this.btnRemoveClient.Text = "Remove Client";
+            this.btnRemoveClient.Text = "Remove Monitored";
             this.btnRemoveClient.UseVisualStyleBackColor = false;
             this.btnRemoveClient.Click += new System.EventHandler(this.btnRemoveClient_Click);
             // 
@@ -146,6 +212,18 @@
             this.panel1.Size = new System.Drawing.Size(1200, 645);
             this.panel1.TabIndex = 72;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.groupBox2.Controls.Add(this.dataGridView1);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.groupBox2.Location = new System.Drawing.Point(91, 331);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(694, 256);
+            this.groupBox2.TabIndex = 70;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Computers awaiting initial connection:";
             // 
             // dataGridView1
             // 
@@ -194,102 +272,26 @@
             this.setting.ReadOnly = true;
             this.setting.Width = 150;
             // 
-            // checkLstAllClient
-            // 
-            this.checkLstAllClient.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkLstAllClient.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.checkLstAllClient.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.checkLstAllClient.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.checkLstAllClient.FormattingEnabled = true;
-            this.checkLstAllClient.Location = new System.Drawing.Point(22, 61);
-            this.checkLstAllClient.Name = "checkLstAllClient";
-            this.checkLstAllClient.Size = new System.Drawing.Size(655, 35);
-            this.checkLstAllClient.TabIndex = 4;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "id";
-            this.Column2.MinimumWidth = 8;
-            this.Column2.Name = "Column2";
-            this.Column2.Visible = false;
-            this.Column2.Width = 8;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "name";
-            this.Column4.MinimumWidth = 70;
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 70;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "socket";
-            this.Column3.MinimumWidth = 70;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 70;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.MinimumWidth = 8;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 20;
-            // 
-            // dgvConnectedClients
-            // 
-            this.dgvConnectedClients.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.dgvConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvConnectedClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvConnectedClients.ColumnHeadersVisible = false;
-            this.dgvConnectedClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column3,
-            this.Column4,
-            this.Column2});
-            this.dgvConnectedClients.GridColor = System.Drawing.Color.FloralWhite;
-            this.dgvConnectedClients.Location = new System.Drawing.Point(22, 61);
-            this.dgvConnectedClients.MaximumSize = new System.Drawing.Size(600, 200);
-            this.dgvConnectedClients.MinimumSize = new System.Drawing.Size(600, 100);
-            this.dgvConnectedClients.Name = "dgvConnectedClients";
-            this.dgvConnectedClients.RowHeadersVisible = false;
-            this.dgvConnectedClients.RowHeadersWidth = 62;
-            this.dgvConnectedClients.RowTemplate.Height = 28;
-            this.dgvConnectedClients.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvConnectedClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvConnectedClients.Size = new System.Drawing.Size(600, 138);
-            this.dgvConnectedClients.TabIndex = 72;
-            this.dgvConnectedClients.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvConnectedClients_CellClick);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.groupBox2.Controls.Add(this.dataGridView1);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.groupBox2.Location = new System.Drawing.Point(91, 331);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(694, 256);
-            this.groupBox2.TabIndex = 70;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Computers awaiting initial connection:";
-            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1297, 977);
+            this.ClientSize = new System.Drawing.Size(1278, 894);
             this.Controls.Add(this.panel1);
+            this.Location = new System.Drawing.Point(100, 100);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MaximumSize = new System.Drawing.Size(1600, 1600);
+            this.MaximumSize = new System.Drawing.Size(1300, 950);
+            this.MinimumSize = new System.Drawing.Size(1300, 950);
             this.Name = "ServerForm";
-            this.Text = "Basic Async Server";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }

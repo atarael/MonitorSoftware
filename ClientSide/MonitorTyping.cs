@@ -94,7 +94,7 @@ namespace ClientSide
                 sendAlertToMail(FilePic, "badWord trigger occur", badWord, "typing");
                 ShowErrorDialog("send alert to mail\nTypedin trigger occur\nword: |" + badWord + "|");
 
-            }
+            } 
 
             if (base.SettingInstance.triggersForReport.Contains("badWord") == true)
             {
@@ -107,7 +107,8 @@ namespace ClientSide
        
         private static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

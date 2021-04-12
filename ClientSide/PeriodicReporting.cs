@@ -165,37 +165,39 @@ namespace ClientSide
 
         public static string getReportString()
         {
-            string userName = Environment.UserName;
-            string projectDirectory = Environment.CurrentDirectory;
-            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            //String[] paths = new string[] { @filepath, "files" };
-            //filepath = Path.Combine(paths);
-            string settingString = "";
-            DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            //ShowErrorDialog("filepath is: \n" + filepath);
-            if (!Directory.Exists(filepath))
-            {
-                //return;
-            }
-            string reportStringPath = Path.Combine(filepath, "lastReport.txt");
-            if (File.Exists(reportStringPath))
-            {
-                using (StreamReader sr = System.IO.File.OpenText(reportStringPath))
-                {
+            DBclient DBInstance = DBclient.Instance;
+            string settingString = DBInstance.getGeneralDetailsTable("lastReport");
+            //string userName = Environment.UserName;
+            //string projectDirectory = Environment.CurrentDirectory;
+            //string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            ////String[] paths = new string[] { @filepath, "files" };
+            ////filepath = Path.Combine(paths);
+            //string settingString = "";
+            //DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
+            ////ShowErrorDialog("filepath is: \n" + filepath);
+            //if (!Directory.Exists(filepath))
+            //{
+            //    //return;
+            //}
+            //string reportStringPath = Path.Combine(filepath, "lastReport.txt");
+            //if (File.Exists(reportStringPath))
+            //{
+            //    using (StreamReader sr = System.IO.File.OpenText(reportStringPath))
+            //    {
 
-                    string line = "";
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        settingString += line + "\r\n";
-                    }
-                }
+            //        string line = "";
+            //        while ((line = sr.ReadLine()) != null)
+            //        {
+            //            settingString += line + "\r\n";
+            //        }
+            //    }
 
 
-            }
-            else
-            {
-                return string.Empty;
-            }
+            //}
+            //else
+            //{
+            //    return string.Empty;
+            //}
 
             return settingString;
         }
@@ -223,6 +225,7 @@ namespace ClientSide
 
         private static void createReportFile()
         {
+            stringReport = "";
             //ShowErrorDialog(getReportString());
             var Report = new Document();
             DBclient DBInstance = DBclient.Instance;
@@ -296,22 +299,34 @@ namespace ClientSide
 
             //db.printClientData();  
             string pathLastReport = Path.Combine(path, "lastReport.txt");
-            if (System.IO.File.Exists(pathLastReport))
-            {
-                System.IO.File.Delete(pathLastReport);
+            DBInstance.fillGeneralDetailsTable("lastReport", stringReport);
+            //    {
+            //    using (StreamWriter sw = System.IO.File.CreateText(pathLastReport)) ;
+            //    System.IO.File.WriteAllText(pathLastReport, stringReport);
 
-            }
-            try
-            {
-                using (StreamWriter sw = System.IO.File.CreateText(pathLastReport)) ;
-                System.IO.File.WriteAllText(pathLastReport, stringReport);
+            //}
+            //    catch (Exception ex)
+            //{
+            //    ShowErrorDialog(ex + "hh");
+            //}
 
-            }
-            catch (Exception ex)
-            {
-                ShowErrorDialog(ex + "hh");
-            }
-            ShowErrorDialog(stringReport);
+
+            //if (System.IO.File.Exists(pathLastReport))
+            //{
+            //    System.IO.File.Delete(pathLastReport);
+                
+            //}
+            //try
+            //{
+            //    using (StreamWriter sw = System.IO.File.CreateText(pathLastReport)) ;
+            //    System.IO.File.WriteAllText(pathLastReport, stringReport);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    ShowErrorDialog(ex + "hh");
+            //}
+            //ShowErrorDialog(stringReport);
         }
 
         public static void ShowErrorDialog(string message)

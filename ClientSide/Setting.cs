@@ -148,6 +148,10 @@ namespace ClientSide
              {
                  ShowErrorDialog("settttt" + x);
              }*/
+             if(settingString == string.Empty)
+            {
+                return 0;
+            }
             string[] settingStringSplited = settingString.Split('\n');
 
 

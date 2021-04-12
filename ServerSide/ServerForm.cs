@@ -14,8 +14,8 @@ namespace ServerSide
 {
     public partial class ServerForm : Form
     {
-
-        const string NOT_CONNECTED = "Not_connected";
+        const string NO_INTERNET = "NO Internet";
+        const string NOT_CONNECTED = "Not Connected";
         public MonitorSetting monitorSystem;
         public DBserver dbs;
 
@@ -57,12 +57,22 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
+                    string socketState = row.Cells[2].Value.ToString();
+                    if (socketState == NOT_CONNECTED || socketState == NO_INTERNET)
+                    {
+                        ShowErrorDialog("Client not connected\nLive mode not available ");
 
-                    int id = int.Parse(row.Cells[3].Value.ToString());
-                    playCurrentState handler = Program.startLiveMode;
-                    handler(id);
+                    }
+                    else
+                    {                        
+                        int id = int.Parse(row.Cells[3].Value.ToString());
+                        playCurrentState handler = Program.startLiveMode;
+                        handler(id);
+                    }
+                    return; 
                 }
             }
+            ShowErrorDialog("Please select computer!");
 
  
 
@@ -77,7 +87,8 @@ namespace ServerSide
             {
                 if (row.Cells[3].Value != null)
                 {
-                    if (int.Parse(row.Cells[3].Value.ToString()) == id)
+                    int currentID = int.Parse(row.Cells[3].Value.ToString());
+                    if (currentID == id)
                     {
                         if (ClientSocket == null)
                         {
@@ -120,25 +131,27 @@ namespace ServerSide
                         dgvConnectedClients.Rows.Add(false, Name, NOT_CONNECTED, id);
                     }
                     // Check if id exists in checkbox
-                    for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    {
+                    //for (int i = 0; i < checkLstAllClient.Items.Count; i++)
+                    //{
 
-                        string l = (string)checkLstAllClient.Items[i];
-                        string stringId = l.Split(',')[1].Split(' ')[1];
-                        if (stringId == id.ToString())
-                        {
-                            //ShowErrorDialog(stringId);
-                            Button b = new Button();
-                            checkLstAllClient.Items.RemoveAt(i);
-                            checkLstAllClient.Items.Insert(i, b);
-                            exist = 1;
-                            break;
-                        }
-                    }
+                    //    string l = (string)checkLstAllClient.Items[i];
+                    //    string stringId = l.Split(',')[1].Split(' ')[1];
+                    //    if (stringId == id.ToString())
+                    //    {
+                    //        //ShowErrorDialog(stringId);
+                    //        Button b = new Button();
+                    //        checkLstAllClient.Items.RemoveAt(i);
+                    //        checkLstAllClient.Items.Insert(i, b);
+                    //        exist = 1;
+                    //        break;
+                    //    }
+                    //}
+                   
                     if (exist == 0)
                         checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);
 
                 });
+         
             }
         }
 
@@ -160,7 +173,7 @@ namespace ServerSide
         {
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
-                row.Cells[2].Value = "NO Internet";
+                row.Cells[2].Value = NO_INTERNET;
                 
             }
         }
@@ -200,7 +213,8 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
-                    if (row.Cells[2].Value.ToString() == NOT_CONNECTED)
+                    string socketState = row.Cells[2].Value.ToString();
+                    if (socketState == NOT_CONNECTED || socketState == NO_INTERNET)
                     {
                         ShowErrorDialog("Client not connected\r\nCannot show last report ");
 
@@ -211,7 +225,9 @@ namespace ServerSide
                         RemoveClient handler = Program.removeClient;
                         handler(id);
                     }
+                    return;
                 }
+                ShowErrorDialog("Please select computer!");
             }
 
             
@@ -297,6 +313,7 @@ namespace ServerSide
             //ShowErrorDialog("set setting");
             if (e.RowIndex >= 0)
             {
+
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
                 string s = row.Cells[0].Value.ToString();
                 int id = int.Parse(row.Cells[1].Value.ToString());
@@ -325,7 +342,9 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
-                    if (row.Cells[2].Value.ToString() == NOT_CONNECTED)
+
+                    string socketState = row.Cells[2].Value.ToString();
+                    if (socketState == NOT_CONNECTED || socketState == NO_INTERNET)
                     {
                         ShowErrorDialog("Client not connected\r\nCannot show last report ");
 
@@ -335,7 +354,9 @@ namespace ServerSide
                         showLastReport handler = Program.ShowLastReportFromServer;
                         handler(id);
                     }
+                    return;
                 }
+                ShowErrorDialog("Please select computer!");
             }
         }
 
@@ -359,12 +380,22 @@ namespace ServerSide
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
-                    int id = int.Parse(row.Cells[3].Value.ToString());
-                    MonitorSetting monitorSystem = new MonitorSetting(id);
-                    monitorSystem.ShowDialog();
-                }
-            }
+                    string socketState = row.Cells[2].Value.ToString();
+                    if (socketState == NOT_CONNECTED || socketState == NO_INTERNET) 
+                    {
+                        ShowErrorDialog("Client not connected\r\nCannot update setting ");
 
+                    }
+                    else
+                    {
+                        int id = int.Parse(row.Cells[3].Value.ToString());
+                        MonitorSetting monitorSystem = new MonitorSetting(id);
+                        monitorSystem.ShowDialog();
+                    }
+                }
+                return;
+            }
+            ShowErrorDialog("Please select computer!");
         }
 
         private void dgvConnectedClients_CellClick(object sender, DataGridViewCellEventArgs e)

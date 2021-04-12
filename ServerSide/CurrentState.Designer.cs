@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1146, 1050);
+            this.ClientSize = new System.Drawing.Size(1179, 789);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -119,12 +119,14 @@
             this.Controls.Add(this.txbSites);
             this.Controls.Add(this.txbTyped);
             this.Controls.Add(this.txbProcesses);
-            this.Location = new System.Drawing.Point(100, 100);
+            this.Location = new System.Drawing.Point(50, 50);
             this.MaximumSize = new System.Drawing.Size(2000, 2000);
+            this.MinimumSize = new System.Drawing.Size(1201, 845);
             this.Name = "CurrentState";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "CurrentState";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.CurrentState_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

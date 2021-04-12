@@ -12,7 +12,8 @@ namespace ClientSide
     // This monitor work only in Live mode
     class MonitorProccess : Monitor
     {
-        
+      
+
         public bool ifLive;
         
         public MonitorProccess() { }
@@ -23,7 +24,7 @@ namespace ClientSide
             {
                 stopThreadMonitor();
             } 
-            ifLive = true;
+            //ifLive = true;
             base.monitorAlive = true;
             base.monitorThread = new Thread(playmonitorProccess);
             base.monitorThread.Start();
@@ -70,7 +71,7 @@ namespace ClientSide
                     handler(sb.ToString());                  
 
                 }
-                Thread.Sleep(60000);
+                //Thread.Sleep(6000);
             }
             
             //ShowErrorDialog("playmonitorProccess finish");

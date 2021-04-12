@@ -37,6 +37,7 @@ namespace ClientSide
 
         public void playMonitorInstallations()
         {
+            
             int hour = 60000; // 1 hour
             while (base.monitorAlive)
             {
@@ -60,7 +61,7 @@ namespace ClientSide
 
                     }
                 }
-                Thread.Sleep(hour); // 3,600,000 ms = 1 hr
+                Thread.Sleep(hour*60); // 3,600,000 ms = 1 hr
             }
              
         }
@@ -271,12 +272,14 @@ namespace ClientSide
                 }
             }
 
-            ShowErrorDialog(allProgs);
-
-            string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\Allproc.txt";
+            //ShowErrorDialog(allProgs);
+            String projectDirectory = Environment.CurrentDirectory;
+            string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
+            string path = Path.Combine(filepath, "Allproc.txt");
+            // string path = @"C:\Users\sara\Desktop\Sara Ayash\MonitorSoftware\ClientSide\";
             if (!File.Exists(path))
             {
-                // Create a file to write to.
+                // Create a file to write.
                 using (StreamWriter sw = File.CreateText(path))
                 {
                     sw.WriteLine(allProgs);
@@ -441,7 +444,8 @@ namespace ClientSide
         }
         private static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine(message);
+            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 
