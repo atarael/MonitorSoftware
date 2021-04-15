@@ -383,9 +383,9 @@ namespace ClientSide
         }
         public void fillDailyProcessTable(string date, string Process)
         {
-            string sql = "INSERT OR IGNORE into DailyProcessTable(date,Process) values('" + date + "','" + Process + "');";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            //string sql = "INSERT OR IGNORE into DailyProcessTable(date,Process) values('" + date + "','" + Process + "');";
+            //SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            //command.ExecuteNonQuery();sara 
         }
         public void RemoveDailyProcessTable(string date)
         {

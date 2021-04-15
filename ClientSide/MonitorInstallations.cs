@@ -31,7 +31,7 @@ namespace ClientSide
             base.monitorThread.Start();
 
         }
-        public override void stopThreadMonitor() {
+        public override void stopThreadMonitor() { 
             base.monitorAlive = false;
         }
 

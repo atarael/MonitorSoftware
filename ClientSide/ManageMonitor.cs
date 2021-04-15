@@ -54,14 +54,14 @@ namespace ClientSide
         public void playLiveMode() {
 
             monitorProccess.ifLive = true;
-           // monitorProccess.playThreadMonitor();
+            // monitorProccess.playThreadMonitor();
             monitorTyping.ifLive = true;
             monitorSite.ifLive = true;
         }
         public void stopLiveMode()
         {
             monitorProccess.ifLive = false;
-            monitorSite.ifLive = false;
+            monitorTyping.ifLive = false;
             monitorSite.ifLive = false;
         }
 

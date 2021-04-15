@@ -66,12 +66,12 @@ namespace ClientSide
 
                 if (ifLive)
                 {
-                   // string processes = ListAllApplications();
-                    updateProccess handler = Program.updateCurrentProcess;
-                    handler(sb.ToString());                  
+                     string processes = ListAllApplications();
+                     updateProccess handler = Program.updateCurrentProcess;
+                     handler(sb.ToString());                  
 
                 }
-                //Thread.Sleep(6000);
+                Thread.Sleep(6000); 
             }
             
             //ShowErrorDialog("playmonitorProccess finish");

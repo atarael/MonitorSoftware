@@ -31,7 +31,7 @@ namespace ClientSide
         const string LIVE = "start live mode";
         const string STOP_LIVE = "stop current state";
         const string REMOVE_CLIENT = "remove client";
-        const string LAST_REPORT = "send last report";
+        const string LAST_REPORT = "last report";
 
         private String id;
         private Socket clientSocket;
@@ -70,8 +70,9 @@ namespace ClientSide
                 {
                     program.connectToServer();
                 }
-
-                Application.Run();
+             Thread interntAvilable = new Thread(checkConnections);
+             interntAvilable.Start();
+            Application.Run();
             //    mutex.ReleaseMutex();
             //}
             //else
@@ -105,36 +106,114 @@ namespace ClientSide
             shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
             shortcut.Save();                                    // Save the shortcut
         }
-
-
-        public static void checkInterntConnection()
+        private static void checkConnections()
         {
-            
-            checkConnection = true; 
-            while (checkConnection)
+            while (true)
             {
-              
-                try
+
+                if (checkInterntConnection())
                 {
-
-                    string crypto = Crypto.Encrypt("check connection");
-                    string decrypto = Crypto.Decrypt(crypto);
-                    //ShowErrorDialog("Send: "+ crypto);
-                    var sendData = Encoding.UTF8.GetBytes(crypto);
-                    program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
-
+                    if(!checkSocketConnections())
+                    {
+                        Console.WriteLine("checkSocketConnections false - RECONNECT");
+                        program.reConnect();
+                    }
 
                 }
-                catch(Exception ex)
-                {
-                    ShowErrorDialog("checkInterntConnection: \n" + ex.Message + " \n\n" + ex);                     
-                    program.reConnect();
+                else {
+                    try
+                    {
+                        Console.WriteLine("SEND TO CLIENT NO INTERNET");
+                        string crypto = Crypto.Encrypt("NO_INTERNET\r");
+                        string decrypto = Crypto.Decrypt(crypto);
+                        var sendData = Encoding.UTF8.GetBytes(crypto);
+                        program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
 
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // ShowErrorDialog("checkSocketConnections: \n" + ex.Message + " \n\n" + ex);
+                        Console.WriteLine("FAIL SEND TO CLIENT NO INTERNET");
+                        program.reConnect();   
+
+                    }
                 }
 
+                Thread.Sleep(5000); 
+
+
+            } 
+        }
+        private static bool checkSocketConnections()
+        {
+            try
+            {
+                if (program.clientSocket == null)
+                {
+                    return false;
+                }
+                string crypto = Crypto.Encrypt("client check connection");
+                string decrypto = Crypto.Decrypt(crypto);
+                var sendData = Encoding.UTF8.GetBytes(crypto);
+                program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
+                return true;
 
             }
+            catch (SocketException ex)
+            {
+                // ShowErrorDialog("checkSocketConnections: \n" + ex.Message + " \n\n" + ex);
+               
+                program.manageMonitor.stopLiveMode();              
+                return false;
 
+            }
+        }
+
+        public static bool checkInterntConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+
+                }
+            }
+            catch
+            {
+                // send client not internet
+
+                return false;
+            }
+
+
+            //while (true)
+            //{
+
+            //    try
+            //    {
+
+            //        string crypto = Crypto.Encrypt("check connection");
+            //        string decrypto = Crypto.Decrypt(crypto);                  
+            //        var sendData = Encoding.UTF8.GetBytes(crypto);
+            //        program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
+
+
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        // ShowErrorDialog("checkInterntConnection: \n" + ex.Message + " \n\n" + ex);
+            //        Console.WriteLine("checkInterntConnection RECONNECT");
+            //        program.reConnect();
+
+            //    }
+
+
+            //}
+
+            //Console.WriteLine("exit thread check internet");
         }
 
         private static void connectAtReStartComputer()
@@ -179,7 +258,7 @@ namespace ClientSide
 
                 DBclient DBInstance = DBclient.Instance;
 
-                switch (dataFromServer[0])
+                switch (dataFromServer[0])// dddd 
                 {
                     // Get uniqe id 
                     case ID:
@@ -188,17 +267,17 @@ namespace ClientSide
                         //ShowErrorDialog("get id");  
                         break;
 
-                    // Get Setting to implement monitoring
+                    // Get Setting to implement monitoring gg 
                     case SETTING:
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
                        
                         // save setting 
                         DBInstance.fillGeneralDetailsTable("setting", setting);
-                        playAllTrigers(); //This method obtains the settings string from the server
+                        playAllTrigers(); //This method obtains the settings string from the server  
 
                         // Set Periodic Report
-                        PeriodicReporting.setReportPeriodic();
+                        // PeriodicReporting.setReportPeriodic();
 
                         break;
 
@@ -207,9 +286,9 @@ namespace ClientSide
                         liveMode(clientSocket); 
                         break;
 
-                    // Stop live reporting mode
+                    // Stop live reporting mode 
                     case STOP_LIVE:
-                        // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");
+                        // ShowErrorDialog("server send: |" + dataFromServer[0].Split('\0')[0] + "|");  
                         stopLiveMode(clientSocket);
                         break;
 
@@ -234,12 +313,14 @@ namespace ClientSide
 
             catch (SocketException ex)
             {
-                ShowErrorDialog("ReceiveCallback\n" + ex );
-                //reConnect();
+                //ShowErrorDialog("ReceiveCallback\n" + ex );
+                Console.WriteLine("ReceiveCallback SocketException - RECONNECT");
+                reConnect();
             }
             catch (ObjectDisposedException ex)
             {
-                ShowErrorDialog("ReceiveCallback\n " + ex.Message + " \n\n" + ex);
+                ShowErrorDialog("ReceiveCallback ObjectDisposedException\n " + ex.Message + " \n\n" + ex);
+               Console.WriteLine("ReceiveCallback ObjectDisposedException");
             }
         }
 
@@ -247,15 +328,12 @@ namespace ClientSide
         {
 
             string lastReport = PeriodicReporting.getReportString();
-            if (lastReport == null)
-            {
-                SendData(socket, "last report\r" + "NO REPORT TO SHOW");
-            }
+             
             Console.WriteLine("last reort is: " + lastReport);
-            SendData(socket, "sara ayash\r");
+            SendData(socket, "check connection before send last report\r");
             SendData(socket, "last report\r" + lastReport);
         }
-
+        // sara 
         private void removeClient()
         { 
             ShowErrorDialog("removeeeeeeeeeeee");
@@ -267,8 +345,8 @@ namespace ClientSide
             PeriodicReporting.createLastReport();
            
             // db
-            DBclient DBInstance = DBclient.Instance;
-            DBInstance.deleteDB();
+            // DBclient DBInstance = DBclient.Instance;
+            // DBInstance.deleteDB();
                      
             // restart - delete key 
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -287,15 +365,15 @@ namespace ClientSide
         {
 
             sendCurrentData = false;
-            // monitorProccess.ifLive = false;
-            // ShowErrorDialog("stop send current state");
+            // monitorProccess.ifLive = false; 
+            // ShowErrorDialog("stop send current state");   
             manageMonitor.stopLiveMode();
         }
 
         private void liveMode(Socket socket)
         {
             sendCurrentData = true;
-            SendData(socket, "open live form\r");
+            //SendData(socket, "open live form\r");
             SendData(socket, "current state\ropen CurrentState form");
             manageMonitor.playLiveMode();
 
@@ -331,23 +409,27 @@ namespace ClientSide
                 clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, clientSocket);
 
                 // ShowErrorDialog("in ConnectCallback in socket: " + clientSocket.RemoteEndPoint);
+
                 if (id != null)
+                {
                     SendData(clientSocket, "id\r" + id);
+                }
+                   
                 else SendData(clientSocket, "name\r" + name);
 
                 // play thread to check connection to server socket
-                if (checkConnection)
-                {
-                    checkConnection = false;                    
-                }
-                Thread interntAvilable = new Thread(checkInterntConnection);
-                interntAvilable.Start();
+                //if (checkConnection)
+                //{
+                //    checkConnection = false;                    
+                //}
+
 
             }
             catch (SocketException ex)
             {
-                  ShowErrorDialog("ConnectCallback send SocketException\n" + ex.Message+" \n\n"+ex);
-                //Console.WriteLine("ConnectCallback send SocketException -RECONNECT \r\n" + ex.Message);
+                 Thread.Sleep(5000);
+                //ShowErrorDialog("ConnectCallback send SocketException\n" + ex.Message+" \n\n"+ex);
+                Console.WriteLine("ConnectCallback send SocketException\n"+ex.Message);
 
                 reConnect();
 
@@ -355,6 +437,9 @@ namespace ClientSide
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("ConnectCallback send ObjectDisposedException\n" + ex.Message + " \n\n" + ex);
+            }
+            catch (ArgumentException ex) {
+                Console.WriteLine("ConnectCallback ArgumentException");
             }
         }
 
@@ -373,6 +458,10 @@ namespace ClientSide
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("SendCallback send ObjectDisposedException \r\n" + ex.Message + " \n\n" + ex);
+            }
+            catch (ArgumentException ex) {
+                Console.WriteLine("SendCallback ArgumentException");
+                ShowErrorDialog("SendCallback send ArgumentException \r\n" + ex.Message + " \n\n" + ex);
             }
         }
 
@@ -469,6 +558,7 @@ namespace ClientSide
             if (setting.Length > 0)
             {
                 id = DBInstance.getGeneralDetailsTable("id");
+                Console.WriteLine("connectToExistClient - RECONNECT");
                 reConnect();
                 playAllTrigers();
 
@@ -522,19 +612,20 @@ namespace ClientSide
             clientForm.ShowDialog();
         }
 
-        public void SendData(Socket clientSocket, String data)
+        public void SendData(Socket clientSocket, String data) 
         {
             
  
             try
             {
-                //if (CheckConnection(clientSocket))
+                //if (CheckConnection(clientSocket)) 
                 if(clientSocket!=null)
                 {
                     string crypto = Crypto.Encrypt(data);
                     string decrypto = Crypto.Decrypt(crypto);
+                    Console.WriteLine(crypto +"\n"+decrypto);
                     //ShowErrorDialog("Send: "+ crypto);
-                    var sendData = Encoding.UTF8.GetBytes(crypto);
+                     var sendData = Encoding.UTF8.GetBytes(data);
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
 
                    
@@ -542,7 +633,7 @@ namespace ClientSide
                 }
                 else {
                     Console.WriteLine("send data fail, socket disconnection");
-                    //reConnect();
+                    // reConnect();
                     SendData(clientSocket, data);
                 }
 
@@ -568,7 +659,7 @@ namespace ClientSide
                 //reConnect();
             }
         }
-         
+
 
         //public void sendDataByParts(Socket clientSocket, string data)
         //{
@@ -615,7 +706,7 @@ namespace ClientSide
 
 
 
-        //    }
+        //    } 
 
 
         //    sendData = Encoding.UTF8.GetBytes("stop send data by parts\r" + id + "\r");
@@ -624,12 +715,16 @@ namespace ClientSide
 
         //}
 
-
+         
 
         public void reConnect()
         {
             try
-            { 
+            {
+                if (checkSocketConnections()) {
+                    return;
+
+                }
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 buffer = new byte[clientSocket.ReceiveBufferSize];
@@ -647,8 +742,11 @@ namespace ClientSide
                 {
                     PeriodicReporting.sendMissingReportsToMail(immadiateAlerts);
                 }
+
+
+                
             }
-            catch (SocketException ex)
+            catch (SocketException ex) 
             {
                 ShowErrorDialog("reConnect send SocketException\r\n" + ex.Message + " \n\n" + ex);
             }
