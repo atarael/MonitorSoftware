@@ -138,6 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsynchronousSocketListener.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="CurrentState.cs">

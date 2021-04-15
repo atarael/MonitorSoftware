@@ -51,12 +51,14 @@ namespace ServerSide
         
         public void btnGetCurrentState_Click(object sender, EventArgs e)
         {
+            bool SelectClient = false;
 
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
 
                 if (row.Cells[0].Value.ToString() == "True")
                 {
+                    SelectClient = true;
                     string socketState = row.Cells[2].Value.ToString();
                     if (socketState == NOT_CONNECTED || socketState == NO_INTERNET)
                     {
@@ -67,14 +69,18 @@ namespace ServerSide
                     {                        
                         int id = int.Parse(row.Cells[3].Value.ToString());
                         playCurrentState handler = Program.startLiveMode;
+                         
                         handler(id);
                     }
-                    return; 
+                    
                 }
             }
-            ShowErrorDialog("Please select computer!");
+            if (!SelectClient)
+            {
+                ShowErrorDialog("Please select computer!");
 
- 
+            }
+
 
 
 
@@ -82,7 +88,7 @@ namespace ServerSide
        
         public void addClientToCheckBoxLst(string Name, int id, Socket ClientSocket)
         {
-
+            
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
                 if (row.Cells[3].Value != null)
@@ -121,35 +127,15 @@ namespace ServerSide
                     String line = "";
                     if (ClientSocket != null)
                     {
-                        line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
-                        dgvConnectedClients.Rows.Add(false, Name, ClientSocket.RemoteEndPoint, id);
+                          dgvConnectedClients.Rows.Add(false, Name, ClientSocket.RemoteEndPoint, id);
                     }
                     //line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + ClientSocket.RemoteEndPoint;
                     else
                     {
-                        line += "Client Name: " + Name + " ,id: " + id + " ,Socket: " + "not connect";
-                        dgvConnectedClients.Rows.Add(false, Name, NOT_CONNECTED, id);
+                         dgvConnectedClients.Rows.Add(false, Name, NOT_CONNECTED, id);
                     }
-                    // Check if id exists in checkbox
-                    //for (int i = 0; i < checkLstAllClient.Items.Count; i++)
-                    //{
-
-                    //    string l = (string)checkLstAllClient.Items[i];
-                    //    string stringId = l.Split(',')[1].Split(' ')[1];
-                    //    if (stringId == id.ToString())
-                    //    {
-                    //        //ShowErrorDialog(stringId);
-                    //        Button b = new Button();
-                    //        checkLstAllClient.Items.RemoveAt(i);
-                    //        checkLstAllClient.Items.Insert(i, b);
-                    //        exist = 1;
-                    //        break;
-                    //    }
-                    //}
-                   
-                    if (exist == 0)
-                        checkLstAllClient.Items.Insert(checkLstAllClient.Items.Count, line);
-
+                    
+                  
                 });
          
             }
@@ -157,16 +143,10 @@ namespace ServerSide
 
         public void serverConnect()
         {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
-            {
-                if (row.Cells[3].Value != null) { 
-                    int id = int.Parse(row.Cells[3].Value.ToString());
-                    checkClientSocket handler = Program.checkClientConnection;
-                    handler(id);
-                }
+            
+                    checkClientSocket handler = Program.checkAllConnection;
+                    handler();
                
-
-            }
         }
 
         public void serverNotConnect()
@@ -360,12 +340,12 @@ namespace ServerSide
             }
         }
 
-        internal void setClientNotConnect(EndPoint remoteEndPoint)
+        internal void setClientNotConnect(int id)
         {
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
-
-                if (row.Cells[2].Value.ToString() == remoteEndPoint.ToString())
+                int clientId = int.Parse(row.Cells[3].Value.ToString());
+                if (clientId == id)
                 {
                     row.Cells[2].Value = NOT_CONNECTED;
                 }

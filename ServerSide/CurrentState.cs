@@ -12,23 +12,27 @@ namespace ServerSide
 {
     public partial class CurrentState : Form
     {
+        int id;
+        string name;
         
-        public CurrentState()
-        {                 
+        public CurrentState(int id, string name)
+        {
+            this.id = id;
+            this.name = name;
             InitializeComponent();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            txbProcesses.Text = "";
-            getID handler = Client.sendID;
-            handler();
+            stopCurrentState handler = Program.stopCurrentState;
+            handler(id);
+            txbProcesses.Text = "";            
             this.Close();
         }
 
         private void CurrentState_Load(object sender, EventArgs e)
         {
-            
+            this.Text= "Current State from client: " + Name + ", ID: " + id; 
         }
         public void addText(string str)
         {

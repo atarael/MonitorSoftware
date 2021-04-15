@@ -45,45 +45,65 @@ namespace ServerSide
             this.id = id;
             ClientSocket = clientSocket;
             this.buffer = buffer;
-            currentStateForm = new CurrentState();
-            currentStateForm.Text = "Current State from client: " + Name + ", ID:" + id;
+            currentStateForm = new CurrentState(id,name);
+            //currentStateForm.Text = "Current State from client: " + Name + ", ID:" + id;
             ID = this.id;
              
         }
 
         public void openCurrentStateForm(string data) {
-            // ShowErrorDialog("client send  live:\n  |" + data + "|");
-            if (data.Split('\0')[0] == "open CurrentState form")
+            try
             {
-                currentStateForm = new CurrentState();
-                currentStateForm.Text = "Current State from client: " + Name + ", ID:" + id;
-                currentStateForm.ShowDialog();
-            }
-            else {
-                FormCollection fc = Application.OpenForms;
-
-                foreach (Form frm in fc)
+                // ShowErrorDialog("client send  live:\n  |" + data + "|");
+                if (data.Split('\0')[0] == "open CurrentState form")
                 {
-                    //iterate through
-                    if (frm.Name == "CurrentState")
+                    isOpen = true;
+                    // currentStateForm = new CurrentState();
+                    // currentStateForm.Text = "Current State from client: " + Name + ", ID:" + id;
+                    Thread liveForm = new Thread(openLiveForm);
+                    liveForm.Start();
+
+                }
+                else
+                {
+                    FormCollection fc = Application.OpenForms;
+
+                    foreach (Form frm in fc)
                     {
-                        isOpen = true;
-                        currentStateForm.addText(data);
+                        //iterate through
+                        if (frm.Name == "CurrentState")
+                        {
+                            isOpen = true;
+                            currentStateForm.addText(data);
+                        }
+                    }
+                    if (!isOpen)
+                    {
+                        currentStateForm.ShowDialog();
+
+                        //sara ayash atara 
                     }
                 }
-                if (!isOpen)
-                {
-                    currentStateForm.ShowDialog();
 
-                    //sara ayash atara 
-                }
+
             }
-            
-            
-            
-             
+            catch (Exception ex) {
+                Console.WriteLine("openCurrentStateForm fail: \n"+ex.Message);
+                return;
+            }
+
+
+
+
         }
- 
+
+        private void openLiveForm()
+        {
+            currentStateForm.ShowDialog();
+            isOpen = false;
+
+        }
+
         public static void sendID()
         {
             stopCurrentState handler = Program.stopCurrentState;
