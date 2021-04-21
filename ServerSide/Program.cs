@@ -561,19 +561,17 @@ namespace ServerSide
         }
     
         public static void removeClient(int id)
-        {
-            AsynchronousSocketListener.SendDataToClient(id, "remove client");
+        {           
            
-
-           // program.clientIds.Remove(id);
             s.removeClientFromCheckBoxLst(id);
+            AsynchronousSocketListener.removeClient(id);
+           
             program.DBInstance = DBserver.Instance;
-            program.DBInstance.removeClient(id.ToString());
-            program.removeClientfromMemory(id.ToString());
-
-
-
+            program.DBInstance.removeClientFromDB(id.ToString());
+       
+          
         }
+
         public static void NoInternetConnection() { 
             s.serverNotConnect();
         }
@@ -646,49 +644,19 @@ namespace ServerSide
         {
             AsynchronousSocketListener.setSetting( id, setting);
 
-            // setting at first time
-            //bool connect = checkSocketConnection(program.Allclients[index].ClientSocket);
-            //if (connect)
-            //{
-            //    s.addClientToCheckBoxLst(program.Allclients[index].Name, program.Allclients[index].id, program.Allclients[index].ClientSocket);
-            //    s.removeClientToWaitingList(id);
-            //}
-
-
-           
- 
-
         }
-        
+        public static void ShowLastReportFromServer(int id)
+        {
+            AsynchronousSocketListener.SendDataToClient(id, "last report");
+            
+        }
         public static void setClientNotConnnect(int id) {
             s.setClientNotConnect(id);
 
         }
 
-        private void removeClientfromMemory(string id)
-        {
-            for (int i = 0; i < Allclients.Count(); i++)
-            {
-                if (Allclients[i].id.ToString() == id)
-                {
-                    Allclients.Remove(Allclients[i]);
-                }
-            }
-        }
-
-        public static void ShowLastReportFromServer(int id)
-        {
-            AsynchronousSocketListener.SendDataToClient(id, "last report");
-            //for (int i = 0; i < program.Allclients.Count(); i++)
-            //{
-            //    if (program.Allclients[i].id == id)
-            //    {
-            //        program.sendDataToClient(program.Allclients[i].ClientSocket, "send last report");
-            //        //program.Allclients[i].buffer = new byte[program.Allclients[i].ClientSocket.ReceiveBufferSize];
-            //    }
-            //}
-        }
-
+       
+ 
       
 
     }

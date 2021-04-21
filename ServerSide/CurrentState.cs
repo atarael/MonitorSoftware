@@ -24,6 +24,9 @@ namespace ServerSide
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            txbProcesses.Text = "";
+            txbSites.Text = "";
+            txbTyped.Text = "";
             stopCurrentState handler = Program.stopCurrentState;
             handler(id);
             txbProcesses.Text = "";            
@@ -47,7 +50,11 @@ namespace ServerSide
                     if (add[0] == "processes")
                         txbProcesses.Text = data;                      
                     if (add[0] == "site")
+                    {
                         txbSites.AppendText(data + "\r\n");
+                        txbSites.AppendText("\r\n");
+                    }
+                       
                 });
             }
            
@@ -57,3 +64,4 @@ namespace ServerSide
         
     }
 }
+ 

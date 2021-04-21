@@ -85,10 +85,25 @@ namespace ServerSide
 
 
         }
-       
+
         public void addClientToCheckBoxLst(string Name, int id, Socket ClientSocket)
         {
-            
+            // Check if settings have been set for this client
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[1].Value != null)
+                {
+                    if (row.Cells[1].Value.Equals(id))
+                    {
+                        return; 
+                    
+                    }
+                }
+               
+            }
+
+
+
             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
                 if (row.Cells[3].Value != null)
@@ -220,35 +235,34 @@ namespace ServerSide
         {
 
 
-            dataGridView1.ColumnCount = 1;
-            dataGridView1.Columns[0].Width = 300;
-            dataGridView1.Columns.Add("Column", "id");
-            dataGridView1.Columns[1].Visible = false;
             dataGridView1.AllowUserToAddRows = false;
 
-
+           
             dgvConnectedClients.Columns[0].Width = 20; // checkbox
-          //  dgvConnectedClients.Columns[0].
+            // dgvConnectedClients.Columns[0].
             dgvConnectedClients.Columns[1].Width = 150; // socket number
             dgvConnectedClients.Columns[2].Width = 250; // client name
             dgvConnectedClients.AllowUserToAddRows = false;
-
+            
 
         }
 
         public void addClientToWaitingList(string value, int id)
         {
+             
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells[1].Value.Equals(id))
+                {
+                    return;
+
+                }
+            }
 
             Invoke((Action)delegate
             {
-                dataGridView1.Rows.Add(value, id);
-                DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-                btn.Text = "Confirm";
-                btn.FillWeight = 200;
-                btn.UseColumnTextForButtonValue = true;
-                btn.Width = 120;
-                dataGridView1.Columns.Add(btn);
-
+                dataGridView1.Rows.Add(value, id, "Confirm");
+              
             });
 
 
@@ -317,7 +331,7 @@ namespace ServerSide
 
         private void btnLastReport_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvConnectedClients.Rows)
+             foreach (DataGridViewRow row in dgvConnectedClients.Rows)
             {
 
                 if (row.Cells[0].Value.ToString() == "True")

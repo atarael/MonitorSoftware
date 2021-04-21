@@ -38,6 +38,9 @@ namespace ServerSide
         
         CurrentState currentStateForm;
         private bool isOpen;
+        public string lastReportByParts = "";
+        public string procceccByParts = "";
+
 
         public Client(string name, int id, Socket clientSocket, byte[] buffer)
         {

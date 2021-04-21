@@ -186,20 +186,31 @@ namespace ServerSide
 
             for (int i = 0; i < dtgCategorySites.Rows.Count; i++)
             {
-                DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i];
+                DataGridViewRow row = (DataGridViewRow)dtgCategorySites.Rows[i]; 
 
                 // insert Category Name
                 if(row.Cells[0].Value!= null)
-                    setting += row.Cells[0].Value.ToString().ToLower() + " ";
+                    setting += row.Cells[0].Value.ToString().ToLower() + " "; 
+
 
                 // Report immediately
-                if (row.Cells["ReportImmediately"].Value != null)
-                    setting += "1";
+                if(row.Cells[1].Value != null){
+                    if (row.Cells[1].Value.ToString() == "True")
+                        setting += "1";  
+                    else setting += "0";
+                }
                 else setting += "0";
+
+
                 // Update report
-                if (row.Cells["UpdateReport"].Value != null)
-                    setting += "1";
+                if (row.Cells[2].Value != null)
+                {
+                    if (row.Cells[2].Value.ToString() == "True")
+                        setting += "1";
+                    else setting += "0";
+                }
                 else setting += "0";
+
 
 
                 setting += " ";

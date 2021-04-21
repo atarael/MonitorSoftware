@@ -46,7 +46,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.setting = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.confirm = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConnectedClients)).BeginInit();
             this.panel1.SuspendLayout();
@@ -62,7 +62,7 @@
             this.btnSetSystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSetSystem.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnSetSystem.ForeColor = System.Drawing.Color.Lime;
-            this.btnSetSystem.Location = new System.Drawing.Point(849, 178);
+            this.btnSetSystem.Location = new System.Drawing.Point(849, 41);
             this.btnSetSystem.Name = "btnSetSystem";
             this.btnSetSystem.Size = new System.Drawing.Size(274, 119);
             this.btnSetSystem.TabIndex = 5;
@@ -173,7 +173,7 @@
             this.btnGetCurrentState.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGetCurrentState.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.btnGetCurrentState.ForeColor = System.Drawing.Color.Lime;
-            this.btnGetCurrentState.Location = new System.Drawing.Point(849, 41);
+            this.btnGetCurrentState.Location = new System.Drawing.Point(849, 179);
             this.btnGetCurrentState.Name = "btnGetCurrentState";
             this.btnGetCurrentState.Size = new System.Drawing.Size(274, 118);
             this.btnGetCurrentState.TabIndex = 5;
@@ -202,9 +202,9 @@
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.btnSetSystem);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.btnGetCurrentState);
-            this.panel1.Controls.Add(this.btnSetSystem);
             this.panel1.Controls.Add(this.btnRemoveClient);
             this.panel1.Controls.Add(this.btnLastReport);
             this.panel1.Location = new System.Drawing.Point(30, 241);
@@ -234,7 +234,7 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
             this.id,
-            this.setting});
+            this.confirm});
             this.dataGridView1.Location = new System.Drawing.Point(22, 62);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -249,28 +249,30 @@
             // 
             // name
             // 
-            this.name.HeaderText = "Column5";
-            this.name.MinimumWidth = 150;
+            this.name.HeaderText = "name";
+            this.name.MinimumWidth = 220;
             this.name.Name = "name";
             this.name.ReadOnly = true;
-            this.name.Width = 150;
+            this.name.Width = 220;
             // 
             // id
             // 
-            this.id.HeaderText = "Column5";
+            this.id.HeaderText = "id";
             this.id.MinimumWidth = 8;
             this.id.Name = "id";
             this.id.ReadOnly = true;
             this.id.Visible = false;
             this.id.Width = 150;
             // 
-            // setting
+            // confirm
             // 
-            this.setting.HeaderText = "Column5";
-            this.setting.MinimumWidth = 100;
-            this.setting.Name = "setting";
-            this.setting.ReadOnly = true;
-            this.setting.Width = 150;
+            this.confirm.HeaderText = "confirm";
+            this.confirm.MinimumWidth = 50;
+            this.confirm.Name = "confirm";
+            this.confirm.ReadOnly = true;
+            this.confirm.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.confirm.Text = "Confirm";
+            this.confirm.Width = 120;
             // 
             // ServerForm
             // 
@@ -305,9 +307,6 @@
         private System.Windows.Forms.Button btnRemoveClient;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewButtonColumn setting;
         private System.Windows.Forms.DataGridView dgvConnectedClients;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
@@ -315,6 +314,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.CheckedListBox checkLstAllClient;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewButtonColumn confirm;
     }
 }
 

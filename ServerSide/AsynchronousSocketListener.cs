@@ -34,7 +34,8 @@ namespace ServerSide
         private static Socket listener;
         private static List<Client> Allclients;
         private static int numOfClient;
-         
+        private static string lastReportByParts;
+
         public AsynchronousSocketListener()
         { 
         }
@@ -148,23 +149,25 @@ namespace ServerSide
                 if (bytesRead > 0)
                 {
                     state.sb = new StringBuilder();
+                    
                     // There  might be more data, so store the data received so far.  
                     state.sb.Append(Encoding.UTF8.GetString(
                         state.buffer, 0, bytesRead));
 
-                    // Check for end-of-file tag. If it is not there, read
-                    // more data.  
+                    state.buffer = new byte[StateObject.BufferSize];
+
                     content = state.sb.ToString();
 
-                    string dataFromClient = content.Split('\0')[0];
+                    // string dataFromClient = content.Split('\0')[0];
+                    string dataFromClient = Crypto.Decrypt(content);
 
                     string decryptionSubject = dataFromClient.Split(new char[] { '\r' }, 2)[0];
                     string decryptionMessage = dataFromClient.Split(new char[] { '\r' }, 2).Last();
-
+                    Console.WriteLine("ServerForm GET: |"+ dataFromClient + "|\n|" + content + "|\n|" + content.Length);
                     // client send name at first time 
                     if (decryptionSubject == "name")
                     {
-                        Console.WriteLine("New client name: "+ decryptionMessage);
+                        Console.WriteLine("New client name: "+ decryptionMessage );
                         int newId = createNewId();
 
 
@@ -234,21 +237,8 @@ namespace ServerSide
 
                     if (decryptionSubject == "last report")
                     {
-                        foreach (Client client in Allclients)
-                        {
-                            if (client.ClientSocket == handler)
-                            {
-                                Console.WriteLine("last report for client : " + client.Name);
-                                if (decryptionMessage != string.Empty)
-                                {
-                                    Report.createReportPDFFile(decryptionMessage, client.id);
-                                }
-                                else
-                                {
-                                    ShowErrorDialog("No last report to show");
-                                }
-                            }
-                        }
+                        recieveLastRepoert(handler, decryptionMessage);
+                       
                         // the function open form to disply data from client 
 
                         //liveData dg = Program.showLiveData;
@@ -256,11 +246,77 @@ namespace ServerSide
 
                     }
 
+                    if (decryptionSubject == "parts")
+                    {
+
+                        string[] partData = decryptionMessage.Split(new char[] { '\r' }, 4);
+                        if (partData.Length>=3) {
+                            string id = partData[0];
+                            string status = partData[1]; 
+                            string subject = partData[2];
+                            string massege = partData[3];
+                            massege = massege.Remove(massege.Length - 1);
+
+                            foreach (Client client in Allclients)
+                            {
+                                if(client.id.ToString() == id)
+                                {
+                                    
+                                         
+                                    switch (status)
+                                    {
+
+                                        case "first":
+                                            if (subject == "last report")
+                                                client.lastReportByParts = massege;
+                                            else if (subject == "current state")
+                                                client.procceccByParts = massege;
+                                            break;
+
+                                        case "continue":
+                                            if (subject == "last report")
+                                                client.lastReportByParts += massege;
+                                            else if (subject == "current state")
+                                                client.procceccByParts += massege;
+                                            break;
+
+                                        case "final":
+                                            if (subject == "last report")
+                                            {
+                                                client.lastReportByParts += massege;
+                                                recieveLastRepoert(handler, client.lastReportByParts);
+
+                                            }
+                                            else if (subject == "current state")
+                                            {
+                                                client.procceccByParts += massege;
+                                                client.openCurrentStateForm(client.procceccByParts);
+
+                                            }                                                
+                                            break;
+
+                                           
+                                             
+
+                                    }
+
+                                     
+                                    
 
 
+                                }
+                            }
+                          
 
-                     
-                   handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+                        }
+                        
+
+                         
+
+                    }
+
+
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
                
                 }
                   
@@ -276,6 +332,26 @@ namespace ServerSide
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("ReceiveCallback ObjectDisposedException" + ex.Message + "\n" + ex);
+            }
+        }
+
+        private static void recieveLastRepoert(Socket handler, string data)
+        {
+            ShowErrorDialog("show last report");
+            foreach (Client client in Allclients)
+            {
+                if (client.ClientSocket == handler)
+                {
+                    Console.WriteLine("last report for client : " + client.Name);
+                    if (data != string.Empty)
+                    {
+                        Report.createReportPDFFile(data, client.id);
+                    }
+                    else
+                    {
+                        ShowErrorDialog("No last report to show");
+                    }
+                }
             }
         }
 
@@ -311,19 +387,7 @@ namespace ServerSide
 
             }
         }
-
-        //public static bool CheckConnection(int id, Socket clientSocket)
-        //{
-
-        //    if (internetConnection() && CheckSocketConnection(clientSocket))
-        //    {
-        //        return true;
-        //    }
-
-        //    else
-        //        return false;
-        //}
-      
+       
         public static bool CheckSocketConnection(Socket s)
         {
             if (s == null)
@@ -363,19 +427,12 @@ namespace ServerSide
             }
         }
 
-
-
-
-
-
-
-
-
         private static int createNewId()
         {
+
             int newId = 0;
             List<int> ids = new List<int>();
- 
+            
             foreach (Client client in Allclients)
             {
                 ids.Add(client.id);
@@ -399,7 +456,6 @@ namespace ServerSide
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             //Console.WriteLine(message);
         }
-
 
         private static void Send(Socket handler, String data)
         {
@@ -429,10 +485,7 @@ namespace ServerSide
                 int bytesSent = handler.EndSend(ar);
                 Console.WriteLine("Sent {0} bytes to client.", bytesSent);
                 allDone.Set();
-
-
-                //handler.Shutdown(SocketShutdown.Both);
-                //handler.Close();
+                 
 
             }
             catch (Exception e)
@@ -446,12 +499,26 @@ namespace ServerSide
             {
                 if(client.id == id)
                 { 
-                    Send(client.ClientSocket,subject);
+                    Send(client.ClientSocket, subject);
 
                 }
             }
         }
 
+        public static void removeClient(int id)
+        {
+            SendDataToClient(id, "remove client");
+            foreach(Client client in Allclients)
+            {
+                if (client.id == id)
+                {
+                    Allclients.Remove(client);
+                    return;
+                }
+            }
+
+        }
+     
         public static void setSetting(int id, string setting)
         {
             foreach (Client client in Allclients)
@@ -468,8 +535,6 @@ namespace ServerSide
                         Send(client.ClientSocket, "setting\r\n" + setting);
                         removeFromWaitingAdAdd dg = Program.moveNewClientToInterface;
                         dg(client.id, client.Name, client.ClientSocket);
-
-
                     }
 
                                   
@@ -477,6 +542,7 @@ namespace ServerSide
 
             }
         }
+      
         public static bool checkAllSocketConnection(Socket s)
         {
             if (s == null)
