@@ -29,17 +29,16 @@ namespace ServerSide
 
     public class AsynchronousSocketListener
     {
-        // Thread signal.  
+         
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         private static Socket listener;
         private static List<Client> Allclients;
-        private static int numOfClient;
-        private static string lastReportByParts;
-
+          
         public AsynchronousSocketListener()
         { 
         }
-
+        
+        // this function start listenin for all connections requests
         public static void StartListening()
         {
             // Establish the local endpoint for the socket.  
@@ -55,9 +54,7 @@ namespace ServerSide
            
             DBserver DBInstance = DBserver.Instance;
             Allclients = DBInstance.initialServer();
-            //numOfClient = Allclients.Count();
-            //ShowErrorDialog("num" + numOfClient);
-
+            
             foreach (Client client in Allclients)
             {
                  addExistClient dg = Program.addExistClientToInterface;
@@ -128,7 +125,7 @@ namespace ServerSide
         {
             try
             {
-                String content = String.Empty;
+                string content = String.Empty;
 
                 // Retrieve the state object and the handler socket  
                 // from the asynchronous state object.  
@@ -173,9 +170,7 @@ namespace ServerSide
 
                         Client newClient = new Client(decryptionMessage, newId, handler, null);
                         Allclients.Add(newClient);
-                        //clientIds.Add(newId);
-                        numOfClient++;
-
+                       
                         Send(handler, "id\r" + newId);
                         addNewClient dg = Program.addNewClientToInterface;
                         dg(newId, decryptionMessage);
@@ -238,12 +233,7 @@ namespace ServerSide
                     if (decryptionSubject == "last report")
                     {
                         recieveLastRepoert(handler, decryptionMessage);
-                       
-                        // the function open form to disply data from client 
-
-                        //liveData dg = Program.showLiveData;
-                        //dg(handler, decryptionMessage);
-
+                        
                     }
 
                     if (decryptionSubject == "parts")
@@ -337,7 +327,7 @@ namespace ServerSide
 
         private static void recieveLastRepoert(Socket handler, string data)
         {
-            ShowErrorDialog("show last report");
+           // ShowErrorDialog("show last report");
             foreach (Client client in Allclients)
             {
                 if (client.ClientSocket == handler)

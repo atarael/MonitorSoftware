@@ -78,13 +78,14 @@ namespace ServerSide
                         {
                             isOpen = true;
                             currentStateForm.addText(data);
+                            return;
                         }
                     }
                     if (!isOpen)
                     {
                         currentStateForm.ShowDialog();
 
-                        //sara ayash atara 
+                       
                     }
                 }
 

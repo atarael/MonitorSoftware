@@ -37,6 +37,7 @@ namespace ServerSide
         {
             this.Text= "Current State from client: " + Name + ", ID: " + id; 
         }
+        
         public void addText(string str)
         {
 

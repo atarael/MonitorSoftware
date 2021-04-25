@@ -73,8 +73,7 @@ namespace ServerSide
 
         }
 
-        // Inserts some values in the clientData table.
-        // As you can see, there is quite some duplicate code here, we'll solve this in part two.
+        // Inserts some values in the clientData table. 
         public void fillClientsTable(int id1, string name1, string settingString1)
         {
             

@@ -149,7 +149,6 @@ C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Cu
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.MonitorSetting.resources
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.Properties.Resources.resources
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ServerForm.resources
-C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.ViewPDF.resources
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.GenerateResource.cache
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CoreCompileInputs.cache
 C:\Users\sara\Desktop\project\MonitorSoftware\ServerSide\obj\Debug\ServerSide.csproj.CopyComplete

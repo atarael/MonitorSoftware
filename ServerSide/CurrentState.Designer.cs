@@ -43,14 +43,14 @@
             this.txbProcesses.Multiline = true;
             this.txbProcesses.Name = "txbProcesses";
             this.txbProcesses.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbProcesses.Size = new System.Drawing.Size(431, 597);
+            this.txbProcesses.Size = new System.Drawing.Size(362, 597);
             this.txbProcesses.TabIndex = 0;
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(275, 21);
+            this.btnStop.Location = new System.Drawing.Point(324, 23);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(466, 66);
+            this.btnStop.Size = new System.Drawing.Size(168, 66);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -58,27 +58,27 @@
             // 
             // txbTyped
             // 
-            this.txbTyped.Location = new System.Drawing.Point(512, 491);
+            this.txbTyped.Location = new System.Drawing.Point(445, 491);
             this.txbTyped.Multiline = true;
             this.txbTyped.Name = "txbTyped";
             this.txbTyped.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbTyped.Size = new System.Drawing.Size(582, 230);
+            this.txbTyped.Size = new System.Drawing.Size(400, 230);
             this.txbTyped.TabIndex = 0;
             // 
             // txbSites
             // 
-            this.txbSites.Location = new System.Drawing.Point(512, 124);
+            this.txbSites.Location = new System.Drawing.Point(445, 124);
             this.txbSites.Multiline = true;
             this.txbSites.Name = "txbSites";
             this.txbSites.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txbSites.Size = new System.Drawing.Size(582, 318);
+            this.txbSites.Size = new System.Drawing.Size(400, 318);
             this.txbSites.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(508, 468);
+            this.label1.Location = new System.Drawing.Point(441, 468);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(141, 20);
@@ -89,7 +89,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(508, 101);
+            this.label2.Location = new System.Drawing.Point(441, 101);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 20);
@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1179, 789);
+            this.ClientSize = new System.Drawing.Size(901, 789);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -121,7 +121,7 @@
             this.Controls.Add(this.txbProcesses);
             this.Location = new System.Drawing.Point(50, 50);
             this.MaximumSize = new System.Drawing.Size(2000, 2000);
-            this.MinimumSize = new System.Drawing.Size(1201, 845);
+            this.MinimumSize = new System.Drawing.Size(900, 845);
             this.Name = "CurrentState";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
