@@ -85,6 +85,8 @@ namespace ClientSide
                             SmtpServer.EnableSsl = true;
 
                             SmtpServer.Send(mail);
+                            Console.WriteLine("send report seccess");
+
                             if (lastReport)
                             {
                                 // delete fiels folder
@@ -129,8 +131,9 @@ namespace ClientSide
                     catch (SmtpException ex)
                     {
                         ShowErrorDialog("fail send mailllll: \n" + ex);
+
                         Thread reportThread = new Thread(playSendReportThread);
-                        reportThread.Start();
+                        reportThread.Start(args);
 
                     }
                     catch (Exception ex)
@@ -148,12 +151,11 @@ namespace ClientSide
 
         }
 
-        public static void createLastReport()
+        public static void stopTimer()
         {
-            lastReport = true;
+             
             periodicTimer.Dispose();
-            createReportFile(); // send last report
-
+           
 
         }
 
@@ -167,37 +169,9 @@ namespace ClientSide
         {
             DBclient DBInstance = DBclient.Instance;
             string settingString = DBInstance.getGeneralDetailsTable("lastReport");
-            //string userName = Environment.UserName;
-            //string projectDirectory = Environment.CurrentDirectory;
-            //string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            ////String[] paths = new string[] { @filepath, "files" };
-            ////filepath = Path.Combine(paths);
-            //string settingString = "";
-            //DirectoryInfo d = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            ////ShowErrorDialog("filepath is: \n" + filepath);
-            //if (!Directory.Exists(filepath))
-            //{
-            //    //return;
-            //}
-            //string reportStringPath = Path.Combine(filepath, "lastReport.txt");
-            //if (File.Exists(reportStringPath))
-            //{
-            //    using (StreamReader sr = System.IO.File.OpenText(reportStringPath))
-            //    {
-
-            //        string line = "";
-            //        while ((line = sr.ReadLine()) != null)
-            //        {
-            //            settingString += line + "\r\n";
-            //        }
-            //    }
-
-
-            //}
-            //else
-            //{
-            //    return string.Empty;
-            //}
+            
+          
+ 
 
             return settingString;
         }
@@ -214,7 +188,10 @@ namespace ClientSide
             {
                 tickTime = SettingInstance.reportFrequencyInSecond;
             }
-           
+            if (frequencySecond<120000)
+            {
+                frequencySecond = 600000;
+            }
             // Initialization of periodicTimer  
             periodicTimer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(tickTime), TimeSpan.FromSeconds(frequencySecond));
             //periodicTimer = new Timer(x => { createReportFile(); }, null, TimeSpan.FromSeconds(600), TimeSpan.FromSeconds(1200));
@@ -300,33 +277,8 @@ namespace ClientSide
             //db.printClientData();  
             string pathLastReport = Path.Combine(path, "lastReport.txt");
             DBInstance.fillGeneralDetailsTable("lastReport", stringReport);
-            //    {
-            //    using (StreamWriter sw = System.IO.File.CreateText(pathLastReport)) ;
-            //    System.IO.File.WriteAllText(pathLastReport, stringReport);
-
-            //}
-            //    catch (Exception ex)
-            //{
-            //    ShowErrorDialog(ex + "hh");
-            //}
-
-
-            //if (System.IO.File.Exists(pathLastReport))
-            //{
-            //    System.IO.File.Delete(pathLastReport);
-                
-            //}
-            //try
-            //{
-            //    using (StreamWriter sw = System.IO.File.CreateText(pathLastReport)) ;
-            //    System.IO.File.WriteAllText(pathLastReport, stringReport);
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    ShowErrorDialog(ex + "hh");
-            //}
-            //ShowErrorDialog(stringReport);
+            
+           
         }
 
         public static void ShowErrorDialog(string message)

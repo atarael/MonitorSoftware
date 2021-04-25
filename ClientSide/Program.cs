@@ -56,38 +56,24 @@ namespace ClientSide
         [STAThread]
         static void Main()
         {
-        //     if (mutex.WaitOne(TimeSpan.Zero, true))
-        //    {
-
-                CreateShortcut("BSA-Client", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
-                program = new Program();
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+        
+            CreateShortcut("BSA-Client", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
+            program = new Program();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
 
-                // check if connect at first time or reconnect         
-                if (!program.connectToExistClient())
-                {
-                    program.connectToServer();
-                }
-             Thread interntAvilable = new Thread(checkConnections);
-             interntAvilable.Start();
+            // check if connect at first time or reconncted  
+            if (!program.connectToExistClient())
+            {
+                program.connectToServer();
+            }
+            // thread to check internet connection 
+            Thread interntAvilable = new Thread(checkConnections);
+            interntAvilable.Start();
+           
             Application.Run();
-            //    mutex.ReleaseMutex();
-            //}
-            //else
-            //{
-            //    // send our Win32 message to make the currently running instance
-            //    // jump on top of all the other windows
-            //    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
-            //        NativeMethods.WM_SHOWME,
-            //        IntPtr.Zero,
-            //        IntPtr.Zero);
-            //}
-
-
-            // sqliteForm sf = new sqliteForm();
-            // sf.ShowDialog();
+            
 
 
         }
@@ -103,8 +89,12 @@ namespace ClientSide
 
             shortcut.Description = "BE SAFE CLIENT SIDE ";   // The description of the shortcut
             shortcut.IconLocation = path + "/besafe-server-icon.ico"; // The icon of the shortcut
-            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
+            shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
             shortcut.Save();                                    // Save the shortcut
+
+
+
         }
         private static void checkConnections()
         {
@@ -121,18 +111,8 @@ namespace ClientSide
 
                 }
                 else {
-                    try
-                    {
-                        Console.WriteLine("SEND TO CLIENT NO INTERNET");
-                        string crypto = Crypto.Encrypt("NO_INTERNET\r");
-                        string decrypto = Crypto.Decrypt(crypto);
-                        var sendData = Encoding.UTF8.GetBytes(crypto);
-                        program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
-
-
-                    }
-                    catch (Exception ex)
-                    {
+                    bool sendDataStatus = program.SendData(program.clientSocket, "NO_INTERNET\r");
+                    if (!sendDataStatus) {                       
                         // ShowErrorDialog("checkSocketConnections: \n" + ex.Message + " \n\n" + ex);
                         Console.WriteLine("FAIL SEND TO CLIENT NO INTERNET");
                         program.reConnect();   
@@ -147,27 +127,31 @@ namespace ClientSide
         }
         private static bool checkSocketConnections()
         {
-            try
-            {
+             
                 if (program.clientSocket == null)
                 {
                     return false;
                 }
-                string crypto = Crypto.Encrypt("client check connection");
-                string decrypto = Crypto.Decrypt(crypto);
-                var sendData = Encoding.UTF8.GetBytes(crypto);
-                program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
-                return true;
+                bool sendDataStatus = program.SendData(program.clientSocket, "client check connection");
+                if (sendDataStatus)
+                {
+                    return true;
+                }
+                else
+                {
+                    // ShowErrorDialog("checkSocketConnections: \n" + ex.Message + " \n\n" + ex);
+                    if (program.manageMonitor != null)
+                    {
+                        program.manageMonitor.stopLiveMode();
+                    }
 
-            }
-            catch (SocketException ex)
-            {
-                // ShowErrorDialog("checkSocketConnections: \n" + ex.Message + " \n\n" + ex);
-               
-                program.manageMonitor.stopLiveMode();              
-                return false;
+                    return false;
+                }
 
-            }
+
+                
+
+            
         }
 
         public static bool checkInterntConnection()
@@ -188,32 +172,7 @@ namespace ClientSide
                 return false;
             }
 
-
-            //while (true)
-            //{
-
-            //    try
-            //    {
-
-            //        string crypto = Crypto.Encrypt("check connection");
-            //        string decrypto = Crypto.Decrypt(crypto);                  
-            //        var sendData = Encoding.UTF8.GetBytes(crypto);
-            //        program.clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, program.SendCallback, program.clientSocket);
-
-
-            //    }
-            //    catch(Exception ex)
-            //    {
-            //        // ShowErrorDialog("checkInterntConnection: \n" + ex.Message + " \n\n" + ex);
-            //        Console.WriteLine("checkInterntConnection RECONNECT");
-            //        program.reConnect();
-
-            //    }
-
-
-            //}
-
-            //Console.WriteLine("exit thread check internet");
+ 
         }
 
         private static void connectAtReStartComputer()
@@ -225,11 +184,14 @@ namespace ClientSide
             WshShell shell = new WshShell();
             string shortcutAddress = startupFolder + @"\MyStartupShortcut.lnk";
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-            shortcut.Description = "A startup shortcut. If you delete this shortcut from your computer, LaunchOnStartup.exe will not launch on Windows Startup"; // set the description of the shortcut
+            shortcut.Description = "BESAFE CLIENT SIDE"; // set the description of the shortcut
             shortcut.WorkingDirectory = Application.StartupPath; /* working directory */
             shortcut.TargetPath = Application.ExecutablePath; /* path of the executable */
             shortcut.Save(); // save the shortcut 
             shortcut.Arguments = "/a /c";
+
+            
+
 
 
             // if (rkApp.GetValue("ClientSide.exe") == null) { }
@@ -271,13 +233,16 @@ namespace ClientSide
                     case SETTING:
                         string setting = dataFromServer[1].Split('\0')[0];
                         setting = setting.Substring(setting.IndexOf("\n") + 1);
-                       
+
                         // save setting 
+                         
+                        DBInstance.fillGeneralDetailsTable("name", name);
+                        DBInstance.fillGeneralDetailsTable("ip", ip);
                         DBInstance.fillGeneralDetailsTable("setting", setting);
                         playAllTrigers(); //This method obtains the settings string from the server  
 
-                        // Set Periodic Report
-                        // PeriodicReporting.setReportPeriodic();
+                        // Set Periodic Report 
+                        // PeriodicReporting.setReportPeriodic();  
 
                         break;
 
@@ -293,7 +258,8 @@ namespace ClientSide
                         break;
 
                     // Stop live reporting mode
-                    case LAST_REPORT:
+                    case LAST_REPORT:// abo 
+                        Console.WriteLine("accept request to last report");
                         sendLastReport(clientSocket);
                         break;
 
@@ -336,25 +302,23 @@ namespace ClientSide
         // sara 
         private void removeClient()
         { 
-            ShowErrorDialog("removeeeeeeeeeeee");
+           // ShowErrorDialog("removeeeeeeeeeeee");
             
             // turn off all theards 
             manageMonitor.stopAllTriggers();
            
-            // create last report
-            PeriodicReporting.createLastReport();
+            // stop timer
+            PeriodicReporting.stopTimer();
            
             // db
-            // DBclient DBInstance = DBclient.Instance;
-            // DBInstance.deleteDB();
+            DBclient DBInstance = DBclient.Instance;
+            DBInstance.deleteDB();
                      
             // restart - delete key 
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            rkApp.DeleteValue("ClientSide.exe", false);
+             rkApp.DeleteValue("ClientSide.exe", false);
 
-            // stop theard checkConnection
-            checkConnection = false;
-
+            System.Environment.Exit(0);
 
 
 
@@ -383,11 +347,19 @@ namespace ClientSide
         // set setting and here will play all triggers;
         private void playAllTrigers()
         {
-
             Console.WriteLine("PLAY ALL TRIGGERRS");
 
             // Play all monitors
-            manageMonitor = new ManageMonitor();
+            if (manageMonitor == null)
+            {
+                manageMonitor = new ManageMonitor();
+            }
+            Setting settingInstance = Setting.Instance;
+            settingInstance.setAllSetting();
+
+
+            manageMonitor.stopAllTriggers();
+
             manageMonitor.playAllTriggers();
 
             // Set Periodic Report
@@ -467,8 +439,8 @@ namespace ClientSide
 
         public static void ShowErrorDialog(string message)
         {
-            MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // Console.WriteLine(message);
+           // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+              Console.WriteLine(message);
         }
 
 
@@ -487,9 +459,7 @@ namespace ClientSide
 
                 name = clientForm.clientName;
                 ip = clientForm.ip;
-                DBclient DBInstance = DBclient.Instance;
-                DBInstance.fillGeneralDetailsTable("name", name);
-                DBInstance.fillGeneralDetailsTable("ip", ip);
+                
 
                 // Create new socket 
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -514,26 +484,7 @@ namespace ClientSide
 
 
         }
-
-        public static bool CheckConnection(Socket clientSocket)
-        {
-
-            if (internetConnection() && SocketConnected(clientSocket))
-                return true;
-            else
-                return false;
-        }
-
-        public static bool SocketConnected(Socket s)
-        {
-            bool part1 = s.Poll(1000, SelectMode.SelectRead);
-
-            if (part1)
-                return false;
-            else
-                return true;
-        }
-
+ 
         public static bool internetConnection()
         {
             try
@@ -561,49 +512,12 @@ namespace ClientSide
                 Console.WriteLine("connectToExistClient - RECONNECT");
                 reConnect();
                 playAllTrigers();
-
+                
                 return true;
             }
             return false;
 
-
-            //string set = "";
-            //string projectDirectory = Environment.CurrentDirectory;
-            //string filepath = Directory.GetParent(projectDirectory).Parent.FullName;
-            //string[] paths = new string[] { @filepath, "files" };
-            //filepath = Path.Combine(paths);
-
-            //DirectoryInfo directory = new DirectoryInfo(filepath);//Assuming Test is your Folder
-            ////ShowErrorDialog("filepath is: \n" + filepath);
-            //string fileName = "setting_" + Environment.UserName + ".txt";
-            //if (Directory.Exists(filepath) && System.IO.File.Exists(Path.Combine(filepath, fileName)))
-            //{
-
-            //    using (StreamReader sr = System.IO.File.OpenText(Path.Combine(filepath, fileName)))
-            //    {
-            //        name = sr.ReadLine();
-            //        id = sr.ReadLine();
-            //        //ip = "10.0.0.4";
-            //        //ip = "127.0.0.1";
-
-            //        DBclient DBInstance = DBclient.Instance;
-            //        ip = DBInstance.getGeneralDetailsTable("ip");
-            //        ShowErrorDialog("ipppp: " + ip);
-            //        string line = "";
-            //        while ((line = sr.ReadLine()) != null)
-            //        {
-            //            //ShowErrorDialog("line\n" + line);
-            //            set += line + "\r\n";
-            //        }
-            //    }
-            //    reConnect();
-            //    playAllTrigers();
-
-            //    return true;
-            //}
-
-
-            //return false;
+ 
 
         }
 
@@ -612,7 +526,7 @@ namespace ClientSide
             clientForm.ShowDialog();
         }
 
-        public void SendData(Socket clientSocket, String data) 
+        public bool SendData(Socket clientSocket, String data) 
         {
             
  
@@ -621,13 +535,19 @@ namespace ClientSide
                 //if (CheckConnection(clientSocket)) 
                 if(clientSocket!=null)
                 {
+                     
+                    if (data.Length > 330)
+                    {
+                        sendDataByParts(clientSocket, data);
+
+                    }
                     string crypto = Crypto.Encrypt(data);
                     string decrypto = Crypto.Decrypt(crypto);
-                    Console.WriteLine(crypto +"\n"+decrypto);
+                    Console.WriteLine(crypto +"\n"+decrypto+"\n"+ crypto.Length);
                     //ShowErrorDialog("Send: "+ crypto);
-                     var sendData = Encoding.UTF8.GetBytes(data);
+                    var sendData = Encoding.UTF8.GetBytes(crypto);
                     clientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, SendCallback, clientSocket);
-
+                    return true;
                    
 
                 }
@@ -635,28 +555,65 @@ namespace ClientSide
                     Console.WriteLine("send data fail, socket disconnection");
                     // reConnect();
                     SendData(clientSocket, data);
+                   
                 }
+                return false;
 
             }
             catch (SocketException ex)
             {
-                if (!CheckConnection(clientSocket))
-                {
-                    ShowErrorDialog("send data fail, Socket Exception \r\n" + ex.Message + " \n\n" + ex);
-                    // ShowErrorDialog("SendData send SocketException\r\n" + ex.Message);
-                    // reConnect();
-                    // SendData(clientSocket, data);
-
-                }
-
-
-                //SendData(clientSocket, data);
+                ShowErrorDialog("send data fail, Socket Exception \r\n" + ex.Message + " \n\n" + ex);               
+                return false;
+                 
             }
             catch (ObjectDisposedException ex)
             {
                 ShowErrorDialog("send data fail, ObjectDisposed Exception \r\n" + ex.Message + " \n\n" + ex);
-                // ShowErrorDialog("SendData send ObjectDisposedException \r\n" + ex.Message);
-                //reConnect();
+                return false;
+               
+            }
+        }
+
+        private void sendDataByParts(Socket socket, string data)
+        {
+            string subject = data.Split(new char[] { '\r' }, 2)[0];
+            string message = data.Split(new char[] { '\r' }, 2).Last();
+            List<string> subData = new List<string>();
+            Console.WriteLine("last report lengrh is:" + message.Length);
+            int chunkSize = 300;
+            int stringLength = message.Length;
+            for (int i = 0; i < stringLength; i += chunkSize)
+            {
+                if (i + chunkSize > stringLength) chunkSize = stringLength - i;
+                string s = message.Substring(i, chunkSize);
+                subData.Add(s);
+                Console.WriteLine(s+"\r length: "+s.Length);
+
+            }
+            Console.ReadLine();
+
+
+            //IEnumerable<string> subData = Enumerable.Range(0, message.Length/300).Select(i => message.Substring(i * 300, 300));
+             
+            for (int i=0; i<subData.Count();i++) 
+            {
+
+                if (i == 0)
+                {
+                    Console.WriteLine(subData.ElementAt(i));
+                    SendData(socket, "parts\r"+id+"\rfirst\r"+ subject+ "\r"+ subData.ElementAt(i)+"\n");
+                }
+                else if(i== subData.Count()-1)
+                {
+                    Console.WriteLine(subData.ElementAt(i));
+                    SendData(socket, "parts\r" + id + "\rfinal\r" + subject + "\r" + subData.ElementAt(i) + "\n");
+                }
+                else
+                {
+                    Console.WriteLine(subData.ElementAt(i));
+                    SendData(socket, "parts\r" + id + "\rcontinue\r" + subject + "\r" + subData.ElementAt(i) + "\n");
+                }
+               
             }
         }
 
@@ -715,7 +672,7 @@ namespace ClientSide
 
         //}
 
-         
+
 
         public void reConnect()
         {

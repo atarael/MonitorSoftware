@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,22 +33,25 @@ namespace ClientSide
         }
         public override void stopThreadMonitor()
         {
-            ifLive = false;
+            base.monitorAlive = false;
+            Thread.Sleep(4000);
+            if (base.monitorThread != null)
+            {
+                base.monitorThread.Abort();  
+            }
         }
 
         private void playmonitorProccess()
         {
-            while (monitorAlive)
+            while (base.monitorAlive)
             {
-
                 StringBuilder sb = new StringBuilder();
-
-                foreach (Process p in Process.GetProcesses("."))
+                Process[] allProc = Process.GetProcesses(".");
+                foreach (Process p in allProc)
                 {
 
                     try
                     {
-
                         if (p.MainWindowTitle.Length > 0)
                         {
                             sb.Append("Window Title:\t" + p.MainWindowTitle.ToString() + Environment.NewLine);
@@ -59,19 +63,27 @@ namespace ClientSide
                             DBInstance.fillDailyProcessTable(today, "Window Title:\t" + p.MainWindowTitle.ToString() +", Process Name:\t" + p.ProcessName.ToString()+"\r");
 
                         }
+                           
+                        
 
                     }
-                    catch { }
+                    catch {
+                        Console.WriteLine("monitor proccess error");
+
+                    }
                 }
+               // Console.WriteLine(sb );
+
+
 
                 if (ifLive)
                 {
-                     string processes = ListAllApplications();
+                   
                      updateProccess handler = Program.updateCurrentProcess;
-                     handler(sb.ToString());                  
+                      handler(sb.ToString());                    
 
                 }
-                Thread.Sleep(6000); 
+                Thread.Sleep(4000); 
             }
             
             //ShowErrorDialog("playmonitorProccess finish");

@@ -163,6 +163,7 @@ namespace ClientSide
         {
             string projectDirectory = Environment.CurrentDirectory;
             projectDirectory = Path.Combine(projectDirectory, DB);
+           // ShowErrorDialog(projectDirectory);
             if (File.Exists(projectDirectory))
                 return;
             else
@@ -210,28 +211,9 @@ namespace ClientSide
 
         public void deleteDB()
         {
-            string DatabasePath = Environment.CurrentDirectory;
-            DatabasePath = Path.Combine(DatabasePath, DB + ".sqlite");
-            
-            
-            FileInfo fi = new FileInfo(DatabasePath);
-            try
-            {
-                if (fi.Exists)
-                {
-                    m_dbConnection.Close();
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    fi.Delete();
-                    //string sqlCommandText = "DROP DATABASE " + DB;
-                    //SQLiteCommand sqlCommand = new SQLiteCommand(sqlCommandText, m_dbConnection);
-                    //sqlCommand.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                fi.Delete();
-            }
+            string sql = "DROP TABLE GeneralDetailsTable";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
         }
         private void createReportImmediateTable()
         {// sara atara 
@@ -296,7 +278,7 @@ namespace ClientSide
         // As you can see, there is quite some duplicate code here, we'll solve this in part two.
         public void fillTriggersTable(int idTrigger, string dateTrigger, string DesTrigger)
         {
-            string sql = "insert into TriggersTable(idTrigger,dateTrigger,DesTrigger) values('" + idTrigger + "','" + dateTrigger + "','" + DesTrigger + "');";
+            string sql = "INSERT OR IGNORE into TriggersTable(idTrigger,dateTrigger,DesTrigger) values('" + idTrigger + "','" + dateTrigger + "','" + DesTrigger + "');";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
@@ -383,9 +365,6 @@ namespace ClientSide
         }
         public void fillDailyProcessTable(string date, string Process)
         {
-            //string sql = "INSERT OR IGNORE into DailyProcessTable(date,Process) values('" + date + "','" + Process + "');";
-            //SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            //command.ExecuteNonQuery();sara 
         }
         public void RemoveDailyProcessTable(string date)
         {
@@ -424,8 +403,8 @@ namespace ClientSide
 
         public static void ShowErrorDialog(string message)
         {
-            // MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Console.WriteLine(message);
+              MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //Console.WriteLine(message);
         }
 
 

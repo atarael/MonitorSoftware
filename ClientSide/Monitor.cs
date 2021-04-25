@@ -21,7 +21,7 @@ namespace ClientSide
         protected Thread monitorThread;
         protected bool monitorAlive;
         
-        protected DBclient DBInstance = DBclient.Instance;
+        protected DBclient DBInstance = DBclient.Instance; 
         protected Setting SettingInstance = Setting.Instance;
         
         const int ENUM_CURRENT_SETTINGS = -1;
@@ -243,13 +243,7 @@ namespace ClientSide
                 Console.WriteLine("fail send mail: \n" + ex);
             }
 
-
-
-
-
-
-            //Thread reportThread = new Thread(playSendReportThread);
-            //reportThread.Start();
+             
 
         }
 

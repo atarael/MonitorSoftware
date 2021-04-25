@@ -35,6 +35,26 @@ namespace ClientSide
         private Setting()
         {
 
+            setAllSetting();
+
+        } 
+
+       
+
+        public static Setting Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        public void setAllSetting()
+        {
+            triggersForAlert = new List<string>();
+            triggersForReport = new List<string>();
+            anotherSitesReport = new List<string>();
+            anotherSitesIgnore = new List<string>();
             settingString = readSettingFromDB();
             createOffensiveWordsList();
             installationSetting();
@@ -49,17 +69,7 @@ namespace ClientSide
             DBInstance.removeIgnoredSites(anotherSitesIgnore.ToArray());
             DBInstance.funAddCategorySiteTable(anotherSitesReport.ToArray(), "anotherSitesReport");
 
-
         }
-        public static Setting Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
-
 
 
         private void getEmail(string settingString)
@@ -68,13 +78,14 @@ namespace ClientSide
             if (settingStringSplited.Length > 6)
             {
                 email = settingStringSplited[6].Split('\r')[0];
-                //ShowErrorDialog("email is: |" + email + "|");
+                
 
             }
         }
-        // s atat atara sara 
+
+        // The function gets the tracker how to handle the trigger of the software installation
         private void installationSetting()
-        {
+        {  
             string[] settingStringSplited = settingString.Split('\n');
             if (settingStringSplited.Length > 3)
             {
@@ -91,6 +102,7 @@ namespace ClientSide
             }
         }
 
+        //The function gets the database of inappropriate words from the file
         private void createOffensiveWordsList()
         {
             String projectDirectory = Environment.CurrentDirectory;
@@ -138,16 +150,11 @@ namespace ClientSide
             // foreach (string l in offensiveWords) { ShowErrorDialog(l); }
         }
 
-
+        //The function receives from the tracker the frequency of the periodic report
         private double buildReportFrequency()
         {
             int second = 0;
             DateTime updateDate = DateTime.Now;
-
-            /* foreach(var x in settingString.Split('\n'))
-             {
-                 ShowErrorDialog("settttt" + x);
-             }*/
              if(settingString == string.Empty)
             {
                 return 0;
@@ -161,7 +168,7 @@ namespace ClientSide
                 string frequencyStr = settingStringSplited[7];
                 if (frequencyStr.Split(' ')[0] == "minute")
                 {
-
+                    reportFrequencyInWord = "few seconds";
                     second = int.Parse(frequencyStr.Split(' ')[1]) * 60;
                     updateDate = updateDate.AddDays(0);
 
@@ -211,6 +218,7 @@ namespace ClientSide
 
         }
 
+        //The function receives from the follower the list of sites for removal from tracking
         private List<string> buildAnotherSitesIgnoreList()
         {
             anotherSitesIgnore = new List<string>();
@@ -229,7 +237,7 @@ namespace ClientSide
             }
             return anotherSitesIgnore;
         }
-
+        //The function receives from the follower the list of additional sites to follow
         private List<string> buildAnotherSitesReportList()
         {
             anotherSitesReport = new List<string>();
@@ -266,7 +274,7 @@ namespace ClientSide
             triggersForReport.Add("anotherSitesReport");
 
         }
-
+        //The function gives the list of inappropriate words
         public List<string> getWord()
         {
 
@@ -313,5 +321,5 @@ namespace ClientSide
             MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-    }
+    } 
 }

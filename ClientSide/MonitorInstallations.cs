@@ -38,7 +38,7 @@ namespace ClientSide
         public void playMonitorInstallations()
         {
             
-            int hour = 60000; // 1 hour
+             
             while (base.monitorAlive)
             {
                 bool install = false;
@@ -61,7 +61,7 @@ namespace ClientSide
 
                     }
                 }
-                Thread.Sleep(hour*60); // 3,600,000 ms = 1 hr
+                Thread.Sleep(60000); // 3,600,000 ms = 1 hr
             }
              
         }
@@ -116,21 +116,21 @@ namespace ClientSide
             //ShowErrorDialog(DateTime.Now.AddHours(-1).ToString());
 
             List<FileInfo> myFile = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .Where(f => f.CreationTime >= DateTime.Now.AddMinutes(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
                 .ToList();
             
             string desktop = GetPath(KnownFolder.Desktop);
             directory = new DirectoryInfo(desktop);
 
             List<FileInfo> myFile1 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .Where(f => f.CreationTime >= DateTime.Now.AddMinutes(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
                 .ToList();
 
             string docs = GetPath(KnownFolder.Documents);
             directory = new DirectoryInfo(docs);
 
             List<FileInfo> myFile2 = (from f in directory.GetFiles() orderby f.LastWriteTime descending select f)
-                .Where(f => f.CreationTime >= DateTime.Now.AddHours(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
+                .Where(f => f.CreationTime >= DateTime.Now.AddMinutes(-1) && (f.Name.EndsWith(".apk") || f.Name.EndsWith(".exe") || f.Name.EndsWith(".ink") || f.Name.EndsWith(".msi")))
                 .ToList();
 
             string allFI = "";

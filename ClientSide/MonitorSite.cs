@@ -47,6 +47,11 @@ namespace ClientSide
         public override void stopThreadMonitor()
         {
             base.monitorAlive = false;
+            Thread.Sleep(4000);
+            if (base.monitorThread != null)
+            {
+                base.monitorThread.Abort();
+            }
         }
 
         public void playSiteMonitor() {
